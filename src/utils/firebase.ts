@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { addDoc, collection, getDoc, getFirestore } from "firebase/firestore";
+import { addDoc, collection, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -62,3 +62,10 @@ export const addDocument = async (path: string, data: any) => {
     throw new Error('Error al agregar el documento');
   }
 };
+
+export const getCollection = async (collectionName: string, queryArray?: any[]) => {
+  const ref = collection(db, collectionName);
+  const q = queryArray ? query(ref, ...queryArray) : query(ref);
+
+  return (await getDocs(q)).docs.map((doc) => ({id: doc.id, ...doc.data()}));
+}
