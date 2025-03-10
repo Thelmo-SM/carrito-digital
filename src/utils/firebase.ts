@@ -1,0 +1,64 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { addDoc, collection, getDoc, getFirestore } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+const APYKEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+const AUTHDOMAIN = process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN;
+const PROJECTID = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+const STORAGEBUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+const MESSAGINGSENDERID = process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
+const APPID = process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
+
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: APYKEY,
+  authDomain: AUTHDOMAIN,
+  projectId: PROJECTID,
+  storageBucket: STORAGEBUCKET,
+  messagingSenderId: MESSAGINGSENDERID,
+  appId: APPID
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+export default app;
+
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+
+export const setDocument = (path: string, data: any) => {
+    data.createdAt = serverTimestamp();
+    return setDoc(doc(db, path), data);
+};
+
+export const getDocument = async (path: string) => {
+  return (await getDoc(doc(db, path))).data();
+}
+
+export const signOut = () => {
+  localStorage.removeItem('user');
+  return auth.signOut();
+}
+
+export const sendResetEmail = (email: string) => {
+  return sendPasswordResetEmail(auth, email);
+}
+
+//coleccion para los productos
+export const addDocument = async (path: string, data: any) => {
+  data.createdAt = serverTimestamp();
+
+  try {
+    const docRef = await addDoc(collection(db, path), data);
+    console.log('Documento agregado con ID: ', docRef.id);
+    return docRef.id; // Devolver el ID si se necesita usar más adelante
+  } catch (error) {
+    console.error('Error al agregar el documento: ', error);
+    throw new Error('Error al agregar el documento');
+  }
+};
