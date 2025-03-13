@@ -1,0 +1,63 @@
+.modal {
+    position: fixed;
+    z-index: 999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgba(0, 27, 53, 0.329);
+    display: none;
+    justify-content: center;
+    align-items: start;
+    backdrop-filter: blur(2);
+}
+.modal.isOpen {
+    display: flex;
+}
+.modalContainer {
+    position: relative;
+    background-color: #a0a0a0;
+    min-width: 70%;
+    max-width: 70%;
+    height: 90%;
+/*    height: 45rem;*/
+    padding: 2rem;
+    margin: auto;
+    border-radius: .25rem;
+}
+
+.modalClose {
+    position: absolute;
+    z-index: 10;
+    top: 1rem;
+    right: 1rem;
+    padding: 0 1rem;
+    border-radius: .2rem;
+    margin:  0 0 3rem;
+    background-color: #d9af71;
+}
+
+/* Media queries */
+@media (max-width: 1024px) {
+    .modalContainer {
+        min-width: 80%;  /* Ajusta el modal a un tamaño más pequeño en tablets */
+        max-width: 80%;
+    }
+}
+
+@media (max-width: 768px) {
+    .modalContainer {
+        min-width: 98%;  /* En dispositivos móviles, el modal puede ocupar un 90% del ancho */
+        max-width: 98%;
+        height: 80%;  /* Reduce la altura para que no ocupe toda la pantalla */
+    }
+}
+
+@media (max-width: 480px) {
+    .modalContainer {
+        min-width: 100%;  /* En pantallas muy pequeñas, el modal ocupará casi todo el ancho */
+        max-width: 100%;
+        height: auto;  /* Ajusta la altura según el contenido */
+        padding: 1rem;  /* Reduce el padding para mejor ajuste en pantallas pequeñas */
+    }
+}

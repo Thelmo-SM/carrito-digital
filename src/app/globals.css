@@ -1,76 +1,103 @@
+/* Reset avanzado de CSS */
+
+/* 1. Aplicar box-sizing a todos los elementos */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 *,
 *::before,
 *::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
 }
 
+/* 2. Configuración de tipografía */
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 3. Definir una tipografía base y altura de línea */
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  color: #171717;
-  background-color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  /* font-size: 16px;
   line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  min-height: 100vh;
+  text-rendering: optimizeSpeed; */
 }
 
+/* 4. Asegurar imágenes y elementos multimedia responsivos */
+img,
+video,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 5. Eliminar decoraciones predeterminadas en enlaces */
 a {
   text-decoration: none;
   color: inherit;
-  -webkit-transition: color 0.2s ease;
-  transition: color 0.2s ease;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
+/* 6. Estilos base para listas */
 ul,
 ol {
   list-style: none;
-  padding-left: 0;
 }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
+/* 7. Evitar subrayado en enlaces dentro de botones */
+button a {
+  text-decoration: none;
+}
+
+/* 8. Normalizar botones e inputs */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  outline: none;
+  background: none;
 }
 
 button {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
   cursor: pointer;
 }
 
+/* 9. Quitar apariencia por defecto en formularios */
 input,
-textarea,
-select,
-button {
-  background-color: transparent;
-  border: 0;
-  font: inherit;
-  color: inherit;
-  outline: none;
-}
-
-input,
-textarea,
-select,
-button {
-  -webkit-appearance: none;
-  -moz-appearance: none;
+textarea {
+  background: transparent;
+  border-radius: 0;
   appearance: none;
 }
 
-html,
-body {
-  line-height: 1;
+/* 10. Ocultar elementos con `hidden` */
+[hidden] {
+  display: none !important;
 }
 
+/* 11. Prevenir desplazamiento horizontal */
 body {
-  margin: 0;
+  overflow-x: hidden;
 }
 
-* {
-  padding: 0;
-  margin: 0;
+/* 12. Suavizar el desplazamiento en navegadores modernos */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }

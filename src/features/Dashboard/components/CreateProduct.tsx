@@ -29,7 +29,6 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
     return (
         <div>
             <form onSubmit={(e) => handleSubmit(e, form)}>
-                <h1>Nombre: {user?.name}</h1>
                 <h2>Crear productos</h2>
                 {/* <div>
                 <label>Imagen</label>
