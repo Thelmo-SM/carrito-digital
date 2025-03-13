@@ -28,7 +28,7 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
 
     return (
         <div>
-            <form style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }} onSubmit={(e) => handleSubmit(e, form)}>
+            <form onSubmit={(e) => handleSubmit(e, form)}>
                 <h1>Nombre: {user?.name}</h1>
                 <h2>Crear productos</h2>
                 {/* <div>
@@ -48,7 +48,6 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
                 />
                 </div>
                 <div>
@@ -59,7 +58,6 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
                 id="price_id" 
                 value={form.price}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
                 />
                 </div>
                 <div>
@@ -70,7 +68,6 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
                 id="soldUnits_id"
                 value={form.soldUnits}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
                 />
                 </div>
                 <div>
@@ -81,7 +78,6 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
                 id="description_id"
                 value={form.description}
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
                 />
                 </div>
                 <button>Crear</button>
