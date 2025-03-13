@@ -1,3 +1,45 @@
 .container {
     border: solid .1rem red;
 }
+
+.container > h2 {
+    font-size: 1.9rem;
+    text-align: center;
+    color: #444444;
+}
+
+.container > h3 {
+    font-size: 1.3rem;
+    padding: 1rem;
+    text-align: center;
+    color: #444444;
+}
+
+.form {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 .1rem .9rem .1rem #44444446;
+    padding: 1rem 3rem;
+    border-radius: .2rem;
+}
+
+.form > button {
+    padding: .5rem;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    border-radius: .2rem;
+    transition: 0.5s;
+}
+
+.form > button:hover {
+    background-color: rgb(39, 124, 204);
+}
+
+.form > h3 {
+    font-size: 1.3rem;
+    text-align: center;
+    color: #444444;
+    margin: auto 0;
+}
