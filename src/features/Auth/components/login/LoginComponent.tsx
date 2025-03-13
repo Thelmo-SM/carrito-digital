@@ -3,6 +3,10 @@
 import { useLogin } from "../../hooks/formLogin";
 import { validateLogin } from "../../helpers/validateForm";
 import { initialLogin } from "../../helpers/initialForm";
+import Image from "next/image";
+import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
+import Link from "next/link";
+import Style from '@/styles/form.module.css';
 
 export const LoginComponent = () => {
   const {
@@ -13,9 +17,13 @@ export const LoginComponent = () => {
     handleSubmit
   } = useLogin(initialLogin, validateLogin)
     return (
-        <form style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }} onSubmit={handleSubmit}>
+      <div className={Style.container}>
+        <form onSubmit={handleSubmit}
+        className={Style.formContainer}
+        >
+        <h2 className={Style.title}>Iniciar Sesión</h2>
           <div>
-            <label htmlFor="email" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="email">
               Correo electrónico
             </label>
             <input
@@ -25,16 +33,15 @@ export const LoginComponent = () => {
               value={form.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.email && <div>
-              <p>{errors.email}</p>
+            {errors.email && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.email}</p>
               </div>}
           </div>
     
           <div>
-            <label htmlFor="password" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="password">
               Contraseña
             </label>
             <input
@@ -44,29 +51,28 @@ export const LoginComponent = () => {
               value={form.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.password && <div>
-              <p>{errors.password}</p>
+            {errors.password && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.password}</p>
               </div>}
           </div>
     
           <button
             type="submit"
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
             >
             Iniciar sesión
           </button>
+          <Link href='/register'
+          className={Style.Link}
+          >¿No tienes cuenta?</Link>
         </form>
+        <div className={Style.image}>
+          <Image src={img} width={600} height={600} alt=""
+          
+          />
+        </div>
+        </div>
       );
 }
 

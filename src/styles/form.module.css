@@ -1,0 +1,78 @@
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.formContainer {
+    width: 25%;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: .2rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+    box-shadow: 0 .1rem .9rem .2rem #d1d9e6;
+}
+.formContainer > div {
+    display: flex;
+    flex-direction: column;
+    margin: .4rem auto;
+    width: 100%;
+}
+.formContainer div > label {
+    color: #444444;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: .2rem;
+} 
+.formContainer div > input {
+    border: .1rem solid #BDC3C7;
+    padding: .3rem;
+    color: #444444;
+    border-radius: .2rem
+}
+
+.error {
+    background-color: #F87171;
+    border-radius: .2rem
+}
+.error > p {
+    color: rgb(248, 252, 255);
+    text-align: center;
+    padding: .1rem;
+}
+
+.formContainer > button {
+    background-color: rgb(67, 123, 175);
+    padding: .8rem;
+    width: 100%;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    color: rgb(223, 230, 235);
+}
+.formContainer > button:hover {
+    background-color: rgb(39, 124, 204);
+    transition: 0.9s;
+}
+
+
+.Link {
+    text-align: center;
+    margin-top: 1rem;
+    color: #444444;
+}
+
+.title {
+    text-align: center;
+    color: #444444;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.image > img {
+    border: solid;
+    border-radius: .2rem;
+}

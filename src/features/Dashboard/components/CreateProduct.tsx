@@ -2,7 +2,7 @@
 
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useCreateItems } from "../hooks/useCreateItems";
-import { productsTypes } from "@/types/imageTypes";
+import { productsTypes } from "@/types/productTypes";
 
 
 const initialProductsValues: productsTypes = {
@@ -13,14 +13,18 @@ const initialProductsValues: productsTypes = {
         description: ''
 }
 
+type CreateProductProps = {
+    getProduct: () => Promise<void>;
+  };
 
-export const CreateProduct = () => {
+
+export const CreateProduct = ({getProduct}: CreateProductProps) => {
       const user = useAuthUsers();
     const {
         form,
         handleChange,
         handleSubmit
-    } = useCreateItems(initialProductsValues, user?.uid)
+    } = useCreateItems(initialProductsValues, user?.uid, getProduct)
 
     return (
         <div>

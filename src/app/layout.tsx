@@ -5,6 +5,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { redirect, usePathname } from "next/navigation";
+import Style from '@/styles/layout.module.css';
+import Nav from "@/components/Header/NavComponent";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,7 +45,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <main>
+        <Nav />
+        <main className={Style.container}>
         {children}
         </main>
       </body>

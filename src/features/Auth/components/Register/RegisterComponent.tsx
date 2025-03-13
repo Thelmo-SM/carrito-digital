@@ -3,6 +3,10 @@
 import { useRegister } from "../../hooks/formRegister";
 import { initialRegister } from "../../helpers/initialForm";
 import { validateRegister } from "../../helpers/validateForm";
+import Style from '@/styles/form.module.css';
+import Image from "next/image";
+import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
+import Link from "next/link";
 
 export const RegisterComponent = () => {
   const {
@@ -14,9 +18,16 @@ export const RegisterComponent = () => {
   } = useRegister(initialRegister, validateRegister)
 
     return (
-        <form onSubmit={handleSubmit}  style={{ maxWidth: '500px', margin: '0 auto', padding: '20px' }}>
+      <div className={Style.container}>
+        <div>
+          <Image src={img} width={600} height={600} alt=""/>
+        </div>
+        <form onSubmit={handleSubmit}
+        className={Style.formContainer}
+        >
+          <h2 className={Style.title}>¡Registrate!</h2>
           <div>
-            <label htmlFor="name" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="name" >
               Nombre
             </label>
             <input
@@ -26,16 +37,15 @@ export const RegisterComponent = () => {
               value={form.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.name && <div>
-              <p>{errors.name}</p>
+            {errors.name && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.name}</p>
               </div>}
           </div>
     
           <div>
-            <label htmlFor="lastName" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="lastName" >
               Apellido
             </label>
             <input
@@ -45,16 +55,15 @@ export const RegisterComponent = () => {
               value={form.lastName}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.lastName && <div>
-              <p>{errors.lastName}</p>
+            {errors.lastName && <div  className={Style.error}>
+              <p className={Style.errorText}>{errors.lastName}</p>
               </div>}
           </div>
     
           <div>
-            <label htmlFor="email" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="email" >
               Correo electrónico
             </label>
             <input
@@ -64,16 +73,15 @@ export const RegisterComponent = () => {
               value={form.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.email && <div>
-              <p>{errors.email}</p>
+            {errors.email && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.email}</p>
               </div>}
           </div>
     
           <div>
-            <label htmlFor="password" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="password" >
               Contraseña
             </label>
             <input
@@ -83,16 +91,15 @@ export const RegisterComponent = () => {
               value={form.password}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.password && <div>
-              <p>{errors.password}</p>
+            {errors.password && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.password}</p>
               </div>}
           </div>
     
           <div>
-            <label htmlFor="confirmPassword" style={{ display: 'block', fontWeight: 'bold' }}>
+            <label htmlFor="confirmPassword" >
               Repetir Contraseña
             </label>
             <input
@@ -102,29 +109,23 @@ export const RegisterComponent = () => {
               value={form.confirmPassword}
               onChange={handleChange}
               onBlur={handleBlur}
-              style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
               required
             />
-            {errors.confirmPassword && <div>
-              <p>{errors.confirmPassword}</p>
+            {errors.confirmPassword && <div className={Style.error}>
+              <p className={Style.errorText}>{errors.confirmPassword}</p>
               </div>}
           </div>
     
           <button
             type="submit"
-            style={{
-              width: '100%',
-              padding: '10px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
           >
-            Enviar
+            Registrarse
           </button>
+          <Link href='/login'
+          className={Style.Link}
+          >¿Ya tienes cuenta?</Link>
         </form>
+        </div>
       );
 };
 

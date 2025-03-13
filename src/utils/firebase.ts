@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { addDoc, collection, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -69,3 +69,8 @@ export const getCollection = async (collectionName: string, queryArray?: any[]) 
 
   return (await getDocs(q)).docs.map((doc) => ({id: doc.id, ...doc.data()}));
 }
+
+export const deleteDocument = async (path: string) => {
+  return deleteDoc(doc(db, path));
+}
+

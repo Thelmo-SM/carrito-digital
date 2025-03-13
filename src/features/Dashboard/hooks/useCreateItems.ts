@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { addDocument } from "@/utils/firebase";
-import { productsTypes } from "@/types/imageTypes";
+import { productsTypes } from "@/types/productTypes";
 
-export const useCreateItems = (initialValue: productsTypes, userUid: string) => {
+export const useCreateItems = (initialValue: productsTypes, userUid: string, getItems: () => Promise<void>) => {
   const [form, setForm] = useState(initialValue);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,6 +47,7 @@ export const useCreateItems = (initialValue: productsTypes, userUid: string) => 
   
     try {
       await itemCollection(items);
+      getItems()
       console.log('Producto creado:', items);
     } catch (error) {
       console.log('Error al crear el producto:', error);
