@@ -1,0 +1,76 @@
+
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-wrap: wrap;
+    background-color: rgb(222, 226, 230);
+    border-radius: .2rem;
+}
+
+.formContainer {
+    width: 90%;
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: .2rem;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+.formContainer > div {
+    display: flex;
+    flex-direction: column;
+    margin: .4rem auto;
+    width: 100%;
+}
+.formContainer div > label {
+    color: #444444;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: .2rem;
+} 
+.formContainer div > input {
+    border: .1rem solid #BDC3C7;
+    padding: .3rem;
+    color: #444444;
+    border-radius: .2rem;
+}
+
+.image {
+    padding: 10px;
+    background-color: rgba(67, 123, 175, 0.247);
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.textarea {
+    border: .1rem solid;
+    color: #444444;
+    border-radius: .2rem;
+    padding: 1rem;
+    border-color: #4444442d;
+}
+
+.error {
+    background-color: #F87171;
+    border-radius: .2rem
+}
+.error > p {
+    color: rgb(248, 252, 255);
+    text-align: center;
+    padding: .1rem;
+}
+
+.formContainer > button {
+    background-color: rgb(67, 123, 175);
+    padding: .8rem;
+    width: 100%;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    color: rgb(223, 230, 235);
+}
+.formContainer > button:hover {
+    background-color: rgb(39, 124, 204);
+    transition: 0.9s;
+}

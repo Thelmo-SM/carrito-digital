@@ -5,7 +5,7 @@ import { productsTypes } from "@/types/productTypes";
 export const useCreateItems = (initialValue: productsTypes, userUid: string, getItems: () => Promise<void>) => {
   const [form, setForm] = useState(initialValue);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
 
     setForm((capture) => ({

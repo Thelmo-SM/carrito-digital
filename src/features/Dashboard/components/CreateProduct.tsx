@@ -3,6 +3,7 @@
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useCreateItems } from "../hooks/useCreateItems";
 import { productsTypes } from "@/types/productTypes";
+import Style from '@/styles/producForm.module.css'
 
 
 const initialProductsValues: productsTypes = {
@@ -27,18 +28,20 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
     } = useCreateItems(initialProductsValues, user?.uid, getProduct)
 
     return (
-        <div>
-            <form onSubmit={(e) => handleSubmit(e, form)}>
+        <div className={Style.container}>
+            <form onSubmit={(e) => handleSubmit(e, form)}
+                className={Style.formContainer}
+                >
                 <h2>Crear productos</h2>
-                {/* <div>
-                <label>Imagen</label>
+                <div>
+                <label htmlFor="file_id">Imagen</label>
                 <input 
-                type="text"
-                id="name_id"
+                className={Style.image}
+                type="file"
+                id="file_id"
                 onChange={handleChange}
-                style={{ width: '100%', padding: '10px', margin: '8px 0', border: '1px solid #ccc', borderRadius: '4px' }}
                 />
-                </div> */}
+                </div>
                 <div>
                 <label htmlFor="name_id">Nombre del producto</label>
                 <input 
@@ -71,13 +74,15 @@ export const CreateProduct = ({getProduct}: CreateProductProps) => {
                 </div>
                 <div>
                 <label htmlFor="description_id">Descripción</label>
-                <input 
-                type="text" 
+                <textarea 
                 name="description" 
-                id="description_id"
+                id="description_id" 
                 value={form.description}
                 onChange={handleChange}
-                />
+                className={Style.textarea}
+                >
+
+                </textarea>
                 </div>
                 <button>Crear</button>
             </form>
