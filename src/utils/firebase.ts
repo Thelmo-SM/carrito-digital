@@ -74,3 +74,26 @@ export const deleteDocument = async (path: string) => {
   return deleteDoc(doc(db, path));
 }
 
+
+//Imagenes
+// const storage = getStorage(app);
+
+// export const uploadImageToFirebase = async (file: File) => {
+//     const storageRef = ref(storage, `products/${file.name}`);
+//     const uploadTask = uploadBytesResumable(storageRef, file);
+
+//     return new Promise<string>((resolve, reject) => {
+//         uploadTask.on(
+//             "state_changed",
+//             null,
+//             (error) => reject(error),
+//             async () => {
+//                 const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+//                 resolve(downloadURL);
+//             }
+//         );
+//     });
+// };
+
+
+// export const uploadBase64 = () => {}

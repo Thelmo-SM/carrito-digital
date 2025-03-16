@@ -2,61 +2,82 @@ import { useState } from "react";
 import { addDocument } from "@/utils/firebase";
 import { productsTypes } from "@/types/productTypes";
 
-export const useCreateItems = (initialValue: productsTypes, userUid: string, getItems: () => Promise<void>) => {
+export const useCreateItems = (
+  initialValue: productsTypes,
+  userUid: string,
+  getItems: () => Promise<void>
+) => {
   const [form, setForm] = useState(initialValue);
+  const [file, setFile] = useState<File | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
 
-    setForm((capture) => ({
-      ...capture,
-      [name]: value,
-    }));
-    console.log('Datos del formulario:', value);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      setFile(selectedFile);
+    }
   };
 
   const itemCollection = async (items: productsTypes) => {
     if (!userUid) {
-      console.log('No hay usuario autenticado');
-      return; // Retorna si no hay un usuario autenticado
+      console.log("No hay usuario autenticado");
+      return;
     }
 
     const path = `users/${userUid}/products`;
 
     try {
       await addDocument(path, items);
-      console.log('Producto agregado correctamente');
-    } catch (error: unknown) {
-      console.log('Error al agregar el producto: ', error);
+      console.log("Producto agregado correctamente");
+    } catch (error) {
+      console.error("Error al agregar el producto:", error);
     }
   };
 
   const handleSubmit = async (e: React.FormEvent, items: productsTypes) => {
     e.preventDefault();
-  
-    console.log('Formulario antes de enviar:', items);
-  
-    // Verificar que todos los campos estén completos
-    let key: string
-    for (key in items) {
-      if (items[key as keyof productsTypes] === "" || items[key as keyof productsTypes] === undefined || items[key as keyof productsTypes] === null) {
-        console.log(`El campo ${key} no puede estar vacío.`);
-        return;
-      }
+
+    if (!file) {
+      console.log("No se ha seleccionado ninguna imagen");
+      return;
     }
-  
+
     try {
-      await itemCollection(items);
-      getItems()
-      console.log('Producto creado:', items);
+      console.log(file); // Verifica si el archivo está correctamente adjunto
+const formData = new FormData();
+formData.append("image", file);
+
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+    });
+    
+    const data = await response.json();
+    console.log("Respuesta de Cloudinary:", data); // Verifica la respuesta completa
+    
+    if (!response.ok || !data.secure_url) {
+        console.error("Error al subir la imagen a Cloudinary:", data.message || "URL no disponible");
+        return;
+    }
+      // Guardar solo la URL de la imagen en Firestore
+      const newItem = { ...items, imageUrl: data.secure_url };
+      await itemCollection(newItem);
+
+      console.log("Producto guardado con imagen en Firestore");
+      getItems();
     } catch (error) {
-      console.log('Error al crear el producto:', error);
+      console.error("Error en el proceso de subida:", error);
     }
   };
 
   return {
     form,
     handleChange,
-    handleSubmit
+    handleSubmit,
+    handleFileChange,
   };
 };

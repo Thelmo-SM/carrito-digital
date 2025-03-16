@@ -12,7 +12,7 @@ import { deleteDocument, getCollection } from "@/utils/firebase";
 import { useEffect, useState } from 'react';
 import { formatPrice } from '../helpers/formatPrice';
 import Image from 'next/image';
-import img from '../../../../public/ewfrtew.jpg'
+//import img from '../../../../public/ewfrtew.jpg'
 
 
 export const DashboardComponent = () => {
@@ -91,9 +91,17 @@ export const DashboardComponent = () => {
     {itemData.map((item) => (
       <tr key={item.id} className={Style.tr}>
         <td className={Style.td}>
-            <Image src={img} width={150} height={100} alt={`${item.name}`} 
-            className={Style.img}
-            />
+        {item.imageUrl ? (
+   <Image
+      src={item.imageUrl}
+      width={150}
+      height={100}
+      alt={item.name}
+      className={Style.img}
+   />
+) : (
+   <p>No hay imagen disponible</p>
+)}
         </td>
         <td className={Style.td}>{item.name}</td>
         <td className={Style.td}>
