@@ -12,13 +12,16 @@ import { deleteDocument, getCollection } from "@/utils/firebase";
 import { useEffect, useState } from 'react';
 import { formatPrice } from '../helpers/formatPrice';
 import Image from 'next/image';
+import  UpdateProducts  from './UpdateProducts';
 //import img from '../../../../public/ewfrtew.jpg'
 
 
 export const DashboardComponent = () => {
     const [itemData, setItemData] = useState<productsTypes[]>([])
+    const [modalType, setModalType] = useState<'create' | 'edit' | null>(null);
+    const [selectedProduct, setSelectedProduct] = useState<productsTypes | null>(null);
     const {isOpen, openModal, closeModal} = useModalForm();
-     const user = useAuthUsers();
+    const user = useAuthUsers();
 
          const getItems = async () => {
              const path = `users/${user?.uid}/products`;
@@ -57,6 +60,17 @@ export const DashboardComponent = () => {
             
         };
 
+            // 👉 Ubicación de handleOpenModal dentro del componente, antes del return
+        const handleOpenModal = (type: 'create' | 'edit', product?: productsTypes) => {
+          setModalType(type);
+          if (type === 'edit' && product) {
+              setSelectedProduct(product);
+          } else {
+              setSelectedProduct(null);
+          }
+          openModal();
+      };
+
 
     return (
         <div className={Style.container}>
@@ -65,13 +79,15 @@ export const DashboardComponent = () => {
 
         <div className={Style.form}>
             <h3>Mis productos</h3>
-            <button className={Style.crear}
-            onClick={openModal}
-            >
+            <button className={Style.crear} onClick={() => handleOpenModal('create')}>
                 Agregar nuevo producto
             </button>
             <ModalForm isOpens={isOpen} closeModal={closeModal}>
-                <CreateProduct getProduct={() => getItems()} />
+             {modalType === 'create' ? (
+                 <CreateProduct getProduct={getItems} />
+             ) : modalType === 'edit' && selectedProduct ? (
+                 <UpdateProducts product={selectedProduct} getProduct={getItems} />
+             ) : null}
             </ModalForm>
         </div>
 
@@ -88,8 +104,8 @@ export const DashboardComponent = () => {
     </tr>
   </thead>
   <tbody>
-    {itemData.map((item) => (
-      <tr key={item.id} className={Style.tr}>
+    {itemData.map((item, index) => (
+      <tr key={`${item.id} ${index}`} className={Style.tr}>
         <td className={Style.td}>
         {item.imageUrl ? (
    <Image
@@ -109,7 +125,9 @@ export const DashboardComponent = () => {
         </td>
         <td className={Style.td}>{item.soldUnits}</td>
         <td className={Style.td}>
-          <button className={Style.buttonFirst}>Editar</button>
+        <button className={Style.buttonFirst} onClick={() => handleOpenModal('edit', item)}>
+            Editar
+        </button>
         </td>
         <td className={Style.td}>
           <button

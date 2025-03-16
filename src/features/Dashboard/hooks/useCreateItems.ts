@@ -48,8 +48,8 @@ export const useCreateItems = (
 
     try {
       console.log(file); // Verifica si el archivo está correctamente adjunto
-const formData = new FormData();
-formData.append("image", file);
+      const formData = new FormData();
+      formData.append("image", file);
 
       const response = await fetch("/api/upload", {
         method: "POST",

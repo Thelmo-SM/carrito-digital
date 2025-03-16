@@ -15,3 +15,12 @@ export interface productsTypes {
     description: string
     createdAt?: Timestamp;
 };
+
+export interface uptatedProductsTypes {
+    file: itemImage;
+    imageUrl?: string;
+    name: string;
+    price: number;
+    soldUnits: number;
+    description: string
+};

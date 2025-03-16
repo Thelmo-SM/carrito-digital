@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
-import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 const APYKEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
@@ -74,26 +74,14 @@ export const deleteDocument = async (path: string) => {
   return deleteDoc(doc(db, path));
 }
 
-
-//Imagenes
-// const storage = getStorage(app);
-
-// export const uploadImageToFirebase = async (file: File) => {
-//     const storageRef = ref(storage, `products/${file.name}`);
-//     const uploadTask = uploadBytesResumable(storageRef, file);
-
-//     return new Promise<string>((resolve, reject) => {
-//         uploadTask.on(
-//             "state_changed",
-//             null,
-//             (error) => reject(error),
-//             async () => {
-//                 const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-//                 resolve(downloadURL);
-//             }
-//         );
-//     });
-// };
-
-
-// export const uploadBase64 = () => {}
+//Editar productos 
+export const updateDocument = async (path: string, data: any) => {
+  try {
+    const docRef = doc(db, path);
+    await updateDoc(docRef, data);
+    console.log("Documento actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar documento:", error);
+    throw new Error("No se pudo actualizar el documento");
+  }
+};
