@@ -7,10 +7,20 @@ export interface itemImage {
 
 export interface productsTypes {
     id?: string;
-    //image: itemImage;
+    file: itemImage;
+    imageUrl?: string;
     name: string;
     price: number;
     soldUnits: number;
     description: string
     createdAt?: Timestamp;
+};
+
+export interface uptatedProductsTypes {
+    file: itemImage;
+    imageUrl?: string;
+    name: string;
+    price: number;
+    soldUnits: number;
+    description: string
 };

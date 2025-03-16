@@ -1,3 +1,32 @@
 .container {
-    border: solid;
+    width: 85%;
+    margin: 2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    border-radius: .2rem;
+}
+
+.cardContainer {
+    padding: 1rem;
+    margin: auto;
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
+.cardContainer > p {
+    text-align: center;
+    margin: .5rem 0;
+}
+
+.tr  {
+    border: solid red .3rem;
+    padding: 12px;
+    text-align: left;
+  }
+
+.price {
+    font-weight: bold;
+    font-style: oblique;
 }

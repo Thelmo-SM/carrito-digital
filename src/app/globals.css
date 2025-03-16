@@ -95,6 +95,10 @@ body {
   overflow-x: hidden;
 }
 
+p {
+  color: #444444;
+}
+
 /* 12. Suavizar el desplazamiento en navegadores modernos */
 @media (prefers-reduced-motion: no-preference) {
   html {

@@ -1,6 +1,5 @@
-.container {
-    border: solid .1rem red;
-}
+/* .container {
+} */
 
 .container > h2 {
     font-size: 1.9rem;
@@ -20,7 +19,7 @@
     margin: auto;
     display: flex;
     justify-content: space-between;
-    box-shadow: 0 .1rem .9rem .1rem #44444446;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
     padding: 1rem 3rem;
     border-radius: .2rem;
 }
@@ -42,4 +41,82 @@
     text-align: center;
     color: #444444;
     margin: auto 0;
+}
+
+
+
+.cardContainer {
+    width: 85%;
+    margin: 2rem auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    border-radius: .2rem;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .th, .td {
+    padding: 1rem;
+    text-align: left;
+  }
+  
+  .th {
+    color: #444444;
+    font-weight: bold;
+    padding-bottom: 1.5rem;
+  }
+  
+  .tr:hover {
+    background-color: rgba(67, 123, 175, 0.192);
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .buttonEliminar {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+  .button:hover {
+    opacity: 0.8;
+  }
+  
+  .buttonFirst {
+    padding: .5rem;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    border-radius: .2rem;
+    transition: 0.5s;
+  }
+
+  .buttonFirst:hover {
+    background-color: rgb(39, 124, 204);
+  }
+  
+  .buttonLast {
+    padding: .5rem;
+    background-color: #dc3545;
+    color: rgb(223, 230, 235);
+    border-radius: .2rem;
+    transition: 0.5s;
+  }
+
+  .buttonLast:hover {
+    background-color: #f54e5e;
+  }
+
+.price {
+    color: #444444;
+    font-weight: bold;
+}
+
+.img {
+  border-radius: .2rem;
 }
