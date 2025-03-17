@@ -1,0 +1,61 @@
+.carouselContainer {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0;
+  }
+  
+  .carouselTrack {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .image {
+    border-radius: 0;
+  }
+  
+  .prevButton, .nextButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  
+  .prevButton { left: 10px; }
+  .nextButton { right: 10px; }
+  
+  .indicators {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+  }
+  
+  .dot {
+    width: 8px;
+    height: 8px;
+    background-color: gray;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+  }
+  
+  .activeDot {
+    background-color: white;
+  }
+  
+
+  
