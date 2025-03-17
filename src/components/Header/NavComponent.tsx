@@ -3,10 +3,14 @@
 import NavStyle from '@/styles/nav.module.css';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { signOut } from '@/utils/firebase';;
+import { signOut } from '@/utils/firebase';
+import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
+
+
 
 export const Nav = () => {
     const [scrollY, setScrollY] = useState(false);
+    const user = useAuthUsers();
  
 
     const handleScroll = () => {
@@ -30,13 +34,17 @@ export const Nav = () => {
 
     return (
         <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
-            <Link href='/home' className={NavStyle.links}>Home</Link>
+            <Link href='/' className={NavStyle.links}>Home</Link>
             <Link href='/products' className={NavStyle.links}>Productos</Link>
             <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
-            <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}>Acceso</Link>
-            <button
+            { user ? <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
             onClick={signOut}
-            >cerrar</button>
+            >
+            Cerrar Sesión
+            </Link>: <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
+            >
+            Accesso
+            </Link>}
         </nav>
     );
 };

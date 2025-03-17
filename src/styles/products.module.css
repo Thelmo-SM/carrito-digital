@@ -3,8 +3,8 @@
     margin: 2rem auto;
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
-    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    gap: 2rem;
+    /* box-shadow: 0 .1rem .9rem .2rem #cad1dd; */
     border-radius: .2rem;
 }
 
@@ -13,11 +13,18 @@
     margin: auto;
     border-radius: .2rem;
     box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .cardContainer > p {
     text-align: center;
     margin: .5rem 0;
+}
+
+.cardContainer > img {
+    width: 100%;
 }
 
 .tr  {
@@ -29,4 +36,18 @@
 .price {
     font-weight: bold;
     font-style: oblique;
+}
+
+.button {
+    width: 100%;
+    padding: .5rem;
+    margin: .2rem;
+    border-radius: .2rem;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    transition: 0.5s;
+}
+
+.button:hover {
+    background-color: rgb(39, 124, 204)
 }

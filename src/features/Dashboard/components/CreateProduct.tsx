@@ -1,4 +1,3 @@
-import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useCreateItems } from "../hooks/useCreateItems";
 import { productsTypes } from "@/types/productTypes";
 import Style from '@/styles/producForm.module.css'
@@ -16,13 +15,13 @@ type CreateProductProps = {
 };
 
 export const CreateProduct = ({ getProduct }: CreateProductProps) => {
-  const user = useAuthUsers();
+
   const {
     form,
     handleChange,
     handleSubmit,
     handleFileChange
-  } = useCreateItems(initialProductsValues, user?.uid, getProduct);
+  } = useCreateItems(initialProductsValues, getProduct);
 
   return (
     <div className={Style.container}>

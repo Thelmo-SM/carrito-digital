@@ -17,60 +17,53 @@ import  UpdateProducts  from './UpdateProducts';
 
 
 export const DashboardComponent = () => {
-    const [itemData, setItemData] = useState<productsTypes[]>([])
-    const [modalType, setModalType] = useState<'create' | 'edit' | null>(null);
-    const [selectedProduct, setSelectedProduct] = useState<productsTypes | null>(null);
-    const {isOpen, openModal, closeModal} = useModalForm();
-    const user = useAuthUsers();
+  const [itemData, setItemData] = useState<productsTypes[]>([]);
+  const [modalType, setModalType] = useState<'create' | 'edit' | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<productsTypes | null>(null);
+  const {isOpen, openModal, closeModal} = useModalForm();
+  const user = useAuthUsers()
 
-         const getItems = async () => {
-             const path = `users/${user?.uid}/products`;
-     
-             try {
-                 const data = await getCollection(path) as productsTypes[];
-                 if(data) {
-                     setItemData(data)
-                 }
-                 console.log('Productos agregados: ',data);
-             } catch (error: unknown) {
-                 console.log('Error en alo leer productos: ', error)
-             }
-         };
-         
-         useEffect(() => {
-            if (user) {
-                getItems();
-            }
-        }, [user]);
-
-         const deleteItem = async (item:productsTypes) => {
-    
-            const path = `users/${user?.uid}/products/${item.id}`;
-        
-            try {
-                await deleteDocument(path);
-    
-                console.log('Elimando productos');
-    
-                const newItem = itemData.filter(i => i.id !== item.id);
-                setItemData(newItem);
-            } catch (error: unknown) {
-                console.log('Error al intentar eliminar un producto: ', error)
-            }
-            
-        };
-
-            // 👉 Ubicación de handleOpenModal dentro del componente, antes del return
-        const handleOpenModal = (type: 'create' | 'edit', product?: productsTypes) => {
-          setModalType(type);
-          if (type === 'edit' && product) {
-              setSelectedProduct(product);
-          } else {
-              setSelectedProduct(null);
+  const getItems = async () => {
+      const path = `products`; // Cambiado para acceder a la colección general de productos.
+  
+      try {
+          const data = await getCollection(path) as productsTypes[];
+          if (data) {
+              setItemData(data);
           }
-          openModal();
-      };
+          console.log('Productos agregados: ', data);
+      } catch (error: unknown) {
+          console.log('Error al leer productos: ', error);
+      }
+  };
 
+  useEffect(() => {
+      getItems(); // Ya no dependemos de `user`, solo cargamos los productos de la colección general.
+  }, []);
+
+  const deleteItem = async (item: productsTypes) => {
+      const path = `products/${item.id}`; // Cambiado para eliminar de la colección general de productos.
+  
+      try {
+          await deleteDocument(path);
+          console.log('Producto eliminado');
+  
+          const newItem = itemData.filter(i => i.id !== item.id);
+          setItemData(newItem);
+      } catch (error: unknown) {
+          console.log('Error al eliminar producto: ', error);
+      }
+  };
+
+  const handleOpenModal = (type: 'create' | 'edit', product?: productsTypes) => {
+      setModalType(type);
+      if (type === 'edit' && product) {
+          setSelectedProduct(product);
+      } else {
+          setSelectedProduct(null);
+      }
+      openModal();
+  };
 
     return (
         <div className={Style.container}>

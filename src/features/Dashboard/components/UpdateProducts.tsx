@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Style from '@/styles/producForm.module.css';
 import { productsTypes } from '@/types/productTypes';
 import { updateDocument } from '@/utils/firebase';
-import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 
 interface UpdateProductsProps {
@@ -16,7 +15,6 @@ export const UpdateProducts = ({ getProduct, product }: UpdateProductsProps) => 
   const [form, setForm] = useState<productsTypes>(product);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const user = useAuthUsers();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -76,7 +74,7 @@ export const UpdateProducts = ({ getProduct, product }: UpdateProductsProps) => 
 
     // Actualizar el producto en Firebase
     try {
-      await updateDocument(`users/${user?.uid}/products/${product.id}`, { ...form, imageUrl });
+      await updateDocument(`products/${product.id}`, { ...form, imageUrl });
       console.log('Producto actualizado correctamente');
       getProduct(); // Recargar productos
     } catch (error) {

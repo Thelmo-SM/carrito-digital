@@ -4,7 +4,6 @@ import { productsTypes } from "@/types/productTypes";
 
 export const useCreateItems = (
   initialValue: productsTypes,
-  userUid: string,
   getItems: () => Promise<void>
 ) => {
   const [form, setForm] = useState(initialValue);
@@ -22,17 +21,11 @@ export const useCreateItems = (
     }
   };
 
+  // Cambiar la ruta para guardar en la colección global 'products'
   const itemCollection = async (items: productsTypes) => {
-    if (!userUid) {
-      console.log("No hay usuario autenticado");
-      return;
-    }
-
-    const path = `users/${userUid}/products`;
-
     try {
-      await addDocument(path, items);
-      console.log("Producto agregado correctamente");
+      await addDocument("products", items); // Guarda el producto en la colección pública 'products'
+      console.log("Producto agregado correctamente en la colección 'products'");
     } catch (error) {
       console.error("Error al agregar el producto:", error);
     }
@@ -47,28 +40,28 @@ export const useCreateItems = (
     }
 
     try {
-      console.log(file); // Verifica si el archivo está correctamente adjunto
       const formData = new FormData();
       formData.append("image", file);
 
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
-    });
+      });
     
-    const data = await response.json();
-    console.log("Respuesta de Cloudinary:", data); // Verifica la respuesta completa
+      const data = await response.json();
+      console.log("Respuesta de Cloudinary:", data);
     
-    if (!response.ok || !data.secure_url) {
+      if (!response.ok || !data.secure_url) {
         console.error("Error al subir la imagen a Cloudinary:", data.message || "URL no disponible");
         return;
-    }
-      // Guardar solo la URL de la imagen en Firestore
+      }
+
+      // Guardar el producto con la URL de la imagen en la colección pública
       const newItem = { ...items, imageUrl: data.secure_url };
       await itemCollection(newItem);
 
-      console.log("Producto guardado con imagen en Firestore");
-      getItems();
+      console.log("Producto guardado con imagen en 'products'");
+      getItems(); // Recargar productos
     } catch (error) {
       console.error("Error en el proceso de subida:", error);
     }

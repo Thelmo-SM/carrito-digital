@@ -1,8 +1,8 @@
 .container {
-    min-height: 100vh;
+    min-height: 50vh;
     display: flex;
     flex-direction: column;
     /* justify-content: center; */
-    padding-top: 6rem;
+    padding-top: 0rem;
     background-color: rgb(222, 226, 230);
 }

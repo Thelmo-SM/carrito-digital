@@ -1,5 +1,6 @@
-/* .container {
-} */
+.container {
+  padding: 8rem 0;
+}
 
 .container > h2 {
     font-size: 1.9rem;
