@@ -24,3 +24,11 @@ export interface uptatedProductsTypes {
     soldUnits: number;
     description: string
 };
+
+export interface detailProduct {
+    imageUrl?: string;
+    name: string;
+    price: number;
+    soldUnits: number;
+    description: string
+}

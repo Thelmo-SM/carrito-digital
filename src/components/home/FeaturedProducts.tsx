@@ -4,6 +4,7 @@ import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
 import { productsTypes } from "@/types/productTypes";
 import { getCollection } from "@/utils/firebase";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 
 export const FeaturedProducts = () => {
@@ -33,6 +34,7 @@ export const FeaturedProducts = () => {
         <div className={Style.container}>
             {itemData.map((product) => (
   <div key={product.id} className={Style.cardContainer}>
+    
     {/* Asegúrate de que `product.image` sea la URL de la imagen */}
     {product.imageUrl ? (
    <Image
@@ -51,10 +53,11 @@ export const FeaturedProducts = () => {
     
     {/* Formatear el precio, asegurándote de que `product.price` es un número */}
     <p className={Style.price}>{formatPrice(Number(product.price))}</p>
-    
+    <p>Cantidad - <span className={Style.span}>{product.soldUnits}</span></p>
+
     {/* Opcionalmente mostrar la cantidad vendida y la descripción */}
-    {/* <p>{product.soldUnits}</p> */}
     {/* <p>{product.description}</p> */}
+    <Link href = {`/products/${product.id}`} className={Style.detalle}>Ver detalles</Link>
 
     {/* Botón para eliminar */}
     <button className={Style.button}>
