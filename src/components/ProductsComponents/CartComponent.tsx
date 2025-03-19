@@ -9,7 +9,7 @@ import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
-    const { cart, deleteProduct } = useCart();
+    const { cart, deleteProduct, updateProductQuantity } = useCart(); // Asegúrate de tener `updateProductQuantity` en tu contexto
     console.log('productos del carrito: ', cart);
 
     const handleOrder = async () => {
@@ -40,7 +40,7 @@ export const CartComponent = () => {
         }
     };
 
-    const totalCart = cart.reduce((acc, item) => acc + (item.price || 0), 0);
+    const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.soldUnits || 1), 0); // Total del carrito con cantidades
 
     return (
         <div className={styles.subContainer}>
@@ -75,13 +75,27 @@ export const CartComponent = () => {
                                     </td>
                                     <td>{name}</td>
                                     <td className="text-green-600">{formatPrice(Number(price))}</td>
-                                    <td>{soldUnits}</td>
-                                    <td className="text-green-600">{formatPrice(Number(price))}</td>
+                                    <td>
+                                        <input
+                                            type="number"
+                                            value={soldUnits}
+                                            onChange={(e) => {
+                                                const newQuantity = Number(e.target.value);
+                                                if (newQuantity == 0) {
+                                                    updateProductQuantity(id, newQuantity); // Actualiza la cantidad
+                                                }
+                                            }}
+                                            min="1"
+                                            max='1'
+                                            className={styles.quantityInput}
+                                        />
+                                    </td>
+                                    <td className="text-green-600">{formatPrice(Number(price) * soldUnits!)}</td>
                                     <td>
                                         <button
                                             className={styles.cartButton}
                                             onClick={() => {
-                                               if(id) deleteProduct(id)
+                                               if(id) deleteProduct(id);
                                             }}
                                         >
                                             X
@@ -109,7 +123,6 @@ export const CartComponent = () => {
             <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>Place order</button>
         </div>
         </div>
-
     );
 };
 

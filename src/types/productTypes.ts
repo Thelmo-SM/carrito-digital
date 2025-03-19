@@ -24,6 +24,7 @@ export interface cartTypes {
     soldUnits?: number;  // Hacer esta propiedad opcional
     description?: string;
     createdAt?: Timestamp;
+    userId?: string; 
 };
 
 
@@ -50,4 +51,5 @@ export interface productTypeContext {
     setCart: (cart: cartTypes[]) => void;
     handleAddToCard: (product: cartTypes) => void;
     deleteProduct: (id: string) => void;
+    updateProductQuantity: (id: string, newQuantity: number) => void
 }
