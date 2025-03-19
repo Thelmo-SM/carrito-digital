@@ -3,6 +3,8 @@
 import styles from '@/styles/cart.module.css'; // Asegúrate de que la ruta sea correcta
 import { useCart } from '@/store/ProductCartContext';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
+import Image from 'next/image';
+import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 //import { useRouter } from 'next/navigation';
 
 export const CartComponent = () => {
@@ -41,28 +43,40 @@ export const CartComponent = () => {
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0), 0);
 
     return (
-        <div className={styles.cartContainer}>
-            <div>
-                <table className={styles.cartTable}>
-                    <thead>
-                        <tr>
+        <div className={styles.subContainer}>
+            <div className={styles.tableAndButton}>
+                <table className={styles.tableContainer}>
+                    <thead className={styles.thead}>
+                        <tr className={styles.thead}>
+                            <th>Producto</th>
                             <th>Nombre</th>
-                            <th>Descripción</th>
                             <th>Precio</th>
-                            <th>ID</th>
+                            <th>Cantidad</th>
                             <th>Total</th>
                             <th>Eliminar</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cart.length > 0 ? (
-                            cart.map(({ name, description, price, id }, index) => (
+                            cart.map(({ name, price, id, imageUrl, soldUnits }, index) => (
                                 <tr key={index}>
+                                    <td>
+                                    {imageUrl ? (
+                                      <Image
+                                         src={imageUrl}
+                                         width={100}
+                                         height={100}
+                                         alt={name}
+                                         className={styles.img}
+                                       />
+                                    ) : (
+                                       <p>No hay imagen disponible</p>
+                                    )}
+                                    </td>
                                     <td>{name}</td>
-                                    <td>{description}</td>
-                                    <td className="text-green-600">{price}</td>
-                                    <td>{id}</td>
-                                    <td className="text-green-600">{price}</td>
+                                    <td className="text-green-600">{formatPrice(Number(price))}</td>
+                                    <td>{soldUnits}</td>
+                                    <td className="text-green-600">{formatPrice(Number(price))}</td>
                                     <td>
                                         <button
                                             className={styles.cartButton}
@@ -86,16 +100,16 @@ export const CartComponent = () => {
                 </table>
             </div>
 
-            <div className={styles.cartTotal}>
-                <h2>Total del carrito</h2>
-                <p>Sub total: <span className="text-green-600">{totalCart}</span></p>
-                <p>Total: <span className="text-green-600 font-bold">{totalCart}</span></p>
+            <div className={styles.totalContainer}>
+            <div className={styles.detalleTotal}>
+            <h2>Total del carrito</h2>
+            <p>Sub total: <span className='text-green-600'>{formatPrice(Number(totalCart))}</span></p>
+            <p>Total: <span className='text-green-600 font-bold'>{formatPrice(Number(totalCart))}</span></p>
             </div>
-
-            <button className={styles.cartButton} onClick={handleOrder} disabled={cart.length === 0}>
-                Place order
-            </button>
+            <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>Place order</button>
         </div>
+        </div>
+
     );
 };
 

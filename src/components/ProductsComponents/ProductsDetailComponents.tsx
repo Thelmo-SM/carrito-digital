@@ -15,7 +15,7 @@ export const ProductDetailComponent = ({ id, name, price, soldUnits, description
 
     const newCart: cartTypes = { 
         name,
-        description,
+        soldUnits,
         price,
         imageUrl,
         id: id.toString(), 

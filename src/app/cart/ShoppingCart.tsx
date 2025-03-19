@@ -1,10 +1,11 @@
 
 import CartComponent from '@/components/ProductsComponents/CartComponent';
+import styles from '@/styles/cart.module.css';
 
 export const ShoppingCart = () => {
     return (
-        <section >
-            <h1 >Carrito de compras</h1>
+        <section className={styles.container}>
+            <h1 className={styles.titulo}>Carrito de compras</h1>
                 <CartComponent/>
         </section>
     )

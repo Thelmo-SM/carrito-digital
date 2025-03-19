@@ -22,7 +22,7 @@ export interface cartTypes {
     name: string;
     price: number;
     soldUnits?: number;  // Hacer esta propiedad opcional
-    description: string;
+    description?: string;
     createdAt?: Timestamp;
 };
 
