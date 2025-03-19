@@ -25,7 +25,6 @@ export const useAuthUsers = () => {
           const data = await getDocument(path); // Asegúrate de que esta función retorne un valor
           setUser(data);
           setInLocalStorage('user', data);
-          console.log('Usuario de DB:', data); // Verifica que el dato que estás obteniendo es correcto
         } catch (error: unknown) {
           console.log('Error al traer usuario:', error);
         }
@@ -39,7 +38,6 @@ export const useAuthUsers = () => {
             
             if (userInLocalStorage) {
               setUser(userInLocalStorage);
-              console.log('Usuario en localStorage:', userInLocalStorage);
             } else {
               await getUsersDB(authUser.uid);
             }

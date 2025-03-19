@@ -37,6 +37,7 @@ export const Nav = () => {
             <Link href='/' className={NavStyle.links}>Home</Link>
             <Link href='/products' className={NavStyle.links}>Productos</Link>
             <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
+            <Link href='/cart' className={NavStyle.links}>Carrito</Link>
             { user ? <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
             onClick={signOut}
             >

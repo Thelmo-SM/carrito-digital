@@ -6,8 +6,8 @@ export interface itemImage {
 };
 
 export interface productsTypes {
-    id?: string;
-    file: itemImage;
+    id: string;
+    file?: itemImage;
     imageUrl?: string;
     name: string;
     price: number;
@@ -15,6 +15,17 @@ export interface productsTypes {
     description: string
     createdAt?: Timestamp;
 };
+
+export interface cartTypes {
+    id: string;
+    imageUrl?: string;
+    name: string;
+    price: number;
+    soldUnits?: number;  // Hacer esta propiedad opcional
+    description?: string;
+    createdAt?: Timestamp;
+};
+
 
 export interface uptatedProductsTypes {
     file: itemImage;
@@ -31,11 +42,12 @@ export interface detailProduct {
     price: number;
     soldUnits: number;
     description: string;
+    id: string;
 }
 
 export interface productTypeContext {
-    cart: productsTypes[]; 
-    setCart: (cart: productsTypes[]) => void;
-    handleAddToCard: (product: productsTypes) => void;
-    deleteProduct: (id: number) => void;
+    cart: cartTypes[]; 
+    setCart: (cart: cartTypes[]) => void;
+    handleAddToCard: (product: cartTypes) => void;
+    deleteProduct: (id: string) => void;
 }

@@ -49,7 +49,7 @@ export const FeaturedProducts = () => {
 )}
     
     {/* Mostrar el nombre del producto */}
-    <p>{product.name}</p>
+    <p className={Style.title1}>{product.name}</p>
     
     {/* Formatear el precio, asegurándote de que `product.price` es un número */}
     <p className={Style.price}>{formatPrice(Number(product.price))}</p>

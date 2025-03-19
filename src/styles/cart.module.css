@@ -1,0 +1,145 @@
+
+
+.container {
+  margin: 7rem;
+}
+
+.titulo {
+  text-align: center;
+  font-weight: bold;
+  font-size: 2.2rem;
+  padding: 1.3rem;
+  color: rgb(67, 123, 175);
+}
+
+.subContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  
+}
+
+.totalContainer {
+  margin-left: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  align-self: flex-start;
+}
+.tableAndButton {
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
+.tableContainer th, .tableContainer td {
+  padding: 1rem;
+  text-align: left;
+  border: solid .1em #ccc;
+}
+
+.tableContainer th {
+  border-right: solid .1em #ccc;
+  color: rgb(223, 230, 235);
+  background-color: rgb(67, 123, 175);
+  text-align: center;
+  font-weight: bold;
+}
+
+.tableContainer {
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
+.finalizarContainer {
+  width: 100%
+}
+
+.finalizarB {
+  padding: .7rem 0;
+  color: rgb(39, 10, 54);
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  font-weight: bold;
+  font-size: 1.1rem;
+  width: 38.6%;
+}
+.finalizarB:hover {
+  background-color: rgb(39, 10, 54);
+  color: #f1e1ff;
+  transition: .2s;
+}
+
+.tableContainer td > input {
+  border-bottom: .1rem solid #311a3b;
+  width: 4rem;
+  text-align: center;
+}
+
+.tableContainer td {
+  word-wrap: break-word; 
+  overflow-wrap: break-word; 
+  white-space: normal; 
+  max-width: 20rem; 
+  width: 100%;
+}
+
+.totalContainer {
+  margin-left: 1rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
+.detalleTotal {
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  padding: 1rem 3rem;
+}
+
+.detalleTotal > h2 {
+  font-weight: bold;
+  margin: 2rem 0;
+}
+
+.detalleTotal > p {
+  margin: 2rem 0;
+}
+
+.totalContainer > .activeButton {
+  margin: 1.4rem auto 0;
+  width: 100%;
+  padding: .7rem 1.3rem;
+  color: #f1e1ff;
+  background-color: rgb(67, 123, 175);
+  transition: .2s;
+}
+
+.totalContainer > .activeButton:hover {
+  background-color: #16a34a;
+  font-weight: bold;
+}
+
+.totalContainer > .disabledButton {
+  margin: 1.4rem auto 0;
+  width: 100%;
+  padding: .7rem 1.3rem;
+  color: #4c4c4d;
+  background-color: rgb(151, 147, 153);
+}
+
+.img {
+  border-radius: .2rem;
+  width: 100%;
+}
+
+.cartButton {
+  padding: .5rem;
+  background-color: #dc3545;
+  color: rgb(223, 230, 235);
+  border-radius: .2rem;
+  transition: 0.5s;
+  width: 100%;
+}
