@@ -1,11 +1,9 @@
 'use client';
 
 import { createContext, useState, useContext, useEffect } from "react";
-//import { CartTypeContext, CartDetalleProps } from "@/types/products";
-import { productsTypes, productTypeContext } from "@/types/productTypes";
+import {  productTypeContext , cartTypes} from "@/types/productTypes";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
-import { useRouter } from 'next/navigation';
-//import { useModal } from "./modalProvider";
+
 
 const ProductCartContext = createContext<productTypeContext>({
     cart: [],
@@ -15,11 +13,8 @@ const ProductCartContext = createContext<productTypeContext>({
 });
 
 export const ProductCartProvider = ({ children }: { children: React.ReactNode }) => {
-    const [cart, setCart] = useState<productsTypes[]>([]);
+    const [cart, setCart] = useState<cartTypes[]>([]);
     const user = useAuthUsers();
-    //const { isOpen, openModal, closeModal } = useModal();
-    const router = useRouter();
-    
 
     useEffect(() => {
         if (cart.length > 0 && user?.uid) {
@@ -29,38 +24,37 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         if (user?.uid) {
-            const persistirCart = localStorage.getItem(`cart_${user?.uid}`);
+            const persistirCart = localStorage.getItem(`cart_${user.uid}`);
             if (persistirCart) {
                 try {
-                    setCart(JSON.parse(persistirCart));
+                    const cartData = JSON.parse(persistirCart);
+                    if (Array.isArray(cartData)) {
+                        setCart(cartData);  // Actualiza solo si los datos son válidos
+                    }
                 } catch (error) {
                     console.error("Error parsing cart from localStorage:", error);
-                    setCart([]);
+                    setCart([]);  // En caso de error, vaciar el carrito
                 }
             } else {
-                setCart([]);
+                setCart([]);  // Si no existe carrito, establecer un carrito vacío
             }
-        } else {
-            setCart([]);
         }
     }, [user?.uid]);
-
-    const handleAddToCard = (product: productsTypes) => {
+    
+    const handleAddToCard = (product: cartTypes) => {
         if (user?.uid) {
             const userProduct = { ...product, userId: user?.uid };
             const updatedCart = [...cart, userProduct];
             setCart(updatedCart);
             localStorage.setItem(`cart_${user?.uid}`, JSON.stringify(updatedCart));
-           // openModal();
-            // setTimeout(closeModal, 2050);
-            // setTimeout(() => router.push('/products'), 2000);
+            console.log('Añadido')
+ 
         } else {
-          //  openModal();
-            setTimeout(() => router.push('/login'), 2000);
+            console.log('');
         }
     }
 
-    const deleteProduct = (id: number) => {
+    const deleteProduct = (id: string) => {
         const updatedCart = cart.filter((product) => product.id !== id.toString());
         setCart(updatedCart);
         if (user?.uid) {

@@ -52,7 +52,7 @@ export const DetailProduct = async ({ params }: DatilIdProps) => {
     const { name, description, price, soldUnits, imageUrl, id } = product;
 
     return (
-            <ProductDetailComponent name={name} description={description} price={price} soldUnits={soldUnits} imageUrl={imageUrl} key={id} />
+            <ProductDetailComponent name={name} description={description} price={price} soldUnits={soldUnits} imageUrl={imageUrl} key={id} id={id!} />
     );
 };
 
