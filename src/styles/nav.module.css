@@ -1,7 +1,7 @@
 .container {
     position: fixed;
     z-index: 9;
-    background-color: rgb(67, 123, 175); /* Asegúrate de que sea un color visible */
+    background-color: rgb(67, 123, 175);
     color: rgb(223, 230, 235);
     left: 50%;
     transform: translateX(-50%);
@@ -58,6 +58,7 @@
     display: flex;
     justify-content: space-evenly;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: clip-path 0.5s ease, padding 0.5s ease, width 0.5s ease;
+    transition: clip-path 0.1s ease, padding 0.1s ease, width 0.1s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    
 }

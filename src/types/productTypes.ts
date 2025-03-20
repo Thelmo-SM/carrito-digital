@@ -21,9 +21,12 @@ export interface cartTypes {
     imageUrl?: string;
     name: string;
     price: number;
-    soldUnits?: number;  // Hacer esta propiedad opcional
+    soldUnits?: number;
+    units?: number
     description?: string;
     createdAt?: Timestamp;
+    userId?: string; 
+
 };
 
 
@@ -50,4 +53,5 @@ export interface productTypeContext {
     setCart: (cart: cartTypes[]) => void;
     handleAddToCard: (product: cartTypes) => void;
     deleteProduct: (id: string) => void;
+    updateProductQuantity: (id: string, newQuantity: number) => void
 }

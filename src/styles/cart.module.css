@@ -81,7 +81,6 @@
   overflow-wrap: break-word; 
   white-space: normal; 
   max-width: 20rem; 
-  width: 100%;
 }
 
 .totalContainer {
@@ -130,9 +129,15 @@
   background-color: rgb(151, 147, 153);
 }
 
+.imgContainer {
+  padding: 0;
+  margin: 0;
+}
+
 .img {
   border-radius: .2rem;
   width: 100%;
+  padding: 0;
 }
 
 .cartButton {

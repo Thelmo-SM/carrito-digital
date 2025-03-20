@@ -10,6 +10,7 @@ const ProductCartContext = createContext<productTypeContext>({
     setCart: () => {},
     handleAddToCard: () => {},
     deleteProduct: () => {},
+    updateProductQuantity: () => {}
 });
 
 export const ProductCartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -43,16 +44,30 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
     
     const handleAddToCard = (product: cartTypes) => {
         if (user?.uid) {
-            const userProduct = { ...product, userId: user?.uid };
-            const updatedCart = [...cart, userProduct];
+            // Verificar si el producto ya está en el carrito
+            const existingProduct = cart.find(item => item.id === product.id);
+    
+            let updatedCart;
+            
+            if (existingProduct) {
+                // Incrementar la cantidad del producto en el carrito
+                updatedCart = cart.map(item =>
+                    item.id === product.id
+                        ? { ...item, units: (item.units || 1) + 1 } // Asegurar que `units` existe y sumarle 1
+                        : item
+                );
+            } else {
+                // Si el producto no está en el carrito, agregarlo con cantidad 1
+                updatedCart = [...cart, { ...product, userId: user?.uid, units: 1 }];
+            }
+    
             setCart(updatedCart);
             localStorage.setItem(`cart_${user?.uid}`, JSON.stringify(updatedCart));
-            console.log('Añadido')
- 
+            console.log('Producto agregado al carrito');
         } else {
-            console.log('');
+            console.log('Por favor, inicie sesión para agregar productos al carrito');
         }
-    }
+    };
 
     const deleteProduct = (id: string) => {
         const updatedCart = cart.filter((product) => product.id !== id.toString());
@@ -62,8 +77,16 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
         }
     }
 
+    const updateProductQuantity = (id: string, newQuantity: number) => {
+        setCart(prevCart =>
+          prevCart.map(item =>
+            item.id === id ? { ...item, units: newQuantity } : item
+          )
+        );
+      };
+
     return (
-        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct }}>
+        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct, updateProductQuantity }}>
             {children}
         </ProductCartContext.Provider>
     );
