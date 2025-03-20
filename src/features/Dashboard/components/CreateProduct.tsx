@@ -7,6 +7,7 @@ const initialProductsValues: productsTypes = {
   name: '',
   price: 0,
   soldUnits: 0,
+  categorie: '',
   description: ''
 }
 
@@ -63,6 +64,16 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
             name="soldUnits"
             id="soldUnits_id"
             value={form.soldUnits}
+            onChange={handleChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="categorie_id">Categoría</label>
+          <input
+            type="text"
+            id="categorie_id"
+            name="categorie"
+            value={form.categorie}
             onChange={handleChange}
           />
         </div>
