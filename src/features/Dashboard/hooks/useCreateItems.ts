@@ -21,6 +21,14 @@ export const useCreateItems = (
     }
   };
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setForm((prev) => ({
+      ...prev,
+      categorie: value.split(",").map((cat) => cat.trim()),
+    }));
+  };
+
   // Cambiar la ruta para guardar en la colección global 'products'
   const itemCollection = async (items: productsTypes) => {
     try {
@@ -49,6 +57,7 @@ export const useCreateItems = (
       });
     
       const data = await response.json();
+      setForm(initialValue);
       console.log("Respuesta de Cloudinary:", data);
     
       if (!response.ok || !data.secure_url) {
@@ -72,5 +81,6 @@ export const useCreateItems = (
     handleChange,
     handleSubmit,
     handleFileChange,
+    handleCategoryChange
   };
 };
