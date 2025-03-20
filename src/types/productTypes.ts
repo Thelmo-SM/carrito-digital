@@ -21,10 +21,12 @@ export interface cartTypes {
     imageUrl?: string;
     name: string;
     price: number;
-    soldUnits?: number;  // Hacer esta propiedad opcional
+    soldUnits?: number;
+    units?: number
     description?: string;
     createdAt?: Timestamp;
     userId?: string; 
+
 };
 
 

@@ -9,38 +9,32 @@ import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
-    const { cart, deleteProduct, updateProductQuantity } = useCart(); // Asegúrate de tener `updateProductQuantity` en tu contexto
-    console.log('productos del carrito: ', cart);
+    const { cart, deleteProduct, updateProductQuantity } = useCart();
 
     const handleOrder = async () => {
-        if (!user || !user.uid) {
+        if (!user?.uid) {
             alert("Por favor, inicie sesión para realizar un pedido.");
             return;
         }
 
-        // Verificación de carrito vacío
-        if (!cart || cart.length === 0) {
-            console.log('El carrito está vacío');
+        if (cart.length === 0) {
+            alert("El carrito está vacío.");
             return;
         }
 
-        // Verificación de que todos los elementos en el carrito tengan un ID
-        const productIds = cart.map(item => {
-            if (!item.id) {
-                console.error("Un producto en el carrito no tiene un ID válido:", item);
-                return null;
-            }
-            return item.id;
-        }).filter(id => id !== null); // Filtra los valores nulos
+        const productIds = cart
+            .map(item => item.id)
+            .filter(id => id !== null);
 
-        // Verificación de que hay productos válidos en el carrito
         if (productIds.length === 0) {
             alert("No hay productos válidos en el carrito.");
             return;
         }
+
+        console.log("Procesando pedido con productos:", productIds);
     };
 
-    const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.soldUnits || 1), 0); // Total del carrito con cantidades
+    const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
 
     return (
         <div className={styles.subContainer}>
@@ -58,45 +52,40 @@ export const CartComponent = () => {
                     </thead>
                     <tbody>
                         {cart.length > 0 ? (
-                            cart.map(({ name, price, id, imageUrl, soldUnits }, index) => (
-                                <tr key={index}>
+                            cart.map(({ name, price, id, imageUrl, units }) => (
+                                <tr key={id}>
                                     <td>
-                                    {imageUrl ? (
-                                      <Image
-                                         src={imageUrl}
-                                         width={100}
-                                         height={100}
-                                         alt={name}
-                                         className={styles.img}
-                                       />
-                                    ) : (
-                                       <p>No hay imagen disponible</p>
-                                    )}
+                                        {imageUrl ? (
+                                            <Image
+                                                src={imageUrl}
+                                                width={100}
+                                                height={100}
+                                                alt={name}
+                                                className={styles.img}
+                                            />
+                                        ) : (
+                                            <p>No hay imagen disponible</p>
+                                        )}
                                     </td>
                                     <td>{name}</td>
                                     <td className="text-green-600">{formatPrice(Number(price))}</td>
                                     <td>
-                                        <input
-                                            type="number"
-                                            value={soldUnits}
-                                            onChange={(e) => {
-                                                const newQuantity = Number(e.target.value);
-                                                if (newQuantity == 0) {
-                                                    updateProductQuantity(id, newQuantity); // Actualiza la cantidad
-                                                }
-                                            }}
-                                            min="1"
-                                            max='1'
-                                            className={styles.quantityInput}
-                                        />
+                                    <input
+                                       type="number"
+                                       value={units ?? 1} // Si `units` es undefined, usa `1`
+                                        onChange={(e) => {
+                                           const newQuantity = Number(e.target.value);
+                                           if (id) updateProductQuantity(id, newQuantity);
+                                        }}
+                                        min="1"
+                                       className={styles.quantityInput}
+                                    />
                                     </td>
-                                    <td className="text-green-600">{formatPrice(Number(price) * soldUnits!)}</td>
+                                    <td className="text-green-600">{formatPrice(Number(price) * (units ?? 1))}</td>
                                     <td>
                                         <button
                                             className={styles.cartButton}
-                                            onClick={() => {
-                                               if(id) deleteProduct(id);
-                                            }}
+                                            onClick={() => id && deleteProduct(id)}
                                         >
                                             X
                                         </button>
@@ -106,7 +95,7 @@ export const CartComponent = () => {
                         ) : (
                             <tr>
                                 <td colSpan={6} className={styles.emptyCartMessage}>
-                                    You have no product added to the cart
+                                    No hay productos en el carrito
                                 </td>
                             </tr>
                         )}
@@ -115,13 +104,15 @@ export const CartComponent = () => {
             </div>
 
             <div className={styles.totalContainer}>
-            <div className={styles.detalleTotal}>
-            <h2>Total del carrito</h2>
-            <p>Sub total: <span className='text-green-600'>{formatPrice(Number(totalCart))}</span></p>
-            <p>Total: <span className='text-green-600 font-bold'>{formatPrice(Number(totalCart))}</span></p>
+                <div className={styles.detalleTotal}>
+                    <h2>Total del carrito</h2>
+                    <p>Sub total: <span className='text-green-600'>{formatPrice(totalCart)}</span></p>
+                    <p>Total: <span className='text-green-600 font-bold'>{formatPrice(totalCart)}</span></p>
+                </div>
+                <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>
+                    Realizar pedido
+                </button>
             </div>
-            <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>Place order</button>
-        </div>
         </div>
     );
 };

@@ -50,20 +50,20 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
             let updatedCart;
             
             if (existingProduct) {
-                // Si el producto ya está en el carrito, no se agregan más unidades
+                // Incrementar la cantidad del producto en el carrito
                 updatedCart = cart.map(item =>
                     item.id === product.id
-                        ? { ...item, soldUnits: item.soldUnits } // No modificar la cantidad
+                        ? { ...item, units: (item.units || 1) + 1 } // Asegurar que `units` existe y sumarle 1
                         : item
                 );
             } else {
-                // Si el producto no está en el carrito, agregar con cantidad 1
-                updatedCart = [...cart, { ...product, userId: user?.uid, soldUnits: 1 }];
+                // Si el producto no está en el carrito, agregarlo con cantidad 1
+                updatedCart = [...cart, { ...product, userId: user?.uid, units: 1 }];
             }
     
             setCart(updatedCart);
             localStorage.setItem(`cart_${user?.uid}`, JSON.stringify(updatedCart));
-            console.log('Producto agregado con cantidad 1');
+            console.log('Producto agregado al carrito');
         } else {
             console.log('Por favor, inicie sesión para agregar productos al carrito');
         }
@@ -80,7 +80,7 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
     const updateProductQuantity = (id: string, newQuantity: number) => {
         setCart(prevCart =>
           prevCart.map(item =>
-            item.id === id ? { ...item, soldUnits: newQuantity } : item
+            item.id === id ? { ...item, units: newQuantity } : item
           )
         );
       };
