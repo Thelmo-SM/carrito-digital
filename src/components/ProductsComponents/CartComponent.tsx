@@ -54,12 +54,12 @@ export const CartComponent = () => {
                         {cart.length > 0 ? (
                             cart.map(({ name, price, id, imageUrl, units }) => (
                                 <tr key={id}>
-                                    <td>
+                                    <td className={styles.imgContainer}>
                                         {imageUrl ? (
                                             <Image
                                                 src={imageUrl}
-                                                width={100}
-                                                height={100}
+                                                width={50}
+                                                height={50}
                                                 alt={name}
                                                 className={styles.img}
                                             />

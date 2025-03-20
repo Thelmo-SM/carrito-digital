@@ -1,0 +1,96 @@
+.searchContainer {
+    padding: 1rem;
+    width: 70%;
+    bottom: 3rem;
+    display: flex;
+    justify-content: center;
+}
+
+.search {
+    color: rgb(222, 226, 230);
+    width: 60%;
+    height: 2.5rem;
+    border-radius: 3rem 0 0 3rem;
+    text-indent: 3.5rem;
+    background-color: rgba(67, 123, 175, 0.39);
+    backdrop-filter: blur(1rem);
+}
+
+.searchButton {
+    color: rgb(222, 226, 230);
+    width: 7rem;
+    border-radius: 0 3rem 3rem 0; 
+    height: 2.5rem;
+    background-color: rgba(67, 123, 175, 0.39);
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.searchButton:hover {
+    background-color: rgb(67, 123, 175);
+}
+
+.inicioContainer {
+    position: relative;
+    /* background: linear-gradient(to right, #12091a, #40749e, #12091a); */
+    height: 20rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding-top: 5rem;
+    background-color: rgba(67, 123, 175, 0.397);
+}
+
+.saludo {
+    font-size: 1.9rem;
+    padding: 1rem;
+    text-align: center;
+    color: #444444;
+    font-weight: bold;
+}
+
+.mensajeP {
+    color: #444444;
+    font-size: 1.2rem;
+    width: 50%;
+    text-align: center;
+}
+
+.categories {
+    display: flex;
+    width: 100%;
+    background-color: rgb(222, 226, 230);
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    margin-top: 2rem;
+}
+.categories > nav {
+    margin: auto;
+}
+
+.categories nav > button {
+    margin: 0 1.5rem;
+    padding: .3rem;
+    transition: 0.2s;
+    border-radius: .2rem;
+}
+.categories nav > button:hover {
+    background-color: rgb(67, 123, 175);
+    color: #cad1dd;
+}
+
+.filtroContainer {
+    align-self: flex-start;
+    margin-left: 5rem;
+    padding: .5rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    margin: auto;
+}
+
+.filtroContainer > option {
+    background-color: rgb(67, 123, 175);
+    color: #cad1dd;
+    transition: 0.2s;
+}

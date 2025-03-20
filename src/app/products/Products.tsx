@@ -1,8 +1,8 @@
-
+import ProductsComponent from "@/components/ProductsComponents/ProductsComponent"
 
 
 
 export default function Products() {
     
-    return <h1>Productos</h1>
+    return <ProductsComponent />
 }
