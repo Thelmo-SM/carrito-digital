@@ -6,12 +6,13 @@ export interface itemImage {
 };
 
 export interface productsTypes {
-    id: string;
+    id?: string;
     file?: itemImage;
     imageUrl?: string;
     name: string;
     price: number;
     soldUnits: number;
+    categorie: string;
     description: string
     createdAt?: Timestamp;
 };
