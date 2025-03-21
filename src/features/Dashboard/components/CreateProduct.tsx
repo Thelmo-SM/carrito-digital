@@ -7,7 +7,7 @@ const initialProductsValues: productsTypes = {
   name: '',
   price: 0,
   soldUnits: 0,
-  categorie: '',
+  categorie: [],
   description: ''
 }
 
@@ -21,7 +21,8 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
     form,
     handleChange,
     handleSubmit,
-    handleFileChange
+    handleFileChange,
+    handleCategoryChange
   } = useCreateItems(initialProductsValues, getProduct);
 
   return (
@@ -73,8 +74,8 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
             type="text"
             id="categorie_id"
             name="categorie"
-            value={form.categorie}
-            onChange={handleChange}
+            value={form.categorie.join(", ")}
+            onChange={handleCategoryChange}
           />
         </div>
         <div>

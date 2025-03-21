@@ -12,8 +12,9 @@ export interface productsTypes {
     name: string;
     price: number;
     soldUnits: number;
-    categorie: string;
-    description: string
+    categorie: string[];
+    description: string;
+    isFeature?: boolean;
     createdAt?: Timestamp;
 };
 
