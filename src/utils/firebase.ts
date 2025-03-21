@@ -85,3 +85,16 @@ export const updateDocument = async (path: string, data: any) => {
     throw new Error("No se pudo actualizar el documento");
   }
 };
+
+//Ordenar productos
+export const createOrder = async (userId, productIds, totalCart) => {
+  // Lógica para crear una orden en la base de datos (por ejemplo, Firebase)
+  const orderRef = await addDoc(collection(db, "orders"), {
+      userId,
+      productIds,
+      total: totalCart,
+      status: "pending", // Status de ejemplo
+      createdAt: new Date()
+  });
+  return orderRef.id; // Devuelve el ID de la orden
+};

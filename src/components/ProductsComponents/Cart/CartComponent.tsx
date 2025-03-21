@@ -6,6 +6,8 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 //import { useRouter } from 'next/navigation';
+import CheckoutComponent from '../Checkout/CheckoutComponent';
+import { createOrder } from '@/utils/firebase';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
@@ -31,8 +33,16 @@ export const CartComponent = () => {
             return;
         }
 
-        console.log("Procesando pedido con productos:", productIds);
+        // Llamar al servicio que crea un pedido en la base de datos
+        try {
+            const orderId = await createOrder(user.uid, productIds, totalCart); // Ejemplo de función
+            alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
+        } catch (error) {
+            alert("Hubo un problema al procesar el pedido.");
+            console.log(error)
+        }
     };
+
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
 
@@ -103,7 +113,7 @@ export const CartComponent = () => {
                 </table>
             </div>
 
-            <div className={styles.totalContainer}>
+            {/* <div className={styles.totalContainer}>
                 <div className={styles.detalleTotal}>
                     <h2>Total del carrito</h2>
                     <p>Sub total: <span className='text-green-600'>{formatPrice(totalCart)}</span></p>
@@ -112,7 +122,8 @@ export const CartComponent = () => {
                 <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>
                     Realizar pedido
                 </button>
-            </div>
+            </div> */}
+            <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder}/>
         </div>
     );
 };

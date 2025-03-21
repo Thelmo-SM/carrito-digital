@@ -10,7 +10,8 @@
     color: rgb(222, 226, 230);
     width: 60%;
     height: 2.5rem;
-    border-radius: 3rem 0 0 3rem;
+    border-radius: 3rem;
+    /* border-radius: 3rem 0 0 3rem; */
     text-indent: 3.5rem;
     background-color: rgba(67, 123, 175, 0.39);
     backdrop-filter: blur(1rem);
