@@ -3,45 +3,56 @@
 import styles from '@/styles/cart.module.css'; // Asegúrate de que la ruta sea correcta
 import { useCart } from '@/store/ProductCartContext';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
+import { useState } from 'react';
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 //import { useRouter } from 'next/navigation';
 import CheckoutComponent from '../Checkout/CheckoutComponent';
 import { createOrder } from '@/utils/firebase';
+import AddressFormComponent from '../Checkout/AddressFormComponent';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const { cart, deleteProduct, updateProductQuantity } = useCart();
+    const [isAddressFormVisible, setAddressFormVisible] = useState(false);
+    const [shippingAddress, setShippingAddress] = useState(null);
 
     const handleOrder = async () => {
         if (!user?.uid) {
-            alert("Por favor, inicie sesión para realizar un pedido.");
-            return;
+          alert("Por favor, inicie sesión para realizar un pedido.");
+          return;
         }
-
+      
         if (cart.length === 0) {
-            alert("El carrito está vacío.");
-            return;
+          alert("El carrito está vacío.");
+          return;
         }
-
+      
         const productIds = cart
-            .map(item => item.id)
-            .filter(id => id !== null);
-
+          .map(item => item.id)
+          .filter(id => id !== null);
+      
         if (productIds.length === 0) {
-            alert("No hay productos válidos en el carrito.");
-            return;
+          alert("No hay productos válidos en el carrito.");
+          return;
         }
-
-        // Llamar al servicio que crea un pedido en la base de datos
+      
+        // Verificar el valor de shippingAddress
+        console.log("Dirección de envío:", shippingAddress);
+      
+        if (!shippingAddress) {
+          alert("Por favor, ingrese una dirección de envío válida.");
+          return;
+        }
+      
         try {
-            const orderId = await createOrder(user.uid, productIds, totalCart); // Ejemplo de función
-            alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
+          const orderId = await createOrder(user.uid, productIds, totalCart, shippingAddress);
+          alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
         } catch (error) {
-            alert("Hubo un problema al procesar el pedido.");
-            console.log(error)
+          alert("Hubo un problema al procesar el pedido.");
+          console.log(error)
         }
-    };
+      };
 
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
@@ -113,16 +124,17 @@ export const CartComponent = () => {
                 </table>
             </div>
 
-            {/* <div className={styles.totalContainer}>
-                <div className={styles.detalleTotal}>
-                    <h2>Total del carrito</h2>
-                    <p>Sub total: <span className='text-green-600'>{formatPrice(totalCart)}</span></p>
-                    <p>Total: <span className='text-green-600 font-bold'>{formatPrice(totalCart)}</span></p>
-                </div>
-                <button onClick={handleOrder} disabled={cart.length === 0} className={styles.activeButton}>
-                    Realizar pedido
-                </button>
-            </div> */}
+            {!shippingAddress && !isAddressFormVisible && (
+                <button onClick={() => setAddressFormVisible(true)}>Agregar Dirección de Envío</button>
+            )}
+
+            {isAddressFormVisible && (
+                <AddressFormComponent onAddressSaved={(address) => {
+                    setShippingAddress(address);
+                    setAddressFormVisible(false);
+                }} />
+            )}
+
             <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder}/>
         </div>
     );

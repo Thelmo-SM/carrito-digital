@@ -3,7 +3,12 @@
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import styles from '@/styles/cart.module.css';
 
-export const CheckoutComponent = ({ totalCart, handleOrder }) => {
+interface checkoutType {
+    totalCart: number;
+    handleOrder: () => void;
+}
+
+export const CheckoutComponent = ({ totalCart, handleOrder }: checkoutType) => {
     return (
         <div className={styles.totalContainer}>
             <div className={styles.detalleTotal}>

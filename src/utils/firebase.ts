@@ -87,14 +87,27 @@ export const updateDocument = async (path: string, data: any) => {
 };
 
 //Ordenar productos
-export const createOrder = async (userId, productIds, totalCart) => {
+export const createOrder = async (userId: string, productIds: string[], totalCart: number, shippingAddress: any) => {
   // Lógica para crear una orden en la base de datos (por ejemplo, Firebase)
   const orderRef = await addDoc(collection(db, "orders"), {
       userId,
       productIds,
       total: totalCart,
+      shippingAddress,
       status: "pending", // Status de ejemplo
       createdAt: new Date()
   });
   return orderRef.id; // Devuelve el ID de la orden
+};
+
+//Dirección de envío
+export const saveShippingAddress = async (userId: string, address: any) => {
+  try {
+    const addressRef = doc(db, "shippingAddresses", userId);
+    await setDoc(addressRef, address, { merge: true });
+    console.log("Dirección de envío guardada correctamente.");
+  } catch (error) {
+    console.error("Error al guardar la dirección de envío:", error);
+    throw new Error("No se pudo guardar la dirección de envío");
+  }
 };
