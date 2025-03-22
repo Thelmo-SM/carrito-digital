@@ -62,3 +62,82 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     
 }
+
+.userImg {
+    background-color: #d1d9e6;
+    border-radius: 50%;
+    margin: 0;
+    padding: .1rem;
+}
+
+/* //////user nav */
+.profileContainer {
+  position: relative;
+  display: inline-block;
+}
+
+.userImg {
+  cursor: pointer;
+  border-radius: 50%;
+  transition: opacity 0.3s;
+}
+
+.userImg:hover {
+  opacity: 0.8;
+}
+
+/* Estilos del menú desplegable */
+.container, .navScroll {
+    overflow: visible !important; /* Asegura que los elementos dentro del nav no sean recortados */
+  }
+  
+  /* Estilos del menú desplegable */
+  .dropdownMenu {
+    position: fixed;
+    top: 4.3rem;
+    right: 5rem;
+    width: 30%;
+    padding: 2rem;
+    background: rgb(222, 226, 230);
+    box-shadow: 0 .1rem .7rem .1rem #41464e65;
+    border-radius: .2rem;
+    overflow: hidden;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .menuItem {
+    color: rgb(39, 124, 204);
+    padding: 1rem;
+    border-radius: .2rem;
+    transition: 0.2s;
+    width: 100%;
+  }
+  .menuItem:hover {
+    background-color: rgb(39, 124, 204);
+    color: #d1d9e6;
+  }
+
+  .logout {
+    margin-top: 2rem;
+    padding: 1rem;
+    background-color: #dc3545;
+    color: #d1d9e6;
+    font-weight: bold;
+    border-radius: .2rem;
+    transition: 0.2s;
+    width: 100%;
+  }
+
+  .logout:hover {
+    background-color: #f54e5e;
+  }
+  
+  /* Asegura que el contenedor del usuario sea visible */
+  .profileContainer {
+    position: relative;
+    z-index: 999; /* Asegura que esté por encima del nav */
+  }
