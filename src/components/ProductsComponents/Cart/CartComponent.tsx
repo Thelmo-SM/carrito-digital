@@ -6,52 +6,116 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { useState } from 'react';
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
-//import { useRouter } from 'next/navigation';
-import CheckoutComponent from '../Checkout/CheckoutComponent';
+import ModalForm from '@/components/Modals/modalForm';
+import { useModalForm } from '@/hooks/useModalForm';
+import CheckoutComponent from '../../../features/Checkout/CheckoutComponent';
 import { createOrder } from '@/utils/firebase';
-import AddressFormComponent from '../Checkout/AddressFormComponent';
+import AddressFormComponent from '../../../features/Checkout/AddressFormComponent';
+
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const { cart, deleteProduct, updateProductQuantity } = useCart();
     const [isAddressFormVisible, setAddressFormVisible] = useState(false);
     const [shippingAddress, setShippingAddress] = useState(null);
+    const {isOpen, openModal, closeModal} = useModalForm();
 
     const handleOrder = async () => {
+        // if (!user?.uid) {
+        //   alert("Por favor, inicie sesión para realizar un pedido.");
+        //   return;
+        // }
+      
+        // if (cart.length === 0) {
+        //   alert("El carrito está vacío.");
+        //   return;
+        // }
+      
+        // const productIds = cart
+        //   .map(item => item.id)
+        //   .filter(id => id !== null);
+      
+        // if (productIds.length === 0) {
+        //   alert("No hay productos válidos en el carrito.");
+        //   return;
+        // }
+      
+        // // Verificar el valor de shippingAddress
+        // console.log("Dirección de envío:", shippingAddress);
+      
+        // if (!shippingAddress) {
+        //   alert("Por favor, ingrese una dirección de envío válida.");
+        //   return;
+        // }
+      
+        // try {
+        //   const orderId = await createOrder(user.uid, productIds, totalCart, shippingAddress);
+        //   alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
+        // } catch (error) {
+        //   alert("Hubo un problema al procesar el pedido.");
+        //   console.log(error)
+        // }
+
         if (!user?.uid) {
-          alert("Por favor, inicie sesión para realizar un pedido.");
-          return;
+            alert("Por favor, inicie sesión para realizar un pedido.");
+            return;
         }
-      
+    
         if (cart.length === 0) {
-          alert("El carrito está vacío.");
-          return;
+            alert("El carrito está vacío.");
+            return;
         }
-      
-        const productIds = cart
-          .map(item => item.id)
-          .filter(id => id !== null);
-      
+    
+        const productIds = cart.map(item => item.id).filter(id => id !== null);
         if (productIds.length === 0) {
-          alert("No hay productos válidos en el carrito.");
-          return;
+            alert("No hay productos válidos en el carrito.");
+            return;
         }
-      
-        // Verificar el valor de shippingAddress
-        console.log("Dirección de envío:", shippingAddress);
-      
+    
+        // Verificar si la dirección de envío es válida
         if (!shippingAddress) {
-          alert("Por favor, ingrese una dirección de envío válida.");
-          return;
+            alert("Por favor, ingrese una dirección de envío válida.");
+            return;
         }
-      
+    
+        // Preparar los datos para el backend
+        const orderData = {
+            userId: user.uid,
+            products: cart.map(item => ({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                quantity: item.units ?? 1,
+                imageUrl: item.imageUrl
+            })),
+            total: totalCart,
+            shippingAddress,
+        };
+    
         try {
-          const orderId = await createOrder(user.uid, productIds, totalCart, shippingAddress);
-          alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
+            // Enviar los datos al backend para crear el pedido
+            const response = await fetch('/api/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(orderData),
+            });
+    
+            const data = await response.json();
+            window.location = data.sessionUrl
+            console.log(data);
+    
+            if (response.ok) {
+                alert(`Pedido realizado exitosamente. ID de pedido: ${data.orderId}`);
+            } else {
+                alert("Hubo un problema al procesar el pedido.");
+            }
         } catch (error) {
-          alert("Hubo un problema al procesar el pedido.");
-          console.log(error)
+            alert("Error al procesar el pedido.");
+            console.error(error);
         }
+
       };
 
 
@@ -124,18 +188,21 @@ export const CartComponent = () => {
                 </table>
             </div>
 
-            {!shippingAddress && !isAddressFormVisible && (
-                <button onClick={() => setAddressFormVisible(true)}>Agregar Dirección de Envío</button>
-            )}
 
             {isAddressFormVisible && (
+            <ModalForm isOpens={isOpen} closeModal={closeModal}>
                 <AddressFormComponent onAddressSaved={(address) => {
                     setShippingAddress(address);
                     setAddressFormVisible(false);
                 }} />
+                </ModalForm>
             )}
 
-            <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder}/>
+            <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} openModal={openModal} 
+            setAddressFormVisible={setAddressFormVisible}
+            shippingAddress={shippingAddress}
+            isAddressFormVisible={isAddressFormVisible}
+            />
         </div>
     );
 };
