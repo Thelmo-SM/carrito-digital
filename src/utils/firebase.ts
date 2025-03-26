@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
+import { orderTypes } from "@/types/ordersTypes";
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -87,17 +88,44 @@ export const updateDocument = async (path: string, data: any) => {
 };
 
 //Ordenar productos
-export const createOrder = async (userId: string, productIds: string[], totalCart: number, shippingAddress: any) => {
-  // Lógica para crear una orden en la base de datos (por ejemplo, Firebase)
-  const orderRef = await addDoc(collection(db, "orders"), {
+export const createOrder = async (userId: string, products: any[], totalCart: number, shippingAddress: any) => {
+  try {
+    const orderData = {
       userId,
-      productIds,
+      products, // Ahora guardamos los productos completos
       total: totalCart,
       shippingAddress,
-      status: "pending", // Status de ejemplo
-      createdAt: new Date()
+      status: "pending",
+      createdAt: new Date(),
+    };
+
+    const orderRef = await addDoc(collection(db, "orders"), orderData);
+    return orderRef.id;
+  } catch (error) {
+    console.error("Error al crear la orden:", error);
+    throw new Error("No se pudo crear la orden");
+  }
+};
+
+// Obtener todas las órdenes de un usuario específico
+export const getUserOrders = async (userId: string) => {
+  // Asumiendo que tienes una colección llamada "orders"
+  const userOrdersSnapshot = await getDocs(
+    query(collection(db, "orders"), where("userId", "==", userId))
+  );
+  
+  const userOrders: orderTypes[] = userOrdersSnapshot.docs.map(doc => {
+    const orderData = doc.data();
+    return {
+      id: doc.id,
+      total: orderData.total,
+      status: orderData.status,
+      createdAt: orderData.createdAt,
+      products: orderData.products
+    };
   });
-  return orderRef.id; // Devuelve el ID de la orden
+
+  return userOrders;
 };
 
 //Dirección de envío
