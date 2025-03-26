@@ -4,6 +4,7 @@ export interface orderTypes {
     status: string;
     createdAt: Date; // Cambia a Date si quieres usar objetos Date reales
     products: ProductOrderTypes[];
+    shippingAddress: ShippingAddress | null;
   }
 
 export interface ProductOrderTypes {
@@ -12,4 +13,13 @@ export interface ProductOrderTypes {
     price: number;
     quantity: number;
     imageUrl: string; // Asegúrate de que esto esté incluido
+    shippingAddress: []
+  }
+
+  export interface ShippingAddress {
+    street: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
   }
