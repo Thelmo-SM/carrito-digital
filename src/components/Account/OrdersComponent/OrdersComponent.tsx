@@ -4,12 +4,13 @@ import style from '@/styles/account.module.css';
 import { useEffect, useState } from "react";
 import { getUserOrders } from "@/utils/firebase";
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
+import { orderTypes } from '@/types/ordersTypes';
 
 
 export const OrdersComponent = () => {
 
-    const [orders, setOrders] = useState([]);
-    const user = useAuthUsers(); // Obtener el usuario autenticado
+    const [orders, setOrders] = useState<orderTypes[]>([]);
+    const user  = useAuthUsers(); // Usuario autenticado
   
     useEffect(() => {
       if (!user?.uid) return;
@@ -40,15 +41,22 @@ export const OrdersComponent = () => {
                 <p>Estado: {order.status}</p>
                 <p>Fecha: {new Date(order.createdAt).toLocaleDateString()}</p>
                 <ul>
-                  {order.productIds.map((productId) => (
-                    <li key={productId}>Producto ID: {productId}</li>
-                  ))}
+                  {/* Verificar que 'products' sea un array antes de mapear */}
+                  {Array.isArray(order.products) ? (
+                    order.products.map((product, index) => (
+                      <li key={index}>
+                        {product.name} - ${product.price} x {product.quantity}
+                      </li>
+                    ))
+                  ) : (
+                    <p>Productos no disponibles</p>
+                  )}
                 </ul>
               </li>
             ))}
           </ul>
         )}
-      </div>   
+      </div>
     );
 };
 
