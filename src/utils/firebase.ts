@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
-import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -98,6 +98,23 @@ export const createOrder = async (userId: string, productIds: string[], totalCar
       createdAt: new Date()
   });
   return orderRef.id; // Devuelve el ID de la orden
+};
+
+// Obtener todas las órdenes de un usuario específico
+export const getUserOrders = async (userId: string) => {
+  try {
+    const ordersRef = collection(db, "orders");
+    const q = query(ordersRef, where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  } catch (error) {
+    console.error("Error al obtener órdenes del usuario:", error);
+    throw new Error("No se pudieron recuperar las órdenes");
+  }
 };
 
 //Dirección de envío

@@ -55,7 +55,7 @@ export const Nav = () => {
             {/* Menú desplegable fuera del `nav` */}
             {openMenu && (
                 <div className={NavStyle.dropdownMenu}>
-                    <Link href= '' className={NavStyle.menuItem}>Perfil</Link>
+                    <Link href= '/account/profile' className={NavStyle.menuItem}>Perfil</Link>
                     <Link href= '' className={NavStyle.menuItem}>Configuración</Link>
                     <button className={NavStyle.logout} onClick={signOut}>
                         Cerrar sesión
