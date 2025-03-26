@@ -1,16 +1,16 @@
 'use client';
 
-import style from '@/styles/account.module.css';
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { getUserOrders } from "@/utils/firebase";
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { orderTypes } from '@/types/ordersTypes';
-
+import style from '@/styles/account.module.css';
+import Image from "next/image";
 
 export const OrdersComponent = () => {
-
     const [orders, setOrders] = useState<orderTypes[]>([]);
-    const user  = useAuthUsers(); // Usuario autenticado
+    const [selectedOrder, setSelectedOrder] = useState<orderTypes | null>(null); // Estado para la orden seleccionada
+    const user = useAuthUsers(); // Usuario autenticado
   
     useEffect(() => {
       if (!user?.uid) return;
@@ -27,8 +27,12 @@ export const OrdersComponent = () => {
       fetchOrders();
     }, [user]);
   
+    const handleOrderClick = (order: orderTypes) => {
+      setSelectedOrder(order); // Establecer la orden seleccionada
+    };
+  
     return (
-      <div>
+      <div className={style.subContainer}>
         <h2>Historial de Compras</h2>
         {orders.length === 0 ? (
           <p>No tienes compras registradas.</p>
@@ -40,24 +44,33 @@ export const OrdersComponent = () => {
                 <p>Total: ${order.total}</p>
                 <p>Estado: {order.status}</p>
                 <p>Fecha: {new Date(order.createdAt).toLocaleDateString()}</p>
-                <ul>
-                  {/* Verificar que 'products' sea un array antes de mapear */}
-                  {Array.isArray(order.products) ? (
-                    order.products.map((product, index) => (
-                      <li key={index}>
-                        {product.name} - ${product.price} x {product.quantity}
-                      </li>
-                    ))
-                  ) : (
-                    <p>Productos no disponibles</p>
-                  )}
-                </ul>
+                <button onClick={() => handleOrderClick(order)}>Ver detalles</button> {/* Botón para ver detalles */}
               </li>
             ))}
           </ul>
         )}
+  
+        {/* Mostrar detalles si hay una orden seleccionada */}
+        {selectedOrder && (
+          <div className={style.orderDetails}>
+            <h2>Detalles del Pedido #{selectedOrder.id}</h2>
+            <p>Total: ${selectedOrder.total}</p>
+            <p>Estado: {selectedOrder.status}</p>
+            <p>Fecha: {new Date(selectedOrder.createdAt).toLocaleDateString()}</p>
+            <h3>Productos:</h3>
+            <ul>
+              {selectedOrder.products.map((product, index) => (
+                <li key={index}>
+                  {/* Mostrar imagen del producto */}
+                  {product.imageUrl && <Image src={product.imageUrl} alt={product.name} width={50} height={50} />}
+                  <div>{product.name} - ${product.price} x {product.quantity}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     );
-};
-
-export default OrdersComponent;
+  };
+  
+  export default OrdersComponent;
