@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { orderTypes } from "@/types/ordersTypes";
+import { ShippingAddress } from "@/types/ordersTypes";
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore";
@@ -163,5 +163,44 @@ export const saveShippingAddress = async (userId: string, address: any) => {
   } catch (error) {
     console.error("Error al guardar la dirección de envío:", error);
     throw new Error("No se pudo guardar la dirección de envío");
+  }
+};
+
+//Crear direcciones
+export const createShippingAddress = async (userId: string, address: any) => {
+  try {
+    // Crear un nuevo documento en la colección "shippingAddresses" sin necesidad de proporcionar un ID
+    const addressRef = await addDoc(collection(db, "shippingAddresses"), {
+      userId, // Agregamos el userId para asociar la dirección al usuario
+      ...address, // Los datos de la dirección
+    });
+
+    console.log("Dirección de envío creada correctamente con ID: ", addressRef.id);
+  } catch (error) {
+    console.error("Error al crear la dirección de envío:", error);
+    throw new Error("No se pudo crear la dirección de envío");
+  }
+};
+
+//Ver direcciones
+export const getUserAddresses = async (userId: string): Promise<ShippingAddress[]> => {
+  try {
+    const addressesSnapshot = await getDocs(
+      query(collection(db, "shippingAddresses"), where("userId", "==", userId))
+    );
+
+    const addresses: ShippingAddress[] = addressesSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      street: doc.data().street,
+      city: doc.data().city,
+      state: doc.data().state,
+      postalCode: doc.data().postalCode,
+      country: doc.data().country,
+    }));
+
+    return addresses;
+  } catch (error) {
+    console.error("Error al obtener las direcciones del usuario:", error);
+    throw new Error("No se pudieron obtener las direcciones");
   }
 };
