@@ -88,45 +88,70 @@ export const updateDocument = async (path: string, data: any) => {
 };
 
 //Ordenar productos
-export const createOrder = async (userId: string, products: any[], totalCart: number, shippingAddress: any) => {
+export const createOrder = async (userId: string, products: { id: string, name: string, price: number, quantity: number, imageUrl: string }[], totalCart: number, shippingAddress: any) => {
   try {
-    const orderData = {
+    // Creamos un nuevo documento en la colección "orders"
+    const orderRef = await addDoc(collection(db, "orders"), {
       userId,
-      products, // Ahora guardamos los productos completos
-      total: totalCart,
-      shippingAddress,
-      status: "pending",
-      createdAt: new Date(),
-    };
+      products, // Almacenamos los detalles completos de los productos, incluyendo la imagen
+      total: totalCart, // El total del carrito
+      shippingAddress, // Dirección de envío
+      status: "pending", // Estado inicial de la orden
+      createdAt: serverTimestamp() // Timestamp de cuando se crea la orden
+    });
 
-    const orderRef = await addDoc(collection(db, "orders"), orderData);
-    return orderRef.id;
+    console.log("Orden creada con ID: ", orderRef.id); // Log del ID de la orden creada
+    return orderRef.id; // Retornamos el ID de la orden creada
+
   } catch (error) {
     console.error("Error al crear la orden:", error);
-    throw new Error("No se pudo crear la orden");
+    throw new Error("No se pudo crear la orden.");
   }
 };
 
+
 // Obtener todas las órdenes de un usuario específico
 export const getUserOrders = async (userId: string) => {
-  // Asumiendo que tienes una colección llamada "orders"
-  const userOrdersSnapshot = await getDocs(
-    query(collection(db, "orders"), where("userId", "==", userId))
-  );
-  
-  const userOrders: orderTypes[] = userOrdersSnapshot.docs.map(doc => {
-    const orderData = doc.data();
-    return {
-      id: doc.id,
-      total: orderData.total,
-      status: orderData.status,
-      createdAt: orderData.createdAt,
-      products: orderData.products
-    };
-  });
+  try {
+    const userOrdersSnapshot = await getDocs(
+      query(collection(db, "orders"), where("userId", "==", userId))
+    );
 
-  return userOrders;
+    const userOrders = await Promise.all(
+      userOrdersSnapshot.docs.map(async (docSnapshot) => { // Cambié `doc` a `docSnapshot` para mayor claridad
+        const orderData = docSnapshot.data();
+        
+        const productDetails = await Promise.all(
+          orderData.products.map(async (product: { id: string }) => {
+            const productDoc = await getDoc(doc(db, "products", product.id));
+            if (productDoc.exists()) {
+              const productData = productDoc.data();
+              return {
+                ...productData, // Asegúrate de incluir todos los datos del producto, incluidas las imágenes
+                id: product.id
+              };
+            }
+            return null;
+          })
+        );
+    
+        return {
+          id: docSnapshot.id,
+          total: orderData.total,
+          status: orderData.status,
+          createdAt: orderData.createdAt ? orderData.createdAt.toDate() : null,
+          products: productDetails.filter((product) => product !== null),
+        };
+      })
+    );
+
+    return userOrders;
+  } catch (error) {
+    console.error("Error al obtener las órdenes del usuario:", error);
+    throw new Error("No se pudieron obtener las órdenes");
+  }
 };
+
 
 //Dirección de envío
 export const saveShippingAddress = async (userId: string, address: any) => {
