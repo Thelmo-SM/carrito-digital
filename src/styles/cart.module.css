@@ -175,5 +175,6 @@
   font-weight: bold;
 }
 .address {
-  color: rgb(67, 123, 175);;
+  color: rgb(67, 123, 175);
+  margin-bottom: .6rem;
 }

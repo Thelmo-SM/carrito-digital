@@ -4,17 +4,17 @@ import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import styles from '@/styles/cart.module.css';
 import { useAddresses } from '@/store/AddressContext';
 import { ShippingAddress } from '@/types/ordersTypes';
+import Link from 'next/link';
 
 interface checkoutType {
     totalCart: number;
     handleOrder: () => void;
-    openModal: () => void;
     setAddressFormVisible: (value: boolean) => void; 
     shippingAddress: ShippingAddress | null;
     isAddressFormVisible: boolean;
 }
 
-export const CheckoutComponent = ({ totalCart, handleOrder, openModal, setAddressFormVisible, shippingAddress, isAddressFormVisible }: checkoutType) => {
+export const CheckoutComponent = ({ totalCart, handleOrder}: checkoutType) => {
     const { defaultAddress } = useAddresses(); // Obtener la dirección predeterminada
 
     return (
@@ -31,15 +31,12 @@ export const CheckoutComponent = ({ totalCart, handleOrder, openModal, setAddres
                 <p className={styles.address}>
                     {defaultAddress?.street}, {defaultAddress?.city}, {defaultAddress?.state}, {defaultAddress?.postalCode}, {defaultAddress?.country}
                 </p>
-                <button 
-            onClick={() => {
-                openModal()
-            }
-            } 
-            className={styles.newAddress}
-            >
+                <Link 
+                href='/account/addresses'
+                className={styles.newAddress}
+                >
                 Cambiar
-            </button>
+                </Link>
             </div>
 
             <button onClick={handleOrder} className={styles.activeButton}>
