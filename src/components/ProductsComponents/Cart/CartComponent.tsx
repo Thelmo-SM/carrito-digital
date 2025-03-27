@@ -3,59 +3,20 @@
 import styles from '@/styles/cart.module.css'; // Asegúrate de que la ruta sea correcta
 import { useCart } from '@/store/ProductCartContext';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
-import { useState } from 'react';
+import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importar el hook para obtener las direcciones
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import ModalForm from '@/components/Modals/modalForm';
 import { useModalForm } from '@/hooks/useModalForm';
 import CheckoutComponent from '../../../features/Checkout/CheckoutComponent';
-import { createOrder } from '@/utils/firebase';
-import AddressFormComponent from '../../../features/Checkout/AddressFormComponent';
-
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const { cart, deleteProduct, updateProductQuantity } = useCart();
-    const [isAddressFormVisible, setAddressFormVisible] = useState(false);
-    const [shippingAddress, setShippingAddress] = useState(null);
-    const {isOpen, openModal, closeModal} = useModalForm();
+    const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
+    const { isOpen, openModal, closeModal } = useModalForm();
 
     const handleOrder = async () => {
-        // if (!user?.uid) {
-        //   alert("Por favor, inicie sesión para realizar un pedido.");
-        //   return;
-        // }
-      
-        // if (cart.length === 0) {
-        //   alert("El carrito está vacío.");
-        //   return;
-        // }
-      
-        // const productIds = cart
-        //   .map(item => item.id)
-        //   .filter(id => id !== null);
-      
-        // if (productIds.length === 0) {
-        //   alert("No hay productos válidos en el carrito.");
-        //   return;
-        // }
-      
-        // // Verificar el valor de shippingAddress
-        // console.log("Dirección de envío:", shippingAddress);
-      
-        // if (!shippingAddress) {
-        //   alert("Por favor, ingrese una dirección de envío válida.");
-        //   return;
-        // }
-      
-        // try {
-        //   const orderId = await createOrder(user.uid, productIds, totalCart, shippingAddress);
-        //   alert(`Pedido realizado exitosamente. ID de pedido: ${orderId}`);
-        // } catch (error) {
-        //   alert("Hubo un problema al procesar el pedido.");
-        //   console.log(error)
-        // }
-
         if (!user?.uid) {
             alert("Por favor, inicie sesión para realizar un pedido.");
             return;
@@ -73,8 +34,8 @@ export const CartComponent = () => {
         }
     
         // Verificar si la dirección de envío es válida
-        if (!shippingAddress) {
-            alert("Por favor, ingrese una dirección de envío válida.");
+        if (!defaultAddress) {
+            alert("No tienes una dirección de envío predeterminada.");
             return;
         }
     
@@ -89,7 +50,7 @@ export const CartComponent = () => {
                 imageUrl: item.imageUrl
             })),
             total: totalCart,
-            shippingAddress,
+            shippingAddress: defaultAddress,  // Usar la dirección predeterminada
         };
     
         try {
@@ -103,8 +64,7 @@ export const CartComponent = () => {
             });
     
             const data = await response.json();
-            window.location = data.sessionUrl
-            console.log(data);
+            window.location = data.sessionUrl;
     
             if (response.ok) {
                 alert(`Pedido realizado exitosamente. ID de pedido: ${data.orderId}`);
@@ -115,11 +75,11 @@ export const CartComponent = () => {
             alert("Error al procesar el pedido.");
             console.error(error);
         }
-
-      };
-
+    };
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
+
+    if (loading) return <p>Cargando direcciones...</p>; // Si las direcciones aún están cargando
 
     return (
         <div className={styles.subContainer}>
@@ -187,21 +147,12 @@ export const CartComponent = () => {
                     </tbody>
                 </table>
             </div>
-
-
-            {isAddressFormVisible && (
             <ModalForm isOpens={isOpen} closeModal={closeModal}>
-                <AddressFormComponent onAddressSaved={(address) => {
-                    setShippingAddress(address);
-                    setAddressFormVisible(false);
-                }} />
-                </ModalForm>
-            )}
-
+                rdef
+            </ModalForm>
+            {/* Aquí ya no necesitas el formulario de dirección */}
             <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} openModal={openModal} 
-            setAddressFormVisible={setAddressFormVisible}
-            shippingAddress={shippingAddress}
-            isAddressFormVisible={isAddressFormVisible}
+            shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
             />
         </div>
     );

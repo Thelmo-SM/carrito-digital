@@ -8,6 +8,7 @@ import { redirect, usePathname } from "next/navigation";
 import Style from '@/styles/layout.module.css';
 import Nav from "@/components/Header/NavComponent";
 import { ProductCartProvider } from "@/store/ProductCartContext";
+import { AddressProvider } from "@/store/AddressContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,6 +41,7 @@ export default function RootLayout({
 
   return (
     <ProductCartProvider>
+    <AddressProvider>
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Nav />
@@ -48,6 +50,7 @@ export default function RootLayout({
         </main>
       </body>
     </html>
+    </AddressProvider>
     </ProductCartProvider>
   );
 }
