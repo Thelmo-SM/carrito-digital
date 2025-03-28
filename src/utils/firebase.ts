@@ -240,3 +240,81 @@ export const updateShippingAddress = async (userId: string, addressId: string) =
     console.error("Error al actualizar la dirección predeterminada:", error);
     throw new Error("No se pudo actualizar la dirección predeterminada");
   }
+}
+
+//Agregar reseñas
+export const addReview = async (userId: string, productId: string, rating: number, comment: string) => {
+  try {
+    const reviewRef = await addDoc(collection(db, "reviews"), {
+      userId,
+      productId,
+      rating,
+      comment,
+      createdAt: serverTimestamp()
+    });
+
+    console.log("Reseña agregada con ID: ", reviewRef.id);
+    return reviewRef.id;
+  } catch (error) {
+    console.error("Error al agregar la reseña: ", error);
+    throw new Error("No se pudo agregar la reseña.");
+  }
+};
+//Obtener reseñas
+export const getProductsWithReviews = async () => {
+  try {
+    // Obtener todas las reseñas
+    const reviewsSnapshot = await getDocs(collection(db, "reviews"));
+    const productIds = new Set<string>(); // Usamos un Set para asegurarnos de que no haya duplicados
+
+    reviewsSnapshot.docs.forEach((doc) => {
+      const review = doc.data();
+      productIds.add(review.productId); // Añadir el productId de cada reseña
+    });
+
+    const productsWithReviews = Array.from(productIds); // Convertir el Set a un array
+    return productsWithReviews; // Retorna un array con los productIds que tienen reseñas
+  } catch (error) {
+    console.error("Error al obtener productos con reseñas:", error);
+    throw new Error("No se pudieron obtener los productos con reseñas.");
+  }
+};
+//Obtener la reseña promedio de un producto
+export const getProductRating = async (productId: string) => {
+  try {
+    const reviewsSnapshot = await getDocs(
+      query(collection(db, "reviews"), where("productId", "==", productId))
+    );
+
+    const reviews = reviewsSnapshot.docs.map((doc) => doc.data());
+    
+    if (reviews.length === 0) return 0;
+
+    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
+    return totalRating / reviews.length;
+  } catch (error) {
+    console.error("Error al calcular la calificación:", error);
+    throw new Error("No se pudo calcular la calificación.");
+  }
+};
+//Editar reseñas
+export const updateReview = async (reviewId: string, rating: number, comment: string) => {
+  try {
+    const reviewRef = doc(db, "reviews", reviewId);
+    await updateDoc(reviewRef, { rating, comment, updatedAt: serverTimestamp() });
+    console.log("Reseña actualizada correctamente.");
+  } catch (error) {
+    console.error("Error al actualizar la reseña:", error);
+    throw new Error("No se pudo actualizar la reseña.");
+  }
+};
+//Eliminar reseñas
+export const deleteReview = async (reviewId: string) => {
+  try {
+    await deleteDoc(doc(db, "reviews", reviewId));
+    console.log("Reseña eliminada correctamente.");
+  } catch (error) {
+    console.error("Error al eliminar la reseña:", error);
+    throw new Error("No se pudo eliminar la reseña.");
+  }
+};

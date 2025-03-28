@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           <Link href= '/account/orders' >Tus pedidos</Link>
           </div>
           <div>
-          <Link href= '' >Tus reseñas</Link>
+          <Link href= '/account/reviews' >Tus reseñas</Link>
           </div>
           <div>
           <Link href= '/account/addresses' >Direcciones</Link>

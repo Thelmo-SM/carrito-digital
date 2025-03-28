@@ -9,13 +9,14 @@ import Img4 from '../../../public/HomeImg/img_4.webp';
 import styles from '@/styles/homeCarrusel.module.css';
 import FeaturedCategories from './FeaturedCategories';
 import FeaturedProducts from './FeaturedProducts';
+import Link from 'next/link';
 
 const images = [
-    Img1,
-    Img2,
-    Img3,
-    Img4
-  ];
+  { src: Img1, text: "Gran variedad de CPU" },
+  { src: Img2, text: "Gran variedad de Laptops" },
+  { src: Img3, text: "Gran variedad de impresoras" },
+  { src: Img4, text: "Gran variedad bocinas" }
+];
 
 export const HomeComponent = () => {
     const [current, setCurrent] = useState(0);
@@ -23,17 +24,21 @@ export const HomeComponent = () => {
     useEffect(() => {
       const interval = setInterval(() => {
         setCurrent((prev) => (prev + 1) % images.length);
-      }, 50000);
+      }, 500000);
       return () => clearInterval(interval);
     }, []);
 
     return (
       <div>
-        <article className={styles.carouselContainer}>
+         <article className={styles.carouselContainer}>
         <div className={styles.carouselTrack} style={{ transform: `translateX(-${current * 100}%)` }}>
           {images.map((src, index) => (
             <div key={index} className={styles.slide}>
-              <Image src={src} alt={`Slide ${index + 1}`} width={2000} height={600} className={styles.image} loading='lazy'/>
+              <Image src={src.src} alt={`Slide ${index + 1}`} width={2000} height={600} className={styles.image} loading='lazy' />
+              <div className={styles.textOverlay}>
+                <h1>{src.text}</h1>
+                <Link href='/products' className={styles.verMas}>Vermas</Link>
+              </div>
             </div>
           ))}
         </div>

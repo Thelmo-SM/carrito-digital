@@ -6,6 +6,7 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { orderTypes } from '@/types/ordersTypes';
 import style from '@/styles/account.module.css';
 import Image from "next/image";
+import ReviewForm from "../ReviewsComponent/AddReviews";
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState<orderTypes[]>([]);
@@ -64,6 +65,7 @@ export const OrdersComponent = () => {
                 {/* Mostrar imagen del producto */}
                 {product.imageUrl && <Image src={product.imageUrl} alt={product.name} width={50} height={50} />}
                 <div>{product.name} - ${product.price} x {product.quantity}</div>
+                <ReviewForm productId={product.id} userId={user?.uid} key={index}/>
               </li>
             ))}
           </ul>
