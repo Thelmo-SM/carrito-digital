@@ -148,3 +148,33 @@
   transition: 0.5s;
   width: 100%;
 }
+
+.newAddress {
+  background-color: #444444;;
+  color: rgb(223, 230, 235);
+  padding: .2rem 1rem;
+  border-radius: .2rem;
+  margin-top: .6rem;
+  transition: 0.2s;
+}
+.newAddress:hover {
+  background-color: rgb(67, 123, 175);
+}
+
+.addressContainer {
+  width: 18rem;
+  text-align: center;
+  margin: .5rem 0;
+  border-radius: .2rem;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  /* border: .01rem solid #4444442c; */
+  padding: .5rem .5rem 1rem .5rem;
+}
+.addressTile {
+  text-decoration: underline;
+  font-weight: bold;
+}
+.address {
+  color: rgb(67, 123, 175);
+  margin-bottom: .6rem;
+}

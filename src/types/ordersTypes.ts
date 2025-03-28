@@ -17,9 +17,11 @@ export interface ProductOrderTypes {
   }
 
   export interface ShippingAddress {
+    id: string
     street: string;
     city: string;
     state: string;
     postalCode: string;
     country: string;
+    isDefault: boolean;
   }
