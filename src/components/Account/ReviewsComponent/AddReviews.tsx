@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { addReview } from "@/utils/firebase"; // Ajusta la ruta según tu estructura
+import style from '@/styles/account.module.css';
 
 const ReviewForm = ({ productId, userId }: { productId: string, userId: string }) => {
   const [rating, setRating] = useState(5);
@@ -36,10 +37,11 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border rounded-md shadow-md">
-      <h3 className="text-lg font-semibold">Dejar una reseña</h3>
-
-      <label className="block mt-2">Calificación:</label>
+    <div className={style.addReviewContainer}>
+      <h3>Dejar una reseña</h3>
+    <form onSubmit={handleSubmit} className={style.addReview}>
+      <div className={style.review}>
+      <label>Calificación:</label>
       <select 
         value={rating} 
         onChange={(e) => setRating(Number(e.target.value))}
@@ -51,26 +53,27 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
           </option>
         ))}
       </select>
-
-      <label className="block mt-2">Comentario:</label>
+      <div className={style.coment}>
+      <label>Comentario:</label>
       <textarea
         value={comment}
         onChange={(e) => setComment(e.target.value)}
         rows={3}
-        className="w-full p-2 border rounded-md"
         required
       ></textarea>
-
-      <button 
+        <button 
         type="submit" 
         disabled={loading} 
-        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md disabled:opacity-50"
+        className={style.button}
       >
         {loading ? "Enviando..." : "Enviar Reseña"}
       </button>
+      </div>
+      </div>
 
       {message && <p className="mt-2 text-sm">{message}</p>}
     </form>
+    </div>
   );
 };
 

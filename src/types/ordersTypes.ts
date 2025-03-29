@@ -32,15 +32,22 @@ export interface ProductOrderTypes {
     createdAt: Date;
   }
   
+  // export interface ProductOrder {
+  //   id: string;
+  //   total: number;
+  //   status: string;
+  //   createdAt: Date;
+  //   products: ProductOrderTypes[]; // Aquí debería ir la estructura de cada producto.
+  //   shipping: []; // O puedes poner una estructura más definida si lo sabes.
+  // }
   export interface ProductOrder {
-    id: string;           // ID del producto en la orden
-    name: string;         // Nombre del producto
-    description: string;  // Descripción del producto (si la tienes)
-    price: number;        // Precio del producto
-    total: number;        // Total de la orden (puede ser el total de todos los productos)
-    status: string;       // Estado de la orden (por ejemplo, "pendiente", "enviado")
-    createdAt: Date;      // Fecha de creación de la orden
-    products: ProductOrderTypes[];  // Lista de productos ordenados
-    shipping: [];      // Detalles de envío
-    reviews: Review[];    // Reseñas de este producto
-  };
+    id: string;
+    total: number;
+    status: string;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    address: ShippingAddress;
+    reviews: Review[]; // Agregar esta propiedad para las reseñas
+  }
