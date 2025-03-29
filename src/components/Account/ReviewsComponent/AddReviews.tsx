@@ -9,15 +9,27 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+  
+    if (!userId || !productId) {
+      setMessage("❌ Error: Usuario o producto no definidos.");
+      console.error("Error: userId o productId están indefinidos", { userId, productId });
+      return;
+    }
+  
+    if (!comment.trim()) {
+      setMessage("❌ Escribe un comentario antes de enviar.");
+      return;
+    }
+  
     setLoading(true);
-
+  
     try {
-      await addReview(productId, userId, rating, comment);
-      setMessage("Reseña agregada correctamente.");
+      await addReview({ userId, productId, rating, comment });
+      setMessage("✅ Reseña agregada correctamente.");
       setComment(""); // Limpiar el comentario después de enviarlo
-    } catch (error: unknown) {
-      setMessage("Error al agregar la reseña.");
-      console.log(error)
+    } catch (error) {
+      setMessage("❌ Error al agregar la reseña.");
+      console.error("Error al enviar la reseña:", error);
     } finally {
       setLoading(false);
     }
@@ -52,7 +64,7 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
       <button 
         type="submit" 
         disabled={loading} 
-        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md"
+        className="mt-3 px-4 py-2 bg-blue-600 text-white rounded-md disabled:opacity-50"
       >
         {loading ? "Enviando..." : "Enviar Reseña"}
       </button>
