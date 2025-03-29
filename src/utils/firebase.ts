@@ -13,7 +13,7 @@ const STORAGEBUCKET = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
 const MESSAGINGSENDERID = process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID;
 const APPID = process.env.NEXT_PUBLIC_FIREBASE_APP_ID;
 
-
+//getProductsWithReviews 
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: APYKEY,
@@ -154,6 +154,10 @@ export const getUserOrders = async (userId: string) => {
 };
 
 
+
+
+
+
 //Dirección de envío
 export const saveShippingAddress = async (userId: string, address: any) => {
   try {
@@ -242,79 +246,126 @@ export const updateShippingAddress = async (userId: string, addressId: string) =
   }
 }
 
-//Agregar reseñas
-export const addReview = async (userId: string, productId: string, rating: number, comment: string) => {
-  try {
-    const reviewRef = await addDoc(collection(db, "reviews"), {
-      userId,
-      productId,
-      rating,
-      comment,
-      createdAt: serverTimestamp()
-    });
 
-    console.log("Reseña agregada con ID: ", reviewRef.id);
-    return reviewRef.id;
-  } catch (error) {
-    console.error("Error al agregar la reseña: ", error);
-    throw new Error("No se pudo agregar la reseña.");
-  }
-};
-//Obtener reseñas
-export const getProductsWithReviews = async () => {
-  try {
-    // Obtener todas las reseñas
-    const reviewsSnapshot = await getDocs(collection(db, "reviews"));
-    const productIds = new Set<string>(); // Usamos un Set para asegurarnos de que no haya duplicados
 
-    reviewsSnapshot.docs.forEach((doc) => {
-      const review = doc.data();
-      productIds.add(review.productId); // Añadir el productId de cada reseña
-    });
 
-    const productsWithReviews = Array.from(productIds); // Convertir el Set a un array
-    return productsWithReviews; // Retorna un array con los productIds que tienen reseñas
-  } catch (error) {
-    console.error("Error al obtener productos con reseñas:", error);
-    throw new Error("No se pudieron obtener los productos con reseñas.");
-  }
-};
-//Obtener la reseña promedio de un producto
-export const getProductRating = async (productId: string) => {
-  try {
-    const reviewsSnapshot = await getDocs(
-      query(collection(db, "reviews"), where("productId", "==", productId))
-    );
+// Función para calcular el promedio de calificaciones
+async function updateAverageRating(productId: string) {
+  const reviewsRef = collection(db, `products/${productId}/reviews`);
+  const reviewsSnapshot = await getDocs(reviewsRef);
+  
+  const reviews = reviewsSnapshot.docs.map(doc => doc.data());
+  const totalReviews = reviews.length;
+  const averageRating = totalReviews > 0 ? reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews : 0;
 
-    const reviews = reviewsSnapshot.docs.map((doc) => doc.data());
+  // Actualizar el producto con el nuevo promedio
+  const productRef = doc(db, `products/${productId}`);
+  await updateDoc(productRef, { averageRating });
+}
+
+// Agregar una reseña
+export async function addReview({ productId, userId, rating, comment }: { productId: string, userId: string, rating: number, comment: string }) {
+  if (rating < 1 || rating > 5) throw new Error("Rating debe estar entre 1 y 5");
+
+  const reviewsRef = collection(db, `products/${productId}/reviews`);
+  await addDoc(reviewsRef, { userId, rating, comment, createdAt: new Date() });
+  
+  await updateAverageRating(productId);
+}
+
+// Obtener productos con sus reseñas
+export async function getProductsWithReviews() {
+  const productsRef = collection(db, "products");
+  const productsSnapshot = await getDocs(productsRef);
+  const products = await Promise.all(productsSnapshot.docs.map(async (docSnap) => {
+    const productData = docSnap.data();
+    const reviewsRef = collection(db, `products/${docSnap.id}/reviews`);
+    const reviewsSnapshot = await getDocs(reviewsRef);
+    const reviews = reviewsSnapshot.docs.map(reviewDoc => reviewDoc.data());
+    return { id: docSnap.id, ...productData, reviews };
+  }));
+
+  return products;
+}
+
+// Obtener el rating promedio de un producto
+export async function getProductRating(productId) {
+  const productRef = doc(db, `products/${productId}`);
+  const productSnap = await getDoc(productRef);
+  if (!productSnap.exists()) throw new Error("Producto no encontrado");
+
+  return productSnap.data().averageRating || 0;
+}
+
+// Actualizar una reseña
+export async function updateReview(productId, reviewId, rating, comment) {
+  if (rating < 1 || rating > 5) throw new Error("Rating debe estar entre 1 y 5");
+
+  const reviewRef = doc(db, `products/${productId}/reviews/${reviewId}`);
+  await updateDoc(reviewRef, { rating, comment, updatedAt: new Date() });
+  
+  await updateAverageRating(productId);
+}
+
+// Eliminar una reseña
+export async function deleteReview(productId, reviewId) {
+  const reviewRef = doc(db, `products/${productId}/reviews/${reviewId}`);
+  await deleteDoc(reviewRef);
+  
+  await updateAverageRating(productId);
+}
+
+export async function getProductsUserReviews(userId: string) {
+  const ordersRef = collection(db, "orders");
+  const ordersSnapshot = await getDocs(ordersRef);
+  
+  // Filtrar las órdenes que pertenecen al usuario
+  const userOrders = ordersSnapshot.docs.filter(orderDoc => {
+    const orderData = orderDoc.data();
+    return orderData.userId === userId; // Solo las órdenes del usuario
+  });
+
+  // Obtener productos con sus reseñas de las órdenes del usuario
+  const orders = await Promise.all(userOrders.map(async (orderDoc) => {
+    const orderData = orderDoc.data();
     
-    if (reviews.length === 0) return 0;
+    const productsWithReviews = await Promise.all(orderData.products.map(async (product) => {
+      // Aquí estamos obteniendo el producto específico desde la colección de productos
+      const productRef = doc(db, `products/${product.id}`);
+      const productSnap = await getDoc(productRef);
 
-    const totalRating = reviews.reduce((sum, review) => sum + review.rating, 0);
-    return totalRating / reviews.length;
-  } catch (error) {
-    console.error("Error al calcular la calificación:", error);
-    throw new Error("No se pudo calcular la calificación.");
-  }
-};
-//Editar reseñas
-export const updateReview = async (reviewId: string, rating: number, comment: string) => {
-  try {
-    const reviewRef = doc(db, "reviews", reviewId);
-    await updateDoc(reviewRef, { rating, comment, updatedAt: serverTimestamp() });
-    console.log("Reseña actualizada correctamente.");
-  } catch (error) {
-    console.error("Error al actualizar la reseña:", error);
-    throw new Error("No se pudo actualizar la reseña.");
-  }
-};
-//Eliminar reseñas
-export const deleteReview = async (reviewId: string) => {
-  try {
-    await deleteDoc(doc(db, "reviews", reviewId));
-    console.log("Reseña eliminada correctamente.");
-  } catch (error) {
-    console.error("Error al eliminar la reseña:", error);
-    throw new Error("No se pudo eliminar la reseña.");
-  }
-};
+      // Si el producto no existe, lo omitimos
+      if (!productSnap.exists()) return null;
+
+      const productData = productSnap.data();
+      
+      // Obtener las reseñas de ese producto
+      const reviewsRef = collection(db, `products/${product.id}/reviews`);
+      const reviewsSnapshot = await getDocs(reviewsRef);
+      const reviews = reviewsSnapshot.docs.map(reviewDoc => reviewDoc.data());
+
+      // Regresar los productos con sus reseñas
+      return {
+        id: product.id,
+        name: productData?.name,  // Asumiendo que el producto tiene un campo `name`
+        description: productData?.description,  // Asumiendo que el producto tiene un campo `description`
+        price: productData?.price,  // Asumiendo que el producto tiene un campo `price`
+        reviews,  // Reseñas asociadas al producto
+      };
+    }));
+
+    // Filtrar productos nulos (por si acaso algún producto no existe)
+    const validProducts = productsWithReviews.filter((product) => product !== null);
+
+    return {
+      id: orderDoc.id,
+      total: orderData.total,
+      status: orderData.status,
+      createdAt: orderData.createdAt.toDate(),
+      products: validProducts,  // Solo productos válidos
+      shipping: orderData.shipping,
+    };
+  }));
+
+  return orders;
+}
