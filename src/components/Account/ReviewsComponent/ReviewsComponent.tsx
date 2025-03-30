@@ -6,6 +6,7 @@ import { getProductsUserReviews } from "@/utils/firebase";
 import { ProductOrder } from "@/types/ordersTypes";
 import styles from "@/styles/account.module.css";
 import Link from "next/link";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const ReviewsComponent = () => {
   const [productsWithReviews, setProductsWithReviews] = useState<ProductOrder[]>([]);
@@ -43,7 +44,10 @@ export const ReviewsComponent = () => {
     <div className={styles.subContainer}>
       <h2 className={styles.title}>Tus reseñas</h2>
       {loading ? (
-        <p>{error || "Cargando productos..."}</p>
+        <div className={styles.loadingContainer}>
+        <LoaderUi />
+        <p>{error || "Cargando reseñas..."}</p>
+        </div>
       ) : error ? (
         <p>{error}</p>
       ) : (

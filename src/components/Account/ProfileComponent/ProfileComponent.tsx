@@ -4,10 +4,14 @@ import style from '@/styles/account.module.css';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 import imgUser from '../../../../public/user.webp';
+import { useModalForm } from '@/hooks/useModalForm';
+import ModalForm from '@/components/Modals/modalForm';
+import UpdateProfile from './UpdateProfile';
 
 
 export const ProfileComponent = () => {
     const user = useAuthUsers();
+          const {isOpen, openModal, closeModal} = useModalForm();
 
     const formatDate = (timestamp?: { seconds: number; nanoseconds: number }) => {
         if (!timestamp) return "Fecha no disponible";
@@ -23,8 +27,13 @@ export const ProfileComponent = () => {
                 <p>{user?.email}</p>
                 <p>Te uniste el {formatDate(user?.createdAt)}</p>
                 </div>
-                <button className={style.editar}>Editar</button>
+                <button className={style.editar}
+                onClick={openModal}
+                >Editar</button>
             </div>
+            <ModalForm isOpens={isOpen} closeModal={closeModal} >
+                <UpdateProfile />
+            </ModalForm>
         </div>
     );
 };
