@@ -8,6 +8,9 @@ import { setDocument } from "@/utils/firebase";
  export const useRegister = (initialValue: usersTypes, validateForm: (values: usersTypes) => FormErrors) => {
     const [form, setForm] = useState(initialValue);
     const [errors, setErrors] = useState<FormErrors>({})
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -44,11 +47,18 @@ import { setDocument } from "@/utils/firebase";
 
       const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        setSuccess(false);
         try {
           const createdUser = await registerService(form);
       
-          if (!createdUser || !createdUser.uid) {
-            throw new Error("Error: UID no encontrado en el usuario creado.");
+          if (!createdUser || !createdUser.user?.uid) {
+            setErrorMessage(createdUser.message ?? null);
+            setTimeout(() => setErrorMessage(null), 2500);
+            setSuccess(false)
+            return;
+          } else {
+            setSuccess(true);
           }
       
           console.log("Usuario autenticado:", createdUser);
@@ -56,9 +66,11 @@ import { setDocument } from "@/utils/firebase";
           const { password, confirmPassword, ...noPassword } = form;
           console.log(password, confirmPassword)
       
-          await userColection({ ...noPassword, uid: createdUser.uid } as dataUsersTypes);
+          await userColection({ ...noPassword, uid: createdUser.user.uid } as dataUsersTypes);
         } catch (error: unknown) {
           console.error("Error en el hook de registro:", error);
+        } finally {
+          setLoading(false);
         }
       };
     
@@ -66,6 +78,9 @@ import { setDocument } from "@/utils/firebase";
     return {
         form,
         errors,
+        loading,
+        success,
+        errorMessage,
         handleChange,
         handleSubmit,
         handleBlur

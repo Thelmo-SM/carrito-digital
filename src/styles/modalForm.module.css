@@ -19,11 +19,14 @@
     position: relative;
     min-width: 70%;
     max-width: 70%;
-    height: 90%;
-/*    height: 45rem;*/
+    max-height: 80%;
+    height: 50rem;
     padding: 2rem;
     margin: auto;
     border-radius: .25rem;
+    overflow-y: auto;
+    background-color: rgb(222, 226, 230);
+    border-radius: .2rem;
 }
 
 .modalClose {

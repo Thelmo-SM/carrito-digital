@@ -44,17 +44,25 @@
     padding: .1rem;
 }
 
-.formContainer > button {
+.button {
     background-color: rgb(67, 123, 175);
-    padding: .8rem;
+    padding: 1rem;
     width: 100%;
     border-radius: .2rem;
     margin-top: 1rem;
     color: rgb(223, 230, 235);
 }
-.formContainer > button:hover {
+.button:hover {
     background-color: rgb(39, 124, 204);
     transition: 0.9s;
+}
+.buttonSuccess {
+    background-color: rgb(1, 163, 1);
+    padding: 1rem;
+    width: 100%;
+    border-radius: .2rem;
+    margin-top: 1rem;
+    color: rgb(223, 230, 235);
 }
 
 
@@ -74,4 +82,15 @@
 .image > img {
     border: solid;
     border-radius: .2rem;
+}
+
+.mesageError {
+    background-color: #F87171;
+    padding: 1rem;
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #98b0d8;
+    text-align: center;
+}
+.mesageError > p {
+    color: rgb(223, 230, 235);
 }

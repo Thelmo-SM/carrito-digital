@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getProductsUserReviews } from "@/utils/firebase";
 import { ProductOrder } from "@/types/ordersTypes";
 import styles from "@/styles/account.module.css";
+import Link from "next/link";
 
 export const ReviewsComponent = () => {
   const [productsWithReviews, setProductsWithReviews] = useState<ProductOrder[]>([]);
@@ -40,33 +41,38 @@ export const ReviewsComponent = () => {
 
   return (
     <div className={styles.subContainer}>
-      <h2>Productos con Reseñas</h2>
+      <h2 className={styles.title}>Tus reseñas</h2>
       {loading ? (
         <p>{error || "Cargando productos..."}</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <ul>
+        <ul className={styles.noDocuments}>
           {productsWithReviews.length === 0 ? <p>No tienes reseñas</p> : 
           productsWithReviews.map((order) => (
-            <li key={order.id}>
+            <li key={order.id} >
               {/* <p>Estado: {order.status}</p>
               <p>Total: {order.total}</p> */}
-              <ul>
+              <ul className={styles.productList}>
                 {order.products.map((product) => (
-                  <li key={product.id}>
+                  <li key={product.id} className={styles.cardContainer}>
                     <h3>{product.name}</h3>
-                    <p>{product.description}</p>
+                    {/* <p>{product.description}</p> */}
                     <p>Precio: ${product.price}</p>
-                    <h4>Reseñas:</h4>
-                    <ul>
+                    <div className={styles.reviewContainer}>
+                      <h4 className={styles.titleText}>Reseñas:</h4>
+                    <ul className={styles.review}>
                       {product.reviews.map((review, index) => (
-                        <li key={index}>
+                        <li key={index} >
                           <p>Calificación: {review.rating}⭐</p>
-                          <p>{review.comment}</p>
+                          <p>Comentario: {review.comment}</p>
+                          <Link href={`/products/${product.id}`} 
+                          className={styles.vermas}
+                          >Ver producto</Link>
                         </li>
                       ))}
                     </ul>
+                    </div>
                   </li>
                 ))}
               </ul>

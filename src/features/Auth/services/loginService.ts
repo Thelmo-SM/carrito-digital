@@ -3,8 +3,17 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export const loginService = async (user: {email:string, password:string}) => {
     try {
-        return await signInWithEmailAndPassword(auth, user.email, user.password);
+        const userLogin =   await signInWithEmailAndPassword(auth, user.email, user.password);
+        return { success: true, user: userLogin };
     } catch (error: unknown) {
-        console.log('Error al iniciar sesión. Error del servicio: ', error);
-    }
-}
+        if (error instanceof Error && "code" in error) {
+            const firebaseError = error as { code: string };
+      
+            if (firebaseError.code === "auth/invalid-credential") {
+              return { success: false, message: "Credenciales incorrectas. Verifica tus datos." };
+            }
+          }
+      
+          return { success: false, message: "Ocurrió un error inesperado. Inténtalo más tarde." };
+        }
+    };

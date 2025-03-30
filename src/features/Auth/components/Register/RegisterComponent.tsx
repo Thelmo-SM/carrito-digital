@@ -7,11 +7,16 @@ import Style from '@/styles/form.module.css';
 import Image from "next/image";
 import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
 import Link from "next/link";
+import { LoaderUi } from "@/components/UI/LoaderUi";
+import { MessageErrror } from "@/components/UI";
 
 export const RegisterComponent = () => {
   const {
     form,
     errors,
+    loading,
+    success,
+    errorMessage,
     handleChange,
     handleSubmit,
     handleBlur
@@ -26,6 +31,9 @@ export const RegisterComponent = () => {
         className={Style.formContainer}
         >
           <h2 className={Style.title}>¡Registrate!</h2>
+                  {errorMessage && 
+                      <MessageErrror>{errorMessage}</MessageErrror>}
+                    <div></div>
           <div>
             <label htmlFor="name" >
               Nombre
@@ -118,8 +126,11 @@ export const RegisterComponent = () => {
     
           <button
             type="submit"
-          >
-            Registrarse
+            className={`${success ? Style.buttonSuccess : Style.button}`}
+            >
+          {loading ? <div>
+            <LoaderUi/>
+            </div> : success ? 'Exito' : 'Registrarse'}
           </button>
           <Link href='/login'
           className={Style.Link}

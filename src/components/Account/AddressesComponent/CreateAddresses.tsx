@@ -3,6 +3,7 @@ import { createShippingAddress, getUserAddresses } from "@/utils/firebase"; // A
 import { ShippingAddress } from "@/types/ordersTypes";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useAddresses } from "@/store/AddressContext";
+import { LabelUi, ButtonSubmitUi, InputUi, DivForm, FormUi, ContainerUi } from "@/components/UI";
 
 export const CreateAddresses = () => {
   const [street, setStreet] = useState("");
@@ -30,7 +31,7 @@ export const CreateAddresses = () => {
     if (user?.uid) {
       fetchAddresses();
     }
-  }, [user?.uid]);
+  }, [user?.uid!]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -69,64 +70,33 @@ export const CreateAddresses = () => {
     }
   };
 
-  // const handleSetDefault = async (id: string) => {
-  //   // Actualizar en la base de datos cuál es la dirección predeterminada
-  //   // (Aquí necesitas una función para actualizar en Firestore)
-
-  //   const updatedAddresses = addresses.map((address) => ({
-  //     ...address,
-  //     isDefault: address.id === id,
-  //   }));
-
-  //   setAddresses(updatedAddresses);
-  //   alert("Dirección establecida como predeterminada");
-  // };
-
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Street:</label>
-          <input type="text" value={street} onChange={(e) => setStreet(e.target.value)} required />
-        </div>
-        <div>
-          <label>City:</label>
-          <input type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
-        </div>
-        <div>
-          <label>State:</label>
-          <input type="text" value={state} onChange={(e) => setState(e.target.value)} required />
-        </div>
-        <div>
-          <label>Postal Code:</label>
-          <input type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
-        </div>
-        <div>
-          <label>Country:</label>
-          <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
-        </div>
-        <button type="submit">Crear Dirección</button>
-      </form>
-
-      {/* <h3>Direcciones de Envío</h3>
-      {addresses.length > 0 ? (
-        <ul>
-          {addresses
-            .sort((a, b) => (b.isDefault ? 1 : -1)) // Mostrar la predeterminada primero
-            .map((address) => (
-              <li key={address.id}>
-                <strong>{address.isDefault ? "★ " : ""}</strong>
-                {address.street}, {address.city}, {address.state}, {address.postalCode}, {address.country}
-                {!address.isDefault && (
-                  <button onClick={() => handleSetDefault(address.id)}>Establecer como predeterminada</button>
-                )}
-              </li>
-            ))}
-        </ul>
-      ) : (
-        <p>No tienes direcciones guardadas.</p>
-      )} */}
-    </div>
+    <ContainerUi>
+      <h2>Agregar nueva dirrección</h2>
+      <FormUi onSubmit={handleSubmit}>
+        <DivForm>
+          <LabelUi>Calle:</LabelUi>
+          <InputUi type="text" value={street} onChange={(e) => setStreet(e.target.value)} required />
+        </DivForm>
+        <DivForm>
+          <LabelUi>Ciudad:</LabelUi>
+          <InputUi type="text" value={city} onChange={(e) => setCity(e.target.value)} required />
+        </DivForm>
+        <DivForm>
+          <LabelUi>Estado:</LabelUi>
+          <InputUi type="text" value={state} onChange={(e) => setState(e.target.value)} required />
+        </DivForm>
+        <DivForm>
+          <LabelUi>Código Postal:</LabelUi>
+          <InputUi type="text" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
+        </DivForm>
+        <DivForm>
+          <LabelUi>País:</LabelUi>
+          <InputUi type="text" value={country} onChange={(e) => setCountry(e.target.value)} required />
+        </DivForm>
+        <ButtonSubmitUi type="submit">Crear Dirección</ButtonSubmitUi>
+      </FormUi>
+    </ContainerUi>
   );
 };
 

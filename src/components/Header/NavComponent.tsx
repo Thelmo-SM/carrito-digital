@@ -67,11 +67,3 @@ export const Nav = () => {
 };
 
 export default Nav;
-
-
-
-            {/* <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
-            onClick={signOut}
-            >
-            Cerrar Sesión
-            </Link> */}
