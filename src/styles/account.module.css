@@ -243,3 +243,11 @@
   margin: 1rem 0;
   align-self: flex-end;
 }
+
+.loadingContainer {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
