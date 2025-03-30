@@ -4,7 +4,7 @@ import { useLogin } from "../../hooks/formLogin";
 import { validateLogin } from "../../helpers/validateForm";
 import { initialLogin } from "../../helpers/initialForm";
 import Image from "next/image";
-import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
+import img from '../../../../../public/login.webp'
 import Link from "next/link";
 import Style from '@/styles/form.module.css';
 import { LoaderUi } from "@/components/UI/LoaderUi";
@@ -78,7 +78,7 @@ export const LoginComponent = () => {
           >¿No tienes cuenta?</Link>
         </form>
         <div className={Style.image}>
-          <Image src={img} width={600} height={600} alt=""
+          <Image src={img} width={440} height={100} alt=""
           
           />
         </div>

@@ -5,6 +5,12 @@
     min-height: 100vh;
 }
 
+.container div > img {
+    background-color: rgba(67, 123, 175, 0);
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
 .formContainer {
     width: 25%;
     padding: 2rem;
@@ -12,8 +18,8 @@
     flex-direction: column;
     justify-content: center;
     border-radius: .2rem;
-    margin-right: 1rem;
-    margin-left: 1rem;
+    margin-right: 5rem;
+    margin-left: 5rem;
     box-shadow: 0 .1rem .9rem .2rem #cad1dd;
 }
 .formContainer > div {

@@ -15,3 +15,15 @@ export const MessageErrror = ({children}: MessageProp) => {
             </div>
     );
 };
+
+export const ValidateMessgeErrror = ({children}: MessageProp) => {
+    return (
+        <div className={style.error}>
+                {/* <Image src='' width={100} height={100} alt="" 
+                className=""
+                /> */}
+                <p className={style.errorText}>{children}</p>
+            </div>
+    );
+};
+

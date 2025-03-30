@@ -1,4 +1,4 @@
-import ProfileComponent from "@/components/Account/ProfileComponent/ProfileComponent"
+import ProfileComponent from "@/features/Account/ProfileComponent/ProfileComponent"
 
 
 

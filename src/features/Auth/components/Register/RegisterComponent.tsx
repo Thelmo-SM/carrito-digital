@@ -5,7 +5,7 @@ import { initialRegister } from "../../helpers/initialForm";
 import { validateRegister } from "../../helpers/validateForm";
 import Style from '@/styles/form.module.css';
 import Image from "next/image";
-import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
+import img from '../../../../../public/register.webp'
 import Link from "next/link";
 import { LoaderUi } from "@/components/UI/LoaderUi";
 import { MessageErrror } from "@/components/UI";
@@ -25,7 +25,7 @@ export const RegisterComponent = () => {
     return (
       <div className={Style.container}>
         <div>
-          <Image src={img} width={600} height={600} alt=""/>
+          <Image src={img} width={440} height={600} alt=""/>
         </div>
         <form onSubmit={handleSubmit}
         className={Style.formContainer}

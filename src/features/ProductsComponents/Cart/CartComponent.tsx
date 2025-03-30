@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import ModalForm from '@/components/Modals/modalForm';
 import { useModalForm } from '@/hooks/useModalForm';
-import CheckoutComponent from '../../../features/Checkout/CheckoutComponent';
+import CheckoutComponent from '../../Checkout/CheckoutComponent';
 
 export const CartComponent = () => {
     const user = useAuthUsers();

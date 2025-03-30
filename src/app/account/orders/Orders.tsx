@@ -1,4 +1,4 @@
-import OrdersComponent from "@/components/Account/OrdersComponent/OrdersComponent";
+import OrdersComponent from "@/features/Account/OrdersComponent/OrdersComponent";
 
 
 

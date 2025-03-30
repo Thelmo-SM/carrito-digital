@@ -1,4 +1,4 @@
-import AddressesComponent from "@/components/Account/AddressesComponent/AddressesComponent";
+import AddressesComponent from "@/features/Account/AddressesComponent/AddressesComponent";
 
 
 export default function Addresses () {
