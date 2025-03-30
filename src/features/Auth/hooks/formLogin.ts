@@ -1,6 +1,7 @@
 import { loginTypes, LoginErrors } from "@/types/usersTypes";
 import { useCallback, useState } from "react";
 import { loginService } from "../services/loginService";
+import { FirebaseError } from "firebase/app";
 
 
 
@@ -9,6 +10,7 @@ import { loginService } from "../services/loginService";
     const [errors, setErrors] = useState<LoginErrors>({})
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -37,12 +39,25 @@ import { loginService } from "../services/loginService";
         setSuccess(false);
         try {
           const data = await loginService(form);
-          console.log('Inicio de sesión exitoso: ', data);
+          if(!data.success) {
+            setErrorMessage(data.message ?? null);
+            setTimeout(() => setErrorMessage(null), 2500);
+            setSuccess(false)
+          } else {
+            setSuccess(true);
+          }
+          console.log('Mensaje en la consola: ', data);
         } catch (error: unknown) {
-          console.log('Error en el hook: ', error);
+          if (error instanceof FirebaseError) {
+            console.error("Error de Firebase:", error.message);
+            setErrorMessage("Hubo un error al iniciar sesión. Intenta de nuevo.");
+          } else {
+            console.error("Error desconocido:", error);
+            setErrorMessage("Ocurrió un error inesperado.");
+          }
         } finally {
           setLoading(false);
-          setSuccess(true);
+          
         }
     }
 
@@ -53,6 +68,7 @@ import { loginService } from "../services/loginService";
         errors,
         loading,
         success,
+        errorMessage,
         handleChange,
         handleSubmit,
         handleBlur

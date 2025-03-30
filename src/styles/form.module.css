@@ -83,3 +83,14 @@
     border: solid;
     border-radius: .2rem;
 }
+
+.mesageError {
+    background-color: #F87171;
+    padding: 1rem;
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #98b0d8;
+    text-align: center;
+}
+.mesageError > p {
+    color: rgb(223, 230, 235);
+}

@@ -8,6 +8,7 @@ import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
 import Link from "next/link";
 import Style from '@/styles/form.module.css';
 import { LoaderUi } from "@/components/UI/LoaderUi";
+import { MessageErrror } from "@/components/UI";
 
 export const LoginComponent = () => {
   const {
@@ -15,6 +16,7 @@ export const LoginComponent = () => {
     errors,
     loading,
     success,
+    errorMessage,
     handleBlur,
     handleChange,
     handleSubmit
@@ -25,6 +27,8 @@ export const LoginComponent = () => {
         className={Style.formContainer}
         >
         <h2 className={Style.title}>Iniciar Sesión</h2>
+        {errorMessage && 
+            <MessageErrror>{errorMessage}</MessageErrror>}
           <div>
             <label htmlFor="email">
               Correo electrónico
