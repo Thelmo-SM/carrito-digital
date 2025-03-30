@@ -8,6 +8,8 @@ import { setDocument } from "@/utils/firebase";
  export const useRegister = (initialValue: usersTypes, validateForm: (values: usersTypes) => FormErrors) => {
     const [form, setForm] = useState(initialValue);
     const [errors, setErrors] = useState<FormErrors>({})
+    const [loading, setLoading] = useState(false);
+    const [success, setSuccess] = useState(false);
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -44,6 +46,8 @@ import { setDocument } from "@/utils/firebase";
 
       const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setLoading(true);
+        setSuccess(false);
         try {
           const createdUser = await registerService(form);
       
@@ -59,6 +63,9 @@ import { setDocument } from "@/utils/firebase";
           await userColection({ ...noPassword, uid: createdUser.uid } as dataUsersTypes);
         } catch (error: unknown) {
           console.error("Error en el hook de registro:", error);
+        } finally {
+          setLoading(false);
+          setSuccess(true);
         }
       };
     
@@ -66,6 +73,8 @@ import { setDocument } from "@/utils/firebase";
     return {
         form,
         errors,
+        loading,
+        success,
         handleChange,
         handleSubmit,
         handleBlur

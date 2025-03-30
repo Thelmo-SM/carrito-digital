@@ -7,11 +7,14 @@ import Style from '@/styles/form.module.css';
 import Image from "next/image";
 import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
 import Link from "next/link";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const RegisterComponent = () => {
   const {
     form,
     errors,
+    loading,
+    success,
     handleChange,
     handleSubmit,
     handleBlur
@@ -118,8 +121,11 @@ export const RegisterComponent = () => {
     
           <button
             type="submit"
-          >
-            Registrarse
+            className={`${success ? Style.buttonSuccess : Style.button}`}
+            >
+          {loading ? <div>
+            <LoaderUi/>
+            </div> : success ? 'Exito' : 'Registrarse'}
           </button>
           <Link href='/login'
           className={Style.Link}

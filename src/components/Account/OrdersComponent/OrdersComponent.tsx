@@ -37,7 +37,7 @@ export const OrdersComponent = () => {
 
   return (
     <div className={style.subContainer}>
-      <h2>Tus pedidos</h2>
+      <h2 className={style.title}>Tus pedidos</h2>
       {orders.length === 0 ? (
         <p className={style.noDocuments}>No tienes compras registradas.</p>
       ) : (
@@ -48,9 +48,10 @@ export const OrdersComponent = () => {
               <p>Total: ${order.total}</p>
               <p>Estado: {order.status}</p>
               <p>Fecha: {new Date(order.createdAt).toLocaleDateString()}</p>
-              <button onClick={() =>
-               //handleOrderClick(order)
+              <button onClick={() => {
+               handleOrderClick(order)
                openModal()
+              }
               
               }
                 >

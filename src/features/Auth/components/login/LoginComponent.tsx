@@ -7,11 +7,14 @@ import Image from "next/image";
 import img from '../../../../../public/Asus-Gaming-Weeks.jpg'
 import Link from "next/link";
 import Style from '@/styles/form.module.css';
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const LoginComponent = () => {
   const {
     form,
     errors,
+    loading,
+    success,
     handleBlur,
     handleChange,
     handleSubmit
@@ -60,8 +63,11 @@ export const LoginComponent = () => {
     
           <button
             type="submit"
+            className={`${success ? Style.buttonSuccess : Style.button}`}
             >
-            Iniciar sesión
+          {loading ? <div>
+            <LoaderUi/>
+            </div> : success ? 'Exito': 'Iniciar sesión'}
           </button>
           <Link href='/register'
           className={Style.Link}

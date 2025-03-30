@@ -71,7 +71,7 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
       </div>
       </div>
 
-      {message && <p className="mt-2 text-sm">{message}</p>}
+      {message && <p className={style.massage}>{message}</p>}
     </form>
     </div>
   );

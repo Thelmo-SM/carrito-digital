@@ -1,0 +1,20 @@
+.loader {
+    width: 1.5rem;
+    height: 1.5rem;
+    border: .2rem solid #cad1dd;
+    border-bottom-color: rgb(67, 123, 175);
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+    padding: 0rem;
+    }
+
+    @keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+    }

@@ -105,3 +105,8 @@ p {
     scroll-behavior: smooth;
   }
 }
+h2 {
+  font-size: 1.3rem;
+  color: #444444;
+  margin: auto 0;
+}
