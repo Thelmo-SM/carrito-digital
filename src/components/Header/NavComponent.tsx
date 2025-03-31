@@ -57,7 +57,7 @@ export const Nav = () => {
                 <div className={NavStyle.dropdownMenu}>
                     <Link href= '/account/profile' className={NavStyle.menuItem}>Perfil</Link>
                     <Link href= '' className={NavStyle.menuItem}>Configuración</Link>
-                    <button className={NavStyle.logout} onClick={signOut}>
+                    <button className={NavStyle.logout} onClick={() => signOut}>
                         Cerrar sesión
                     </button>
                 </div>
