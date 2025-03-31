@@ -7,11 +7,13 @@ import { signOut } from '@/utils/firebase';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 import userImg from '../../../public/user.webp';
+import { useRouter } from 'next/navigation';
 
 export const Nav = () => {
     const [scrollY, setScrollY] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
     const user = useAuthUsers();
+    const router = useRouter();
 
     const handleScroll = () => {
         setScrollY(window.scrollY > 350);
@@ -24,6 +26,11 @@ export const Nav = () => {
         };
     }, []);
 
+    const handleSignOut = () => {
+        signOut();
+        router.push('/login');
+    }
+    
     return (
         <>
             <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
@@ -57,7 +64,7 @@ export const Nav = () => {
                 <div className={NavStyle.dropdownMenu}>
                     <Link href= '/account/profile' className={NavStyle.menuItem}>Perfil</Link>
                     <Link href= '' className={NavStyle.menuItem}>Configuración</Link>
-                    <button className={NavStyle.logout} onClick={() => signOut}>
+                    <button className={NavStyle.logout} onClick={handleSignOut}>
                         Cerrar sesión
                     </button>
                 </div>
