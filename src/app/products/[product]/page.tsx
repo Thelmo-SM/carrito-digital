@@ -1,7 +1,7 @@
 import { productsTypes } from "@/types/productTypes";
 import { getCollection } from "@/utils/firebase";
 import { Metadata } from "next";
-import ProductDetailComponent from "@/components/ProductsComponents/ProductsDetailComponents";
+import ProductDetailComponent from "@/features/ProductsComponents/ProductsDetailComponents";
 
 type DatilIdProps = {
     params: {

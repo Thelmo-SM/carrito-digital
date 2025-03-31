@@ -1,7 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { ShippingAddress } from "@/types/ordersTypes";
+import { usersTypes } from "@/types/usersTypes";
 import { initializeApp } from "firebase/app";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, updateEmail, updatePassword, updateProfile } from "firebase/auth";
 import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -49,6 +50,30 @@ export const signOut = () => {
 export const sendResetEmail = (email: string) => {
   return sendPasswordResetEmail(auth, email);
 }
+
+// Actualizar perfil del usuario
+export const updateUserProfile = async (uid: string, updatedData: any) => {
+  try {
+    const userDocRef = doc(db, "users", uid); // Asegúrate de estar apuntando al documento correcto
+    await updateDoc(userDocRef, updatedData); // Actualiza solo los campos que cambiaron
+    console.log("Perfil actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar el perfil:", error);
+    throw error;
+  }
+};
+
+
+export const updateUserEmail = async (newEmail: string) => {
+  if (!auth.currentUser) return;
+  await updateEmail(auth.currentUser, newEmail);
+};
+
+export const updateUserPassword = async (newPassword: string) => {
+  if (!auth.currentUser) return;
+  await updatePassword(auth.currentUser, newPassword);
+};
+
 
 //coleccion para los productos
 export const addDocument = async (path: string, data: any) => {

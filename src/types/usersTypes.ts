@@ -6,6 +6,7 @@ export type usersTypes = {
     email:string
     password: string;
     confirmPassword: string;
+    image?: string;
 };
 
 export type dataUsersTypes = {

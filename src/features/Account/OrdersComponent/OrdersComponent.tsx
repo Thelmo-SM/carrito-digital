@@ -9,15 +9,19 @@ import Image from "next/image";
 import ReviewForm from "../ReviewsComponent/AddReviews";
 import { useModalForm } from "@/hooks/useModalForm";
 import ModalForm from "@/components/Modals/modalForm";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState<orderTypes[]>([]);
   const [selectedOrder, setSelectedOrder] = useState<orderTypes | null>(null);
-    const {isOpen, openModal, closeModal} = useModalForm();
+  const {isOpen, openModal, closeModal} = useModalForm();
+  const [loading, setLoading] = useState(false)
   const user = useAuthUsers();
 
   useEffect(() => {
     if (!user?.uid) return;
+
+    setLoading(true);
 
     const fetchOrders = async () => {
       try {
@@ -25,6 +29,8 @@ export const OrdersComponent = () => {
         setOrders(userOrders);
       } catch (error) {
         console.error("Error cargando órdenes:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,8 +44,11 @@ export const OrdersComponent = () => {
   return (
     <div className={style.subContainer}>
       <h2 className={style.title}>Tus pedidos</h2>
-      {orders.length === 0 ? (
-        <p className={style.noDocuments}>No tienes compras registradas.</p>
+      {loading ? (
+          <div className={style.loadingContainer}>
+          <LoaderUi />
+          <p>{"Cargando tus pedidos..."}</p>
+          </div>
       ) : (
         <ul className={style.cardContainer}>
           {orders.map((order) => (

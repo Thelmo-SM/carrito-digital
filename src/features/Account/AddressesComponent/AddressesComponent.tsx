@@ -6,11 +6,18 @@ import CreateAddresses from "./CreateAddresses";
 import { useAddresses } from "@/store/AddressContext";
 import { useModalForm } from '@/hooks/useModalForm';
 import ModalForm from '@/components/Modals/modalForm';
+import { LoaderUi } from '@/components/UI/LoaderUi';
+import { useMemo } from 'react';
 
 
 export const AddressesComponent = () => {
-    const { addresses, setDefaultAddress } = useAddresses();
+    const { addresses, loading, setDefaultAddress } = useAddresses();
       const {isOpen, openModal, closeModal} = useModalForm();
+
+      const sortedAddresses = useMemo(
+        () => [...addresses].sort((a, b) => (b.isDefault ? 1 : -1)),
+        [addresses]
+      );
   
     return (
       <div className={style.subContainer}>
@@ -21,10 +28,17 @@ export const AddressesComponent = () => {
         <ModalForm isOpens={isOpen} closeModal={closeModal}>
         <CreateAddresses />
         </ModalForm>
-        {addresses.length > 0 ? (
-        <ul className={style.cardContainer}>
-          {addresses
-            .sort((a, b) => (b.isDefault ? 1 : -1))
+        {
+        loading ? (
+          <div className={style.loadingContainer}>
+          <LoaderUi />
+          <p>{"Cargando tus direcciones..."}</p>
+          </div>
+        ) : sortedAddresses.length === 0 ? (
+          <p>No tienes direcciones</p>
+        ) : (
+          <ul className={style.cardContainer}>
+          {sortedAddresses
             .map((address) => (
               <li key={address.id}
               className={style.address}
@@ -37,9 +51,8 @@ export const AddressesComponent = () => {
               </li>
             ))}
         </ul>
-      ) : (
-        <p>No tienes direcciones guardadas.</p>
-      )}
+      )
+      }
       </div>
     );
   };

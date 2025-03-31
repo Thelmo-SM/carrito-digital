@@ -17,11 +17,17 @@ export const ProfileComponent = () => {
         if (!timestamp) return "Fecha no disponible";
         return new Date(timestamp.seconds * 1000).toLocaleString();
       };
+      console.log('Mostrando la imegen del usuario en la consola: ', user?.image);
 
     return (
         <div className={style.subContainer}>
             <div className={style.userContainer}>
-                <Image src={imgUser} width={200} height={200} alt='' />
+            <Image 
+                     src={user?.image || imgUser} 
+                     width={200}
+                      height={200} 
+                      alt="Imagen del perfil" 
+                    />
                 <div className={style.userInfo}>
                 <h2>{user?.name} {user?.lastName}</h2>
                 <p>{user?.email}</p>

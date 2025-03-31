@@ -1,4 +1,4 @@
-import ReviewsComponent from "@/components/Account/ReviewsComponent/ReviewsComponent"
+import ReviewsComponent from "@/features/Account/ReviewsComponent/ReviewsComponent"
 
 
 
