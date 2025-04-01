@@ -8,7 +8,11 @@ type SimpleAddress = Omit<usersTypes, "uid" | "createdAt"> & {
   image: string;
 };
 
-export const useUpdateProfile = () => {
+interface UpdateProfileProps {
+  closeModal: () => void;
+}
+
+export const useUpdateProfile = ({closeModal}: UpdateProfileProps) => {
   const user = useAuthUsers(); // Obtener los datos del usuario
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -20,6 +24,7 @@ export const useUpdateProfile = () => {
     password: "",
     confirmPassword: "",
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -55,6 +60,8 @@ export const useUpdateProfile = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
   
     let image = form.image;
   
@@ -80,6 +87,7 @@ export const useUpdateProfile = () => {
   
         if (response.ok) {
           image = data.secure_url;
+          closeModal()
         } else {
           console.error('Error al subir la imagen:', data.message);
           return;
@@ -105,6 +113,8 @@ export const useUpdateProfile = () => {
       console.log("Perfil actualizado correctamente");
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,6 +122,7 @@ export const useUpdateProfile = () => {
     form,
     imagePreview,
     file,
+    loading,
     handleChange,
     handleFileChange,
     handleSubmit,
