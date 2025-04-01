@@ -44,8 +44,13 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="image" 
                         onChange={handleFileChange} 
                     />
-                    {imagePreview && <ImagePreview src={imagePreview} width={200} height={200} alt="Vista previa" 
-                    />}
+                    <DivForm>
+                      {loading ? (
+                          <LoaderUi />  // Mostrar un mensaje mientras la imagen se está subiendo
+                         ) : (
+                           imagePreview && <ImagePreview src={imagePreview} width={200} height={200} alt="Vista previa" />
+                         )}
+                         </DivForm>
                 </DivForm>
 
                 <DivForm>

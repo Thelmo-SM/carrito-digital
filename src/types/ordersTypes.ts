@@ -14,6 +14,7 @@ export interface ProductOrderTypes {
     quantity: number;
     imageUrl: string; // Asegúrate de que esto esté incluido
     shippingAddress: []
+    reviews: Review[];
   }
 
   export interface ShippingAddress {
@@ -50,4 +51,31 @@ export interface ProductOrderTypes {
     imageUrl: string;
     address: ShippingAddress;
     reviews: Review[]; // Agregar esta propiedad para las reseñas
+  }
+
+  export interface ProductOrderTypes1 {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    imageUrl: string;
+    reviews: Review[]; // Aquí agregamos las reseñas asociadas al producto
+  }
+  
+  export interface OrderTypes1 {
+    id: string;
+    total: number;
+    status: string;
+    createdAt: Date; // Utilizando Date para manejar correctamente las fechas
+    products: ProductOrderTypes[]; // Aquí cada producto es un ProductOrderTypes
+    shippingAddress: ShippingAddress | null;
+  }
+  
+  export interface ProductOrder1 {
+    id: string;
+    total: number;
+    status: string;
+    createdAt: Date;
+    products: ProductOrderTypes[]; // Listado de productos dentro de la orden
+    shipping: ShippingAddress; // Dirección de envío asociada a la orden
   }

@@ -103,10 +103,6 @@
     color: rgb(67, 123, 175);
 }
 
-.subDcontainer1 {
-
-}
-
 .img2 {
     border-radius: .2rem;
 }
@@ -151,4 +147,16 @@
 }
 .compra > button:hover {
     background-color: rgb(39, 124, 204)
+}
+
+.loading {
+    display: flex;
+    padding: 3rem;
+    margin: auto;
+    text-align: center;
+    justify-content: center;
+}
+.loading > p {
+    margin: 0 2rem 0 0;
+    font-size: 1.2rem;
 }

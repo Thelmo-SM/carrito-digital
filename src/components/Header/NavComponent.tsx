@@ -45,9 +45,9 @@ export const Nav = () => {
                         className={NavStyle.profileButton}
                     >
                         <Image 
-                            src={userImg} 
+                            src={user.image || userImg} 
                             width={30} 
-                            height={30} 
+                            height={50} 
                             alt='' 
                             className={NavStyle.userImg}
                         />
