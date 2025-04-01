@@ -33,7 +33,6 @@ export const RegisterComponent = () => {
           <h2 className={Style.title}>¡Registrate!</h2>
                   {errorMessage && 
                       <MessageErrror>{errorMessage}</MessageErrror>}
-                    <div></div>
           <div>
             <label htmlFor="name" >
               Nombre

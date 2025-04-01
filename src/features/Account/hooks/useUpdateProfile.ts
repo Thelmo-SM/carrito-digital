@@ -7,12 +7,12 @@ import { updateUserProfile } from "@/utils/firebase";
 type SimpleAddress = Omit<usersTypes, "uid" | "createdAt"> & {
   image: string;
 };
-
 interface UpdateProfileProps {
   closeModal: () => void;
+  onSuccess: (message: string) => void;
 }
 
-export const useUpdateProfile = ({closeModal}: UpdateProfileProps) => {
+export const useUpdateProfile = ({closeModal, onSuccess}: UpdateProfileProps) => {
   const user = useAuthUsers(); // Obtener los datos del usuario
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -60,7 +60,6 @@ export const useUpdateProfile = ({closeModal}: UpdateProfileProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setLoading(true);
   
     let image = form.image;
@@ -87,7 +86,6 @@ export const useUpdateProfile = ({closeModal}: UpdateProfileProps) => {
   
         if (response.ok) {
           image = data.secure_url;
-          closeModal()
         } else {
           console.error('Error al subir la imagen:', data.message);
           return;
@@ -104,13 +102,21 @@ export const useUpdateProfile = ({closeModal}: UpdateProfileProps) => {
       image, // Solo se incluye la nueva imagen si fue subida
       password: form.password && form.password.trim() !== "" ? form.password : undefined, // Incluye password solo si tiene valor
     };
+    if (updatedUserData.password === undefined) {
+      delete updatedUserData.password;
+    }
   
     try {
-      if (updatedUserData.password === undefined) {
-        delete updatedUserData.password;
-      }
       await updateUserProfile(user?.uid, updatedUserData);
       console.log("Perfil actualizado correctamente");
+    
+      // Primero mostramos el mensaje de éxito
+      onSuccess("✅ Perfil actualizado correctamente.");
+    
+      // Luego cerramos el modal
+      setTimeout(() => {
+        closeModal();
+      }, 1000);
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
     } finally {

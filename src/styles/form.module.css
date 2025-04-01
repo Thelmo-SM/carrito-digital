@@ -100,3 +100,10 @@
 .mesageError > p {
     color: rgb(223, 230, 235);
 }
+
+.imagePreview {
+    background-color: #444444;
+    margin: 1rem auto;
+    width: 30%;
+    border-radius: .2rem;
+}

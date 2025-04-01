@@ -6,17 +6,18 @@ import {
     InputUi,
     ButtonSubmitUi,
     ContainerUi,
-    DivForm
+    DivForm,
+    ImagePreview
 } from "@/components/UI";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
-import Image from "next/image";
 import { LoaderUi } from "@/components/UI/LoaderUi";
 
 interface UpdateProfileProps {
     closeModal: () => void;
-  }
+    onSuccess: (message: string) => void; 
+}
 
-export const UpdateProfile = (closeModal: UpdateProfileProps) => {
+export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSuccess}) => {
     const {
         form,
         loading,
@@ -24,7 +25,7 @@ export const UpdateProfile = (closeModal: UpdateProfileProps) => {
         handleFileChange,
         handleSubmit,
         imagePreview
-    } = useUpdateProfile(closeModal);
+    } = useUpdateProfile({closeModal, onSuccess});
 
     // Si no hay usuario, mostrar un mensaje de carga o retorno temprano
     if (!form.name) {
@@ -43,7 +44,8 @@ export const UpdateProfile = (closeModal: UpdateProfileProps) => {
                         name="image" 
                         onChange={handleFileChange} 
                     />
-                    {imagePreview && <Image src={imagePreview} width={200} height={200} alt="Vista previa" />}
+                    {imagePreview && <ImagePreview src={imagePreview} width={200} height={200} alt="Vista previa" 
+                    />}
                 </DivForm>
 
                 <DivForm>
