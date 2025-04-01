@@ -5,6 +5,7 @@ import { DivForm } from "./DivForm";
 import { FormUi } from "./FormUi";
 import { ContainerUi } from "./ContainerUi";
 import { MessageErrror } from "./Message";
+import { ImagePreview } from "./ImgUi";
 
 
 export {
@@ -15,5 +16,6 @@ export {
     DivForm,
     FormUi,
     ContainerUi,
-    MessageErrror
+    MessageErrror,
+    ImagePreview
 };
