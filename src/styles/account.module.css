@@ -28,14 +28,17 @@
 
   .subContainer {
     width: 100%;
-    margin: 8rem 0 0 9rem;
+    margin: 8rem 0 0 3rem;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    padding: 3rem;
   }
   .userContainer {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 3rem;
   }
 
   .imgContainer {
@@ -66,10 +69,11 @@
   .userInfo > h2 {
     color: #444444;
     font-weight: bold;
+    padding: 1rem;
   }
   .userInfo > p {
-    margin: 1.6rem .4rem 0 1.6rem;
     font-size: 1.3rem;
+    padding: 1rem;
   }
 
   .editar {
@@ -130,6 +134,7 @@
   font-weight: bold;
   color: #444444;
   margin: 2rem 0;
+  align-self: flex-start;
 }
 
 .status {
@@ -270,4 +275,17 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
+}
+.addressContainer {
+  width: 100%;
+  text-align: center;
+  padding: 2rem;
+  border-radius: .2rem;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+.addressContainer > p {
+  margin: 1rem 0;
+}
+.email {
+  color: rgb(67, 123, 175);;
 }

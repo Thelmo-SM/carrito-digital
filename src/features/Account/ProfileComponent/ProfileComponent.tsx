@@ -8,14 +8,20 @@ import imgUser from '../../../../public/user.webp';
 import { useModalForm } from '@/hooks/useModalForm';
 import ModalForm from '@/components/Modals/modalForm';
 import UpdateProfile from './UpdateProfile';
+import Style from '@/styles/cart.module.css';
+import Link from 'next/link';
+import { useAddresses } from '@/store/AddressContext';
+import { LoaderUi } from '@/components/UI/LoaderUi';
+import FeaturesReviews from '../ReviewsComponent/FeaturesReviews';
 
 export const ProfileComponent = () => {
     const user = useAuthUsers();
     const { isOpen, openModal, closeModal } = useModalForm();
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+        const { defaultAddress, loading } = useAddresses();
 
     const formatDate = (timestamp?: { seconds: number; nanoseconds: number }) => {
-        if (!timestamp) return "Fecha no disponible";
+        if (!timestamp) return "Cargando fecha...";
         return new Date(timestamp.seconds * 1000).toLocaleString();
     };
 
@@ -32,17 +38,17 @@ export const ProfileComponent = () => {
             
             <div className={style.userContainer}>
                 <div className={style.imgContainer}>
-                    <Image 
+                    {loading ? <LoaderUi /> : <Image 
                         src={user?.image || imgUser} 
                         width={200}
                         height={200} 
                         alt="Imagen del perfil" 
                         className={style.image}
-                    />
+                    />}
                 </div>
                 <div className={style.userInfo}>
                     <h2>{user?.name} {user?.lastName}</h2>
-                    <p>{user?.email}</p>
+                    <p className={style.email}>{user?.email}</p>
                     <p>Te uniste el {formatDate(user?.createdAt)}</p>
                 </div>
                 <button className={style.editar} onClick={openModal}>Editar</button>
@@ -51,6 +57,20 @@ export const ProfileComponent = () => {
             <ModalForm isOpens={isOpen} closeModal={closeModal}>
                 <UpdateProfile closeModal={closeModal} onSuccess={handleSuccess} />
             </ModalForm>
+            <div className={style.addressContainer}>
+                {/* Mostrar la dirección predeterminada */}
+                <p className={Style.addressTile}>★ Dirección predeterminada</p>
+                <p className={Style.address}>
+                    {defaultAddress?.street}, {defaultAddress?.city}, {defaultAddress?.state}, {defaultAddress?.postalCode}, {defaultAddress?.country}
+                </p>
+                <Link 
+                href='/account/addresses'
+                className={Style.newAddress}
+                >
+                Cambiar
+                </Link>
+            </div>
+            <FeaturesReviews />
         </div>
     );
 };

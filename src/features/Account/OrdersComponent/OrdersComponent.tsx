@@ -49,7 +49,7 @@ export const OrdersComponent = () => {
           <LoaderUi />
           <p>{"Cargando tus pedidos..."}</p>
           </div>
-      ) : (
+      ) : orders.length === 0 ? <p>No hay compras para mostrar.</p> :(
         <ul className={style.cardContainer}>
           {orders.map((order) => (
             <li key={order.id}>

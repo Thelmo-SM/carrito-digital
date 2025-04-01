@@ -1,6 +1,5 @@
 'use client';
 
-
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { getCollection } from "@/utils/firebase";
 import { productsTypes } from "@/types/productTypes";
@@ -12,16 +11,18 @@ import searchStyle from "@/styles/search.module.css";
 import { SearchFilter } from "./Filters/SearchFilter";
 import { SortFilter } from "./Filters/SortFilter";
 import { CategoryFilter } from "./Filters/CategoryFilter";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortType, setSortType] = useState<string>("default");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // Obtener productos
   const getItems = useCallback(async () => {
+    setLoading(true);
     try {
       const data = (await getCollection("products")) as productsTypes[];
       if (data) setItemData(data);
@@ -102,13 +103,16 @@ export const ProductsComponent = () => {
           <CategoryFilter
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
+            onCategoryChange={setSelectedCategory} // Pasamos la función para actualizar la categoría seleccionada
           />
         </div>
       </div>
 
       {loading ? (
-        <p className="text-center text-gray-500">Cargando productos...</p>
+        <div className={Style.loading}>
+          <p className="text-center text-gray-500">Cargando productos...</p>
+          <LoaderUi />
+        </div>
       ) : (
         <div className={Style.container}>
           {filteredProducts.length > 0 ? (
@@ -133,7 +137,7 @@ export const ProductsComponent = () => {
               </div>
             ))
           ) : (
-            <p className="text-center text-gray-500">No hay productos en esta categoría</p>
+            <p className={Style.loading} >No hay productos en esta categoría</p>
           )}
         </div>
       )}

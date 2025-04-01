@@ -35,6 +35,7 @@ export const AddressFormComponent = ({ onAddressSaved }) => {
         try {
             await saveShippingAddress(user.uid, address);
             onAddressSaved(address);
+            console.log('Dirreccion ceada correctamente.')
         } catch (error) {
             alert("Hubo un error al guardar la dirección.");
             console.log(error)
