@@ -12,7 +12,7 @@ interface UpdateProfileProps {
   onSuccess: (message: string) => void;
 }
 
-export const useUpdateProfile = ({closeModal, onSuccess}: UpdateProfileProps) => {
+export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) => {
   const user = useAuthUsers(); // Obtener los datos del usuario
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -36,6 +36,11 @@ export const useUpdateProfile = ({closeModal, onSuccess}: UpdateProfileProps) =>
         password: "",
         confirmPassword: "",
       });
+
+      // Si el usuario tiene una imagen, establecerla en la vista previa
+      if (user.image) {
+        setImagePreview(user.image);
+      }
     }
   }, [user]);
 
@@ -52,38 +57,38 @@ export const useUpdateProfile = ({closeModal, onSuccess}: UpdateProfileProps) =>
       // Crear una URL temporal para la vista previa
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
+        setImagePreview(reader.result as string); // Guardar la vista previa
       };
-      reader.readAsDataURL(selectedFile);
+      reader.readAsDataURL(selectedFile); // Lee el archivo como una URL de datos
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-  
+
     let image = form.image;
-  
+
     // Subir la imagen a Cloudinary si se ha seleccionado una nueva imagen
     if (file) {
       const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-  
+
       if (!uploadPreset) {
         console.error("El upload preset no está definido en las variables de entorno");
         return;
       }
-  
+
       try {
         const formData = new FormData();
         formData.append("image", file);
-  
+
         const response = await fetch("/api/upload", {
           method: "POST",
           body: formData,
         });
-  
+
         const data = await response.json();
-  
+
         if (response.ok) {
           image = data.secure_url;
         } else {
@@ -95,7 +100,7 @@ export const useUpdateProfile = ({closeModal, onSuccess}: UpdateProfileProps) =>
         return;
       }
     }
-  
+
     // Si no se cambia el password, no lo incluyas en el objeto de datos
     const updatedUserData = {
       ...form,
