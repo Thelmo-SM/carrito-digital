@@ -10,15 +10,21 @@ import {
 } from "@/components/UI";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 import Image from "next/image";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
-export const UpdateProfile = () => {
+interface UpdateProfileProps {
+    closeModal: () => void;
+  }
+
+export const UpdateProfile = (closeModal: UpdateProfileProps) => {
     const {
         form,
+        loading,
         handleChange,
         handleFileChange,
         handleSubmit,
         imagePreview
-    } = useUpdateProfile();
+    } = useUpdateProfile(closeModal);
 
     // Si no hay usuario, mostrar un mensaje de carga o retorno temprano
     if (!form.name) {
@@ -90,7 +96,9 @@ export const UpdateProfile = () => {
                     />
                 </DivForm>
 
-                <ButtonSubmitUi>Terminar</ButtonSubmitUi>
+                <ButtonSubmitUi>
+                    {loading ? <LoaderUi /> : 'Terminar'}
+                    </ButtonSubmitUi>
             </FormUi>
         </ContainerUi>
     );

@@ -37,6 +37,16 @@
     align-items: center;
     justify-content: center;
   }
+
+  .imgContainer {
+    overflow: hidden;
+    position: relative;
+    border-radius: 50%;
+  }
+  .image {
+    width: 100%;
+    height: auto;
+  }
   .userInfo {
     display: flex;
     flex-direction: column;

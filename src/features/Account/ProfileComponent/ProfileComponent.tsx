@@ -11,7 +11,7 @@ import UpdateProfile from './UpdateProfile';
 
 export const ProfileComponent = () => {
     const user = useAuthUsers();
-          const {isOpen, openModal, closeModal} = useModalForm();
+    const {isOpen, openModal, closeModal} = useModalForm();
 
     const formatDate = (timestamp?: { seconds: number; nanoseconds: number }) => {
         if (!timestamp) return "Fecha no disponible";
@@ -22,12 +22,15 @@ export const ProfileComponent = () => {
     return (
         <div className={style.subContainer}>
             <div className={style.userContainer}>
+            <div className={style.imgContainer}>
             <Image 
                      src={user?.image || imgUser} 
                      width={200}
                       height={200} 
                       alt="Imagen del perfil" 
+                      className={style.image}
                     />
+            </div>
                 <div className={style.userInfo}>
                 <h2>{user?.name} {user?.lastName}</h2>
                 <p>{user?.email}</p>
@@ -38,7 +41,7 @@ export const ProfileComponent = () => {
                 >Editar</button>
             </div>
             <ModalForm isOpens={isOpen} closeModal={closeModal} >
-                <UpdateProfile />
+                <UpdateProfile closeModal={closeModal}/>
             </ModalForm>
         </div>
     );
