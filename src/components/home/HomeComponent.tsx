@@ -9,7 +9,7 @@ import Img4 from '../../../public/HomeImg/img_4.webp';
 import styles from '@/styles/homeCarrusel.module.css';
 //import FeaturedCategories from './FeaturedCategories';
 import FeaturedProducts from './FeaturedProducts';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const images = [
   { src: Img1, text: "Gran variedad de CPU" },
@@ -20,7 +20,12 @@ const images = [
 
 export const HomeComponent = () => {
     const [current, setCurrent] = useState(0);
+    const router = useRouter();
 
+    const navigationProducts = () => {
+      router.push('/products');
+    }
+    
     useEffect(() => {
       const interval = setInterval(() => {
         setCurrent((prev) => (prev + 1) % images.length);
@@ -37,7 +42,10 @@ export const HomeComponent = () => {
               <Image src={src.src} alt={`Slide ${index + 1}`} width={2000} height={600} className={styles.image} loading='lazy' />
               <div className={styles.textOverlay}>
                 <h1>{src.text}</h1>
-                <Link href='/products' className={styles.verMas}>Vermas</Link>
+                <button onClick ={navigationProducts}
+                  className={styles.verMas}>
+                    Vermas
+                </button>
               </div>
             </div>
           ))}

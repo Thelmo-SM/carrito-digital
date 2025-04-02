@@ -13,15 +13,15 @@ import { LoaderUi } from "../UI/LoaderUi";
 export const FeaturedProducts = () => {
   const [products, setProducts] = useState<productsTypes[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);  // Productos que se van a mostrar
+  const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);  
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); // Página actual de productos
+  const [currentPage, setCurrentPage] = useState(1); 
 
-  const productsPerPage = 2;  // Número de productos por "página"
+  const productsPerPage = 8;
 
   const onSelectCategory = (category: string | null) => {
     setSelectedCategory(category);
-    setCurrentPage(1);  // Reseteamos la página cuando se cambia de categoría
+    setCurrentPage(1); 
   };
 
   const loadProducts = useCallback(async () => {
@@ -29,7 +29,7 @@ export const FeaturedProducts = () => {
     const data = await getTopRatedProducts();
     if (selectedCategory) {
       const filteredData = data.filter((product) =>
-        product.categorie.includes(selectedCategory) // Filtramos por categoría
+        product.categorie.includes(selectedCategory) 
       );
       setProducts(filteredData);
     } else {
@@ -38,9 +38,8 @@ export const FeaturedProducts = () => {
     setLoading(false);
   }, [selectedCategory]);
 
-  // Función para cargar más productos
   const loadMoreProducts = () => {
-    setCurrentPage((prevPage) => prevPage + 1);  // Incrementamos la página
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   useEffect(() => {

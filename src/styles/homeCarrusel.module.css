@@ -24,28 +24,29 @@
   
   .textOverlay {
     position: absolute;
-    top: 10%;
+    top: 0%;
     left: 25%;
     transform: translate(-50%, 50%);
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: rgb(223, 230, 235);
+    font-size: 3.5rem;
     z-index: 10;
     width: 40%;
     text-align: center;
-    font-size: 3.5rem;
+    text-shadow: .1rem .1rem 1rem #444444, -.1rem -.1rem 1rem 
+    #444444, .1rem -.1rem 1rem 
+    #444444, -.1rem .1rem 1rem 
+    #444444; 
   }
 
   .verMas {
     background-color: rgb(67, 123, 175);
     color: rgb(222, 226, 230);
-    padding: .1rem 1.5rem;
-    font-size: 2.5rem;
+    padding: 1.1rem 4.5rem;
+    font-size: 2rem;
     border-radius: .2rem;
-    margin: 1rem 0 0 0;
+    margin: 3rem 0 0 0;
     transition: 0.2s;
-    box-shadow: 0 .1rem .9rem .1rem #0202028a;
+    box-shadow: 0 .5rem .9rem .1rem #444444cb;
   }
   .verMas:hover {
     background-color: rgb(39, 124, 204);
@@ -56,12 +57,12 @@
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
     color: white;
     border: none;
     padding: 8px 12px;
     border-radius: 50%;
     cursor: pointer;
+    font-size: 2rem;
   }
   
   .prevButton { left: 10px; }
