@@ -30,4 +30,10 @@
     border-radius: .2rem;
     font-size: 1.3rem;
     color: #444444;
+    transition: 1s;
+}
+.features button.selectedButton {
+    background-color: rgb(67, 123, 175);
+    color: #cad1dd;
+    box-shadow: 0 .1rem .9rem .2rem #6b7381;
 }
