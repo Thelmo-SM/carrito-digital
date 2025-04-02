@@ -10,12 +10,13 @@ import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const ReviewsComponent = () => {
   const [productsWithReviews, setProductsWithReviews] = useState<ProductOrder1[]>([]); // Asegúrate de usar el tipo correcto
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const user = useAuthUsers(); // Obtenemos el usuario actual
 
   useEffect(() => {
     const fetchProductsWithReviews = async () => {
+      setLoading(true);
       try {
         if (!user?.uid) return; // Si no hay usuario, no hacer nada
 

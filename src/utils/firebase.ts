@@ -394,3 +394,41 @@ export async function getProductsUserReviews(userId: string) {
 
   return orders;
 }
+
+export async function getTopRatedProducts() {
+  const productsRef = collection(db, "products");
+  const productsSnapshot = await getDocs(productsRef);
+  const products = await Promise.all(productsSnapshot.docs.map(async (docSnap) => {
+    const productData = docSnap.data();
+
+    // Asegúrate de que `productData` tenga todas las propiedades necesarias
+    const { name, price, soldUnits, categorie, description, imageUrl } = productData;
+
+    const reviewsRef = collection(db, `products/${docSnap.id}/reviews`);
+    const reviewsSnapshot = await getDocs(reviewsRef);
+    const reviews = reviewsSnapshot.docs.map(reviewDoc => reviewDoc.data());
+    
+    // Calcular la puntuación promedio de las reseñas
+    const avgRating = reviews.length > 0 
+      ? reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length 
+      : 0;
+
+    // Asegúrate de devolver todos los campos que espera `productsTypes`
+    return { 
+      id: docSnap.id, 
+      name, 
+      price, 
+      soldUnits, 
+      categorie, 
+      description, 
+      imageUrl, 
+      reviews, 
+      avgRating 
+    };
+  }));
+
+  // Ordenar los productos por el rating promedio, de mayor a menor
+  const topRatedProducts = products.sort((a, b) => b.avgRating - a.avgRating);
+
+  return topRatedProducts;
+}

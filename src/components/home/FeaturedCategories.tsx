@@ -1,22 +1,35 @@
 import Style from '@/styles/homeCategories.module.css';
 
-export const FeaturedCategories = () => {
+type FeaturedCategoriesProps = {
+  onSelectCategory: (category: string | null) => void;
+  selectedCategory: string | null;
+};
 
-    return (
-        <article className={Style.container}>
-        <h2>Categorias detacadas</h2>
+export const FeaturedCategories = ({ onSelectCategory, selectedCategory }: FeaturedCategoriesProps) => {
+  const categories = ["Computadoras", "Laptops", "Tablets", "Gaming", "Bocinas", "Oficina", "Imagen y Sonido"];
 
-        <div className={Style.features}>
-            <button>Computadoras</button>
-            <button>Laptops</button>
-            <button>Tablets</button>
-            <button>Gaming</button>
-            <button>Bocinas</button>
-            <button>Oficina</button>
-        </div>
-        </article>
-    )
-
-}
+  return (
+    <article className={Style.container}>
+      <h2>Categorías destacadas</h2>
+      <div className={Style.features}>
+        <button
+          onClick={() => onSelectCategory(null)}
+          className={selectedCategory === null ? Style.selectedButton : ""}
+        >
+          Todas
+        </button>
+        {categories.map((category) => (
+          <button
+            key={category}
+            onClick={() => onSelectCategory(category)}
+            className={selectedCategory === category ? Style.selectedButton : ""}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+    </article>
+  );
+};
 
 export default FeaturedCategories;

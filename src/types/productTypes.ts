@@ -16,6 +16,7 @@ export interface productsTypes {
     description: string;
     isFeature?: boolean;
     createdAt?: Timestamp;
+    avgRating?: number;
 };
 
 export interface cartTypes {

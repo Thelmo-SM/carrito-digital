@@ -7,7 +7,7 @@ import Img2 from '../../../public/HomeImg/img_2.webp';
 import Img3 from '../../../public/HomeImg/img_3.webp';
 import Img4 from '../../../public/HomeImg/img_4.webp';
 import styles from '@/styles/homeCarrusel.module.css';
-import FeaturedCategories from './FeaturedCategories';
+//import FeaturedCategories from './FeaturedCategories';
 import FeaturedProducts from './FeaturedProducts';
 import Link from 'next/link';
 
@@ -52,7 +52,7 @@ export const HomeComponent = () => {
           ))}
         </div>
       </article>
-      <FeaturedCategories />
+      {/* <FeaturedCategories /> */}
       <FeaturedProducts />
       </div>
     );
