@@ -1,5 +1,5 @@
-import { productsTypes } from "@/types/productTypes";
-import { getCollection } from "@/utils/firebase";
+//import { productsTypes } from "@/types/productTypes";
+import { getProductWithReviews } from "@/utils/firebase";  // Importa la función correctamente
 import { Metadata } from "next";
 import ProductDetailComponent from "@/features/ProductsComponents/ProductsDetailComponents";
 
@@ -16,43 +16,37 @@ export const generateMetadata = async ({ params }: DatilIdProps): Promise<Metada
         };
     }
 
-    const product = await fetchDetailProduct(params.product);
+    const product = await getProductWithReviews(params.product);  // Llamar a la nueva función
 
     return {
         title: product ? product.name : "Producto no encontrado",
     };
 };
 
-export const fetchDetailProduct = async (id: string) => {
-    const path = `products`;
-
-    try {
-        const data = (await getCollection(path)) as productsTypes[];
-        const finData = data.find((p) => p.id === id);
-        return finData || null;
-    } catch (error) {
-        console.error("Error fetching product details:", error);
-        return null;
-    }
-};
-
-
-
 export const DetailProduct = async ({ params }: DatilIdProps) => {
     if (!params?.product) {
         return <h1>Error: No se encontró el producto</h1>;
     }
 
-    const product = await fetchDetailProduct(params.product);
+    const product = await getProductWithReviews(params.product);  // Llamar a la nueva función
 
     if (!product) {
         return <h1>Producto no encontrado</h1>;
     }
 
-    const { name, description, price, soldUnits, imageUrl, id } = product;
+    const { name, description, price, soldUnits, imageUrl, id, reviews } = product;  // Obtener también las reseñas
 
     return (
-            <ProductDetailComponent name={name} description={description} price={price} soldUnits={soldUnits} imageUrl={imageUrl} key={id} id={id!} />
+        <ProductDetailComponent 
+            name={name} 
+            description={description} 
+            price={price} 
+            soldUnits={soldUnits} 
+            imageUrl={imageUrl} 
+            key={id} 
+            id={id!} 
+            reviews={reviews}  // Pasar las reseñas al componente
+        />
     );
 };
 

@@ -12,16 +12,17 @@ import { SearchFilter } from "./Filters/SearchFilter";
 import { SortFilter } from "./Filters/SortFilter";
 import { CategoryFilter } from "./Filters/CategoryFilter";
 import { LoaderUi } from "@/components/UI/LoaderUi";
+import { useCart } from "@/store/ProductCartContext";
 
 export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [sortType, setSortType] = useState<string>("latest");
-  const [loading, setLoading] = useState<boolean>(false);  // Inicializar como true
-
+  const [loading, setLoading] = useState<boolean>(false);
   const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const { handleAddToCard } = useCart();
 
   // Obtener productos
   const productsPerPage = 8;
@@ -122,6 +123,7 @@ export const ProductsComponent = () => {
       setSortType(value);
     }
   };
+  
 
   return (
     <section>
@@ -173,7 +175,18 @@ export const ProductsComponent = () => {
               <Link href={`/products/${product.id}`} className={Style.detalle}>
                 Ver detalles
               </Link>
-              <button className={Style.button}>AÑADIR AL CARRITO</button>
+              <button 
+                     onClick={() => handleAddToCard({
+                       id: product.id || '',
+                       name: product.name,
+                       soldUnits: product.soldUnits,
+                       price: product.price,
+                        imageUrl: product.imageUrl
+                      })} 
+                      className={Style.button}
+                    >
+                AÑADIR AL CARRITO
+                </button>
             </div>
           ))
         ) : (
@@ -182,11 +195,11 @@ export const ProductsComponent = () => {
       </div>
   
       <div className={Style.loadMoreButtonContainer}>
-        {!loading && (
+        {filteredProducts.length > 0 ? (
           <button onClick={loadMoreProducts} className={Style.loadMoreButton}>
             Cargar más
           </button>
-        )}
+        ) : ''}
       </div>
     </section>
   );
