@@ -67,6 +67,7 @@
 .price {
     font-weight: bold;
     font-style: oblique;
+    color: rgb(67, 123, 175);
 }
 
 .button {

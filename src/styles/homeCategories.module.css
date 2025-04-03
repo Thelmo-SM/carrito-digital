@@ -23,17 +23,31 @@
 }
 
 .features > button {
-    padding: 3rem;
-    width: 40%;
+    padding: 1rem;
+    width: 20%;
     margin: auto;
     box-shadow: 0 .1rem .9rem .2rem #cad1dd;
     border-radius: .2rem;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     color: #444444;
     transition: 1s;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.features > button:hover {
+       /* background-color: rgba(67, 123, 175, 0.103); */
+       box-shadow: 0 .1rem .9rem .2rem rgb(67, 123, 175);
 }
 .features button.selectedButton {
     background-color: rgb(67, 123, 175);
-    color: #cad1dd;
-    box-shadow: 0 .1rem .9rem .2rem #6b7381;
+    color: rgb(223, 230, 235);
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+.img {
+    background-color: rgb(222, 226, 230);
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: .2rem;
 }

@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore";
+import { Review } from "./ordersTypes";
 
 export interface itemImage {
     path: string;
@@ -17,6 +18,7 @@ export interface productsTypes {
     isFeature?: boolean;
     createdAt?: Timestamp;
     avgRating?: number;
+    reviews?: Review[];
 };
 
 export interface cartTypes {
@@ -29,7 +31,6 @@ export interface cartTypes {
     description?: string;
     createdAt?: Timestamp;
     userId?: string; 
-
 };
 
 

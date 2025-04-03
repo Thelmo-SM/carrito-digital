@@ -19,7 +19,7 @@ export const SortFilter = ({ onSortChange, sortType }: SortFilterProps) => {
     >
       <option value="default">Orden por defecto</option>
       <option value="popularity">Ordenar por popularidad</option>
-      <option value="latest">Ordenar por los últimos</option>
+      {/* <option value="latest">Ordenar por los últimos</option> */}
       <option value="low-high">Ordenar por precio: bajo a alto</option>
       <option value="high-low">Ordenar por precio: alto a bajo</option>
     </select>

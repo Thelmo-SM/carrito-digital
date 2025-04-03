@@ -21,7 +21,8 @@ export const FeaturedProducts = () => {
 
   const onSelectCategory = (category: string | null) => {
     setSelectedCategory(category);
-    setCurrentPage(1); 
+    setCurrentPage(1);
+    setVisibleProducts([]); // Reinicia los productos visibles
   };
 
   const loadProducts = useCallback(async () => {
@@ -49,10 +50,12 @@ export const FeaturedProducts = () => {
   useEffect(() => {
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    setVisibleProducts((prevProducts) => [
-      ...prevProducts,
-      ...products.slice(startIndex, endIndex),
-    ]);
+  
+    const newProducts = products.slice(startIndex, endIndex);
+  
+    setVisibleProducts((prevProducts) => 
+      currentPage === 1 ? newProducts : [...prevProducts, ...newProducts]
+    );
   }, [currentPage, products]);
 
   return (
@@ -62,8 +65,8 @@ export const FeaturedProducts = () => {
         selectedCategory={selectedCategory} 
       />
       <div className={Style.container}>
-        {visibleProducts.map((product) => (
-          <div key={product.id} className={Style.cardContainer}>
+        {visibleProducts.map((product, index) => (
+          <div key={index} className={Style.cardContainer}>
             {product.imageUrl ? (
               <Image
                 src={product.imageUrl}
@@ -76,9 +79,9 @@ export const FeaturedProducts = () => {
               <p>No hay imagen disponible</p>
             )}
             <p className={Style.title1}>{product.name}</p>
-            <p className={Style.price}>{formatPrice(Number(product.price))}</p>
             <p>Cantidad - <span className={Style.span}>{product.soldUnits}</span></p>
-            <p>Rating: {product.avgRating}</p>
+            <p className={Style.price}>{formatPrice(Number(product.price))}</p>
+            <p>Reseñas: <span className={Style.span}>{product.avgRating}</span></p>
             <Link href={`/products/${product.id}`} className={Style.detalle}>Ver detalles</Link>
             <button className={Style.button}>AÑADIR AL CARRITO</button>
           </div>
