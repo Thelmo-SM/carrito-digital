@@ -17,28 +17,51 @@ export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("Todos");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [sortType, setSortType] = useState<string>("latest"); // Por defecto ordena por más reciente
-  const [loading, setLoading] = useState<boolean>(false);
+  const [sortType, setSortType] = useState<string>("latest");
+  const [loading, setLoading] = useState<boolean>(false);  // Inicializar como true
+
+  const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // Obtener productos
+  const productsPerPage = 8;
+
   const getItems = useCallback(async () => {
     setLoading(true);
     try {
       const data = (await getTopRatedProducts()) as productsTypes[];
       if (data) {
-        console.log("Productos obtenidos:", data); // 🔹 Verificar datos
         setItemData(data);
       }
     } catch (error) {
       console.error("Error al leer productos: ", error);
     } finally {
-      setLoading(false);
+      setLoading(false);  // Establecer como false después de obtener los productos
     }
   }, []);
 
   useEffect(() => {
     getItems();
   }, [getItems]);
+
+  useEffect(() => {
+    const startIndex = (currentPage - 1) * productsPerPage;
+    const endIndex = startIndex + productsPerPage;
+
+    const newProducts = itemData.slice(startIndex, endIndex);
+
+    setVisibleProducts((prevProducts) => {
+      if (currentPage === 1) {
+        return newProducts;
+      } else {
+        return [...prevProducts, ...newProducts];
+      }
+    });
+  }, [currentPage, itemData]);
+
+  const loadMoreProducts = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
 
   const categories = useMemo(
     () => [
@@ -57,7 +80,7 @@ export const ProductsComponent = () => {
 
   // 🔹 Filtrar por categoría y búsqueda
   const filteredProducts = useMemo(() => {
-    let products = [...itemData]; // Copia del array para evitar mutaciones
+    let products = [...visibleProducts];
 
     if (selectedCategory !== "Todos") {
       products = products.filter((product) =>
@@ -71,7 +94,6 @@ export const ProductsComponent = () => {
       );
     }
 
-    // 🔹 Ordenamiento según el tipo seleccionado
     if (sortType === "low-high") {
       products.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (sortType === "high-low") {
@@ -83,21 +105,19 @@ export const ProductsComponent = () => {
         return dateB - dateA;
       });
     } else if (sortType === "popularity") {
-      // Ordenar por popularidad: por cantidad de reseñas
       products.sort((a, b) => {
-        const reviewsA = a.reviews?.length || 0; // Si no hay reseñas, tomar 0
-        const reviewsB = b.reviews?.length || 0; // Lo mismo para el otro producto
-        return reviewsB - reviewsA; // De mayor a menor número de reseñas
+        const reviewsA = a.reviews?.length || 0;
+        const reviewsB = b.reviews?.length || 0;
+        return reviewsB - reviewsA;
       });
     }
 
     return products;
-  }, [itemData, selectedCategory, searchQuery, sortType]);
+  }, [visibleProducts, selectedCategory, searchQuery, sortType]);
 
-  // 🔹 Manejador del cambio de orden
   const handleSortChange = (value: string) => {
     if (value === "default") {
-      setSortType("latest"); // Asegurar que no quede sin orden
+      setSortType("latest");
     } else {
       setSortType(value);
     }
@@ -107,65 +127,67 @@ export const ProductsComponent = () => {
     <section>
       <div className={searchStyle.inicioContainer}>
         <h1 className={searchStyle.saludo}>Todos los productos</h1>
-
-        {/* Filtro de Búsqueda */}
+  
         <SearchFilter onSearch={setSearchQuery} />
-
+  
         <div className={searchStyle.categories}>
-          {/* Filtro de Ordenamiento */}
           <SortFilter sortType={sortType} onSortChange={handleSortChange} />
-
-          {/* Filtro de Categorías */}
           <CategoryFilter
             categories={categories}
             selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory} // Pasamos la función para actualizar la categoría seleccionada
+            onCategoryChange={setSelectedCategory}
           />
         </div>
       </div>
-
-      {loading ? (
-        <div className={Style.loading}>
-          <LoaderUi />
-          <p>Cargando productos...</p>
-        </div>
-      ) : (
-        <div className={Style.container}>
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div key={product.id} className={Style.cardContainer}>
-                <Image
-                  src={product.imageUrl ?? ""}
-                  width={150}
-                  height={100}
-                  alt={product.name}
-                  className={Style.img}
-                />
-                <p className={Style.title1}>{product.name}</p>
-                <p>
-                  Cantidad -{" "}
-                  <span className={Style.span}>{product.soldUnits}</span>
-                </p>
-                <p className={Style.price}>
-                  {formatPrice(Number(product.price))}
-                </p>
-                <p>
-                  Reseñas:{" "}
-                  <span className={Style.span}>
-                    ★ {product.reviews?.length || 0}
-                  </span>
-                </p>
-                <Link href={`/products/${product.id}`} className={Style.detalle}>
-                  Ver detalles
-                </Link>
-                <button className={Style.button}>AÑADIR AL CARRITO</button>
-              </div>
-            ))
-          ) : (
-            <p className={Style.loading}>No hay productos en esta categoría</p>
-          )}
-        </div>
-      )}
+  
+      <div className={Style.container}>
+        {loading ? (
+          <div className={Style.loading}>
+            <LoaderUi />
+            <p>Cargando productos...</p>
+          </div>
+        ) : filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => (
+            <div key={product.id} className={Style.cardContainer}>
+              <Image
+                src={product.imageUrl ?? ""}
+                width={150}
+                height={100}
+                alt={product.name}
+                className={Style.img}
+              />
+              <p className={Style.title1}>{product.name}</p>
+              <p>
+                Cantidad -{" "}
+                <span className={Style.span}>{product.soldUnits}</span>
+              </p>
+              <p className={Style.price}>
+                {formatPrice(Number(product.price))}
+              </p>
+              <p>
+                Reseñas:{" "}
+                <span className={Style.span}>
+                  ★ {product.reviews?.length || 0}
+                </span>
+              </p>
+              <Link href={`/products/${product.id}`} className={Style.detalle}>
+                Ver detalles
+              </Link>
+              <button className={Style.button}>AÑADIR AL CARRITO</button>
+            </div>
+          ))
+        ) : (
+          <p className={Style.loading}>No hay productos disponibles.</p>
+        )}
+      </div>
+  
+      <div className={Style.loadMoreButtonContainer}>
+        {!loading && (
+          <button onClick={loadMoreProducts} className={Style.loadMoreButton}>
+            Cargar más
+          </button>
+        )}
+      </div>
     </section>
   );
 };
