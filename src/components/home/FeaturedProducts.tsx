@@ -9,6 +9,7 @@ import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
 import { productsTypes } from "@/types/productTypes";
 import FeaturedCategories from "./FeaturedCategories";
 import { LoaderUi } from "../UI/LoaderUi";
+import { useCart } from "@/store/ProductCartContext";
 
 export const FeaturedProducts = () => {
   const [products, setProducts] = useState<productsTypes[]>([]);
@@ -16,6 +17,7 @@ export const FeaturedProducts = () => {
   const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);  
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
+  const { handleAddToCard } = useCart();
 
   const productsPerPage = 8;
 
@@ -83,7 +85,16 @@ export const FeaturedProducts = () => {
             <p className={Style.price}>{formatPrice(Number(product.price))}</p>
             <p>Reseñas: <span className={Style.span}>{product.avgRating}</span></p>
             <Link href={`/products/${product.id}`} className={Style.detalle}>Ver detalles</Link>
-            <button className={Style.button}>AÑADIR AL CARRITO</button>
+            <button 
+                     onClick={() => handleAddToCard({
+                       id: product.id || '',
+                       name: product.name,
+                       soldUnits: product.soldUnits,
+                       price: product.price,
+                        imageUrl: product.imageUrl
+                      })} 
+                      className={Style.button}
+                    >AÑADIR AL CARRITO</button>
           </div>
         ))}
       </div>

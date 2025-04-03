@@ -9,9 +9,9 @@ import Link from 'next/link';
 interface checkoutType {
     totalCart: number;
     handleOrder: () => void;
-    setAddressFormVisible: (value: boolean) => void; 
+   // setAddressFormVisible: (value: boolean) => void; 
     shippingAddress: ShippingAddress | null;
-    isAddressFormVisible: boolean;
+    //isAddressFormVisible: boolean;
 }
 
 export const CheckoutComponent = ({ totalCart, handleOrder}: checkoutType) => {

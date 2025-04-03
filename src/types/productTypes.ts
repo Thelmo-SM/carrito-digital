@@ -44,13 +44,14 @@ export interface uptatedProductsTypes {
 };
 
 export interface detailProduct {
-    imageUrl?: string;
+    id: string;
     name: string;
+    description: string;
     price: number;
     soldUnits: number;
-    description: string;
-    id: string;
-}
+    imageUrl: string;
+    reviews: Review[];
+  }
 
 export interface productTypeContext {
     cart: cartTypes[]; 

@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { Review, ShippingAddress } from "@/types/ordersTypes";
-import { productsTypes } from "@/types/productTypes";
+import { detailProduct, productsTypes } from "@/types/productTypes";
 import { usersTypes } from "@/types/usersTypes";
 import { initializeApp } from "firebase/app";
 import { getAuth, sendPasswordResetEmail, updateEmail, updatePassword, updateProfile } from "firebase/auth";
@@ -453,3 +453,66 @@ export async function getTopRatedProducts(): Promise<productsTypes[]> {
   // Ordenar los productos por rating promedio, de mayor a menor
   return products.sort((a, b) => b.avgRating - a.avgRating);
 }
+
+//Detalle de un producto con reseña 
+export async function getProductWithReviews(productId: string): Promise<detailProduct | null> {
+  try {
+    // Obtener el producto
+    const productRef = doc(db, `products/${productId}`);
+    const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) {
+      throw new Error("Producto no encontrado");
+    }
+
+    const productData = productSnap.data();
+
+    // Obtener las reseñas del producto
+    const reviewsRef = collection(db, `products/${productId}/reviews`);
+    const reviewsSnapshot = await getDocs(reviewsRef);
+
+    // Asegúrate de extraer los campos userId, rating, comment y createdAt
+    const reviews: Review[] = reviewsSnapshot.docs.map((reviewDoc) => {
+      const reviewData = reviewDoc.data();
+
+      return {
+        id: reviewDoc.id,  // Asegúrate de incluir el id de la reseña
+        userId: reviewData.userId,  // Campo userId
+        rating: reviewData.rating,  // Campo rating
+        comment: reviewData.comment,  // Campo comment
+        createdAt: reviewData.createdAt?.toDate() || new Date(),  // Convertir createdAt a Date
+      };
+    });
+
+    // Retorna el producto con las reseñas
+    return {
+      id: productId,
+      name: productData.name,
+      description: productData.description,
+      price: productData.price,
+      soldUnits: productData.soldUnits,
+      imageUrl: productData.imageUrl,
+      reviews, // Se incluye el array de reseñas tipado
+    };
+  } catch (error) {
+    console.error("Error obteniendo el producto con reseñas:", error);
+    return null;
+  }
+}
+
+//Nombre del usuario que realizo la reseña 
+export const getUserName = async (userId: string) => {
+  try {
+    const userRef = doc(db, `users/${userId}`);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      return userSnap.data().name; // Suponiendo que el campo 'name' existe
+    } else {
+      return "Usuario desconocido"; // En caso de que no se encuentre el usuario
+    }
+  } catch (error) {
+    console.error("Error obteniendo el nombre del usuario:", error);
+    return "Usuario desconocido";
+  }
+};

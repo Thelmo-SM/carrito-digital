@@ -6,15 +6,15 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importar el hook para obtener las direcciones
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
-import ModalForm from '@/components/Modals/modalForm';
-import { useModalForm } from '@/hooks/useModalForm';
+//import ModalForm from '@/components/Modals/modalForm';
+//import { useModalForm } from '@/hooks/useModalForm';
 import CheckoutComponent from '../../Checkout/CheckoutComponent';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const { cart, deleteProduct, updateProductQuantity } = useCart();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
-    const { isOpen, openModal, closeModal } = useModalForm();
+   // const { isOpen, openModal, closeModal } = useModalForm();
 
     const handleOrder = async () => {
         if (!user?.uid) {
@@ -97,8 +97,8 @@ export const CartComponent = () => {
                     </thead>
                     <tbody>
                         {cart.length > 0 ? (
-                            cart.map(({ name, price, id, imageUrl, units }) => (
-                                <tr key={id}>
+                            cart.map(({ name, price, id, imageUrl, units }, index) => (
+                                <tr key={id ?? index}>
                                     <td className={styles.imgContainer}>
                                         {imageUrl ? (
                                             <Image
@@ -147,11 +147,11 @@ export const CartComponent = () => {
                     </tbody>
                 </table>
             </div>
-            <ModalForm isOpens={isOpen} closeModal={closeModal}>
+            {/* <ModalForm isOpens={isOpen} closeModal={closeModal}>
                 rdef
-            </ModalForm>
+            </ModalForm> */}
             {/* Aquí ya no necesitas el formulario de dirección */}
-            <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} openModal={openModal} 
+            <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} 
             shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
             />
         </div>
