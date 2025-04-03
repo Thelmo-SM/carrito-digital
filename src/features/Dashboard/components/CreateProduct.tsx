@@ -1,6 +1,7 @@
 import { useCreateItems } from "../hooks/useCreateItems";
 import { productsTypes } from "@/types/productTypes";
 import Style from '@/styles/producForm.module.css'
+import Image from "next/image";
 
 const initialProductsValues: productsTypes = {
   file: { path: '', url: '' },
@@ -19,6 +20,7 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
 
   const {
     form,
+    imagePreview,
     handleChange,
     handleSubmit,
     handleFileChange,
@@ -37,6 +39,9 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
             id="file_id"
             onChange={handleFileChange}
           />
+                    {imagePreview && (
+            <Image src={imagePreview} width={100} height={100} alt="Vista previa" className={Style.imagePreview} />
+          )}
         </div>
         <div>
           <label htmlFor="name_id">Nombre del producto</label>

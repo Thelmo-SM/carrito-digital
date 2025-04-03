@@ -8,6 +8,7 @@ export const useCreateItems = (
 ) => {
   const [form, setForm] = useState(initialValue);
   const [file, setFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -18,6 +19,11 @@ export const useCreateItems = (
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -78,6 +84,7 @@ export const useCreateItems = (
 
   return {
     form,
+    imagePreview,
     handleChange,
     handleSubmit,
     handleFileChange,

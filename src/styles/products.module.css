@@ -67,6 +67,7 @@
 .price {
     font-weight: bold;
     font-style: oblique;
+    color: rgb(67, 123, 175);
 }
 
 .button {
@@ -157,6 +158,25 @@
     justify-content: center;
 }
 .loading > p {
-    margin: 0 2rem 0 0;
+    /* margin: 0 2rem 0 0; */
     font-size: 1.2rem;
+    margin: 0 1rem;
+}
+
+.loadMoreButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 3rem 0;
+}
+
+.loadMoreButton {
+    background-color: rgb(67, 123, 175);
+    padding: .4rem 4rem;
+    color: rgb(223, 230, 235);
+    border-radius: .2rem;
+    transition: 0.2s;
+}
+.loadMoreButton:hover {
+    background-color: rgb(39, 124, 204)
 }
