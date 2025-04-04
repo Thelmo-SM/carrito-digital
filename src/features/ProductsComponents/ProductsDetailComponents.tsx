@@ -5,7 +5,6 @@ import Style from '@/styles/products.module.css';
 import Image from "next/image";
 import { detailProduct } from "@/types/productTypes";
 import { useCart } from "@/store/ProductCartContext";
-import { cartTypes } from "@/types/productTypes";
 import { getUserName } from "@/utils/firebase";
 import { useEffect, useState } from "react";
 

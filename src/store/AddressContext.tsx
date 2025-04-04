@@ -7,6 +7,7 @@ interface AddressContextType {
     addresses: ShippingAddress[];
     defaultAddress: ShippingAddress | null;
     loading: boolean;
+    setLoading: (value: boolean) => void;
     refreshAddresses: () => Promise<void>;
     setDefaultAddress: (id: string) => Promise<void>;  // Nueva función para actualizar la dirección predeterminada
   }
@@ -15,7 +16,7 @@ interface AddressContextType {
   
   export const AddressProvider = ({ children }: { children: React.ReactNode }) => {
     const [addresses, setAddresses] = useState<ShippingAddress[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const user = useAuthUsers();
   
     // Obtener direcciones del usuario
@@ -58,7 +59,7 @@ interface AddressContextType {
     const defaultAddress = addresses.find((address) => address.isDefault) || null;
   
     return (
-      <AddressContext.Provider value={{ addresses, defaultAddress, loading, refreshAddresses: fetchAddresses, setDefaultAddress }}>
+      <AddressContext.Provider value={{ addresses, defaultAddress, loading, setLoading,  refreshAddresses: fetchAddresses, setDefaultAddress }}>
         {children}
       </AddressContext.Provider>
     );

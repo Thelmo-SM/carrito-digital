@@ -7,7 +7,7 @@ export interface itemImage {
 };
 
 export interface productsTypes {
-    id?: string;
+    id: string;
     file?: itemImage;
     imageUrl?: string;
     name: string;

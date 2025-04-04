@@ -7,9 +7,12 @@ import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importa
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import CheckoutComponent from '../../Checkout/CheckoutComponent';
+import { useState } from 'react';
+//import { LoaderUi } from '@/components/UI/LoaderUi';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
+    const [loading1, setLoading1] = useState(false);
     const { cart, deleteProduct, updateProductQuantity } = useCart();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
 
@@ -18,24 +21,24 @@ export const CartComponent = () => {
             alert("Por favor, inicie sesión para realizar un pedido.");
             return;
         }
-    
+        
         if (cart.length === 0) {
             alert("El carrito está vacío.");
             return;
         }
-    
+        
         const productIds = cart.map(item => item.id).filter(id => id !== null);
         if (productIds.length === 0) {
             alert("No hay productos válidos en el carrito.");
             return;
         }
-    
+        
         // Verificar si la dirección de envío es válida
         if (!defaultAddress) {
             alert("No tienes una dirección de envío predeterminada.");
             return;
         }
-    
+        
         // Preparar los datos para el backend
         const orderData = {
             userId: user.uid,
@@ -49,8 +52,9 @@ export const CartComponent = () => {
             total: totalCart,
             shippingAddress: defaultAddress,  // Usar la dirección predeterminada
         };
-    
+        
         try {
+            setLoading1(true);
             // Enviar los datos al backend para crear el pedido
             const response = await fetch('/api/checkout', {
                 method: 'POST',
@@ -71,6 +75,8 @@ export const CartComponent = () => {
         } catch (error) {
             alert("Error al procesar el pedido.");
             console.error(error);
+        } finally {
+            setLoading1(false);
         }
     };
 
@@ -146,7 +152,8 @@ export const CartComponent = () => {
                 </table>
             </div>
             <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} 
-                shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
+                shippingAddress={defaultAddress}
+                loading={loading1}// Pasar la dirección predeterminada directamente
             />
         </div>
     );

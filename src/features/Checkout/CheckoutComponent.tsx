@@ -5,6 +5,7 @@ import styles from '@/styles/cart.module.css';
 import { useAddresses } from '@/store/AddressContext';
 import { ShippingAddress } from '@/types/ordersTypes';
 import Link from 'next/link';
+import { LoaderUi } from '@/components/UI/LoaderUi';
 
 interface checkoutType {
     totalCart: number;
@@ -12,10 +13,12 @@ interface checkoutType {
    // setAddressFormVisible: (value: boolean) => void; 
     shippingAddress: ShippingAddress | null;
     //isAddressFormVisible: boolean;
+    loading: boolean;
 }
 
-export const CheckoutComponent = ({ totalCart, handleOrder}: checkoutType) => {
-    const { defaultAddress } = useAddresses(); // Obtener la dirección predeterminada
+export const CheckoutComponent = ({ totalCart, handleOrder, loading}: checkoutType) => {
+    const { defaultAddress } = useAddresses();
+    //const [loading, setLoading] = useState(true)
 
     return (
         <div className={styles.totalContainer}>
@@ -40,7 +43,8 @@ export const CheckoutComponent = ({ totalCart, handleOrder}: checkoutType) => {
             </div>
 
             <button onClick={handleOrder} className={styles.activeButton}>
-                Realizar pedido
+                {loading ? <LoaderUi /> :
+                'Realizar pedido'}
             </button>
         </div>
     );

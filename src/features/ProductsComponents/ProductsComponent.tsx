@@ -22,7 +22,8 @@ export const ProductsComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const { handleAddToCard } = useCart();
+  const { cart, handleAddToCard, updateProductQuantity } = useCart();
+  const quantity: number = 1; 
 
   // Obtener productos
   const productsPerPage = 8;
@@ -123,6 +124,29 @@ export const ProductsComponent = () => {
       setSortType(value);
     }
   };
+
+  const handleAddProduct = (product: productsTypes) => {
+    const { id, name, soldUnits, price, imageUrl } = product;
+  
+    const existingProduct = cart.find(item => item.id === id);
+  
+    if (existingProduct) {
+      // Si el producto ya está en el carrito, actualizamos la cantidad
+      updateProductQuantity(id, (existingProduct.units ?? 0) + quantity);  // Asegurarse de sumar correctamente la cantidad
+    } else {
+      // Si el producto no está en el carrito, lo agregamos con la cantidad seleccionada
+      handleAddToCard(
+        {
+          name,
+          soldUnits,
+          price,
+          imageUrl,
+          id: id, // Usar el id como número o string según corresponda
+        },
+        quantity // Pasamos la cantidad seleccionada por el usuario
+      );
+    }
+  };
   
 
   return (
@@ -176,13 +200,7 @@ export const ProductsComponent = () => {
                 Ver detalles
               </Link>
               <button 
-                     onClick={() => handleAddToCard({
-                       id: product.id || '',
-                       name: product.name,
-                       soldUnits: product.soldUnits,
-                       price: product.price,
-                        imageUrl: product.imageUrl
-                      })} 
+                     onClick={() => handleAddProduct(product)} // Pasamos el producto completo
                       className={Style.button}
                     >
                 AÑADIR AL CARRITO

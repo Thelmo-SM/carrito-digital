@@ -7,6 +7,8 @@ import { signOut } from '@/utils/firebase';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 import userImg from '../../../public/user.webp';
+//import cartImg from '../../../public/cart.webp';
+import cart from '../../../public/cart (1).webp';
 import { useRouter } from 'next/navigation';
 
 export const Nav = () => {
@@ -37,7 +39,9 @@ export const Nav = () => {
                 <Link href='/' className={NavStyle.links}>Home</Link>
                 <Link href='/products' className={NavStyle.links}>Productos</Link>
                 <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
-                <Link href='/cart' className={NavStyle.links}>Carrito</Link>
+                <Link href='/cart' className={NavStyle.links}>
+                <Image src={cart} width={30} height={30} alt='' />
+                </Link>
                 
                 {user ? (
                     <button
