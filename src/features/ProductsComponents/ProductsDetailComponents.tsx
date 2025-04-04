@@ -17,7 +17,7 @@ export const ProductDetailComponent = ({
   imageUrl,
   reviews,
 }: detailProduct) => {
-  const { cart, handleAddToCard, updateProductQuantity } = useCart();
+  const { cart, successMessage, handleAddToCard, updateProductQuantity } = useCart();
   const [userNames, setUserNames] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
 
@@ -58,7 +58,7 @@ export const ProductDetailComponent = ({
   
     if (existingProduct) {
       // Si el producto ya está en el carrito, actualizamos la cantidad
-      updateProductQuantity(id, existingProduct.units ?? 0 + quantity);  // Sumar la cantidad actual con la nueva
+      updateProductQuantity(id, (existingProduct.units ?? 0) + quantity);  // Sumar la cantidad actual con la nueva
     } else {
       // Si el producto no está en el carrito, lo agregamos con la cantidad seleccionada
       handleAddToCard(
@@ -120,7 +120,7 @@ export const ProductDetailComponent = ({
 
           <div className={Style.compra}>
             <button onClick={handleAddProduct}>
-              AÑADIR AL CARRITO
+              {successMessage ? 'AÑADIDO' :'AÑADIR AL CARRITO'}
             </button>
           </div>
         </div>

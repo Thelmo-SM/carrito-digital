@@ -10,11 +10,13 @@ const ProductCartContext = createContext<productTypeContext>({
     setCart: () => {},
     handleAddToCard: () => {}, 
     deleteProduct: () => {},
-    updateProductQuantity: () => {}
+    updateProductQuantity: () => {},
+    successMessage: false
 });
 
 export const ProductCartProvider = ({ children }: { children: React.ReactNode }) => {
     const [cart, setCart] = useState<cartTypes[]>([]);
+    const [successMessage, setSuccessMessage] = useState(false);
     const user = useAuthUsers();
 
     useEffect(() => {
@@ -43,6 +45,7 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
     }, [user?.uid]);
     
     const handleAddToCard = (product: cartTypes, quantity: number) => {
+        try {
         if (user?.uid) {
             const existingProduct = cart.find(item => item.id === product.id);
             let updatedCart;
@@ -64,6 +67,11 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
         } else {
             console.log('Por favor, inicie sesión para agregar productos al carrito');
         }
+    } catch (error: unknown) {
+            console.log(error);
+    } finally {
+        setSuccessMessage(true)
+    }
     };
 
     const deleteProduct = (id: string) => {
@@ -83,7 +91,7 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
       };
 
     return (
-        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct, updateProductQuantity }}>
+        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct, updateProductQuantity, successMessage }}>
             {children}
         </ProductCartContext.Provider>
     );

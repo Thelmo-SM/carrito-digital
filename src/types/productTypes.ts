@@ -61,4 +61,5 @@ export interface productTypeContext {
     handleAddToCard: (product: cartTypes, quantity: number) => void; 
     deleteProduct: (id: string) => void;
     updateProductQuantity: (id: string, newQuantity: number) => void
+    successMessage: boolean;
 }
