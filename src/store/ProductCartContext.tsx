@@ -8,7 +8,7 @@ import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 const ProductCartContext = createContext<productTypeContext>({
     cart: [],
     setCart: () => {},
-    handleAddToCard: () => {},
+    handleAddToCard: () => {}, 
     deleteProduct: () => {},
     updateProductQuantity: () => {}
 });
@@ -42,28 +42,25 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
         }
     }, [user?.uid]);
     
-    const handleAddToCard = (product: cartTypes) => {
+    const handleAddToCard = (product: cartTypes, quantity: number) => {
         if (user?.uid) {
-            // Verificar si el producto ya está en el carrito
             const existingProduct = cart.find(item => item.id === product.id);
-    
             let updatedCart;
-            
+
             if (existingProduct) {
-                // Incrementar la cantidad del producto en el carrito
+                // Incrementar la cantidad
                 updatedCart = cart.map(item =>
                     item.id === product.id
-                        ? { ...item, units: (item.units || 1) + 1 } // Asegurar que `units` existe y sumarle 1
+                        ? { ...item, units: item.units ?? 0 + quantity }
                         : item
                 );
             } else {
-                // Si el producto no está en el carrito, agregarlo con cantidad 1
-                updatedCart = [...cart, { ...product, userId: user?.uid, units: 1 }];
+                // Agregar el producto con la cantidad seleccionada
+                updatedCart = [...cart, { ...product, userId: user?.uid, units: quantity }];
             }
-    
+
             setCart(updatedCart);
             localStorage.setItem(`cart_${user?.uid}`, JSON.stringify(updatedCart));
-            console.log('Producto agregado al carrito');
         } else {
             console.log('Por favor, inicie sesión para agregar productos al carrito');
         }

@@ -254,3 +254,71 @@
     color: rgb(67, 123, 175);
     font-weight: bold;
   }
+
+  /* Estilos para el contenedor del control de cantidad */
+.quantityControl {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    width: 40%;
+    padding: .5rem;
+    margin: 0 2rem;
+    border-radius: .2rem;
+    color: rgb(223, 230, 235);
+    transition: 0.5s;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  }
+  
+  /* Estilo común para los botones de aumentar y disminuir */
+  .quantityControl button {
+    background-color: rgb(67, 123, 175);
+    border: 1px solid #ccc;
+    padding: 8px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  /* Estilo para el botón de disminuir */
+  .decrease {
+    background-color: #ffdddd;
+  }
+  
+  .decrease:hover {
+    background-color: #ffcccc;
+    transform: scale(1.1);
+  }
+  
+  /* Estilo para el botón de aumentar */
+  .increase {
+    background-color: #ffffff;
+  }
+  
+  .increase:hover {
+    background-color: rgb(39, 124, 204);
+    transform: scale(1.1);
+  }
+  
+  /* Estilo para el campo de entrada de cantidad */
+  .quantityInput {
+    width: 50px;
+    padding: 8px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: #444444;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Estilo cuando el campo de cantidad está enfocado */
+  .quantityInput:focus {
+    border-color: rgb(39, 124, 204);
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  }
+  

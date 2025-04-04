@@ -6,15 +6,12 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importar el hook para obtener las direcciones
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
-//import ModalForm from '@/components/Modals/modalForm';
-//import { useModalForm } from '@/hooks/useModalForm';
 import CheckoutComponent from '../../Checkout/CheckoutComponent';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const { cart, deleteProduct, updateProductQuantity } = useCart();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
-   // const { isOpen, openModal, closeModal } = useModalForm();
 
     const handleOrder = async () => {
         if (!user?.uid) {
@@ -115,16 +112,17 @@ export const CartComponent = () => {
                                     <td>{name}</td>
                                     <td className="text-green-600">{formatPrice(Number(price))}</td>
                                     <td>
-                                    <input
-                                       type="number"
-                                       value={units ?? 1} // Si `units` es undefined, usa `1`
-                                        onChange={(e) => {
-                                           const newQuantity = Number(e.target.value);
-                                           if (id) updateProductQuantity(id, newQuantity);
-                                        }}
-                                        min="1"
-                                       className={styles.quantityInput}
-                                    />
+                                        <input
+                                            type="number"
+                                            value={units ?? 1} // Si `units` es undefined, usa `1`
+                                            onChange={(e) => {
+                                                const newQuantity = Number(e.target.value);
+                                                if (id) updateProductQuantity(id, newQuantity);
+                                            }}
+                                            min="1"
+                                            max="99"  // Limitar cantidad máxima si es necesario
+                                            className={styles.quantityInput}
+                                        />
                                     </td>
                                     <td className="text-green-600">{formatPrice(Number(price) * (units ?? 1))}</td>
                                     <td>
@@ -147,12 +145,8 @@ export const CartComponent = () => {
                     </tbody>
                 </table>
             </div>
-            {/* <ModalForm isOpens={isOpen} closeModal={closeModal}>
-                rdef
-            </ModalForm> */}
-            {/* Aquí ya no necesitas el formulario de dirección */}
             <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} 
-            shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
+                shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
             />
         </div>
     );
