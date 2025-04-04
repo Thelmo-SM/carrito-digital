@@ -6,39 +6,39 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importar el hook para obtener las direcciones
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
-//import ModalForm from '@/components/Modals/modalForm';
-//import { useModalForm } from '@/hooks/useModalForm';
 import CheckoutComponent from '../../Checkout/CheckoutComponent';
+import { useState } from 'react';
+//import { LoaderUi } from '@/components/UI/LoaderUi';
 
 export const CartComponent = () => {
     const user = useAuthUsers();
+    const [loading1, setLoading1] = useState(false);
     const { cart, deleteProduct, updateProductQuantity } = useCart();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
-   // const { isOpen, openModal, closeModal } = useModalForm();
 
     const handleOrder = async () => {
         if (!user?.uid) {
             alert("Por favor, inicie sesión para realizar un pedido.");
             return;
         }
-    
+        
         if (cart.length === 0) {
             alert("El carrito está vacío.");
             return;
         }
-    
+        
         const productIds = cart.map(item => item.id).filter(id => id !== null);
         if (productIds.length === 0) {
             alert("No hay productos válidos en el carrito.");
             return;
         }
-    
+        
         // Verificar si la dirección de envío es válida
         if (!defaultAddress) {
             alert("No tienes una dirección de envío predeterminada.");
             return;
         }
-    
+        
         // Preparar los datos para el backend
         const orderData = {
             userId: user.uid,
@@ -52,8 +52,9 @@ export const CartComponent = () => {
             total: totalCart,
             shippingAddress: defaultAddress,  // Usar la dirección predeterminada
         };
-    
+        
         try {
+            setLoading1(true);
             // Enviar los datos al backend para crear el pedido
             const response = await fetch('/api/checkout', {
                 method: 'POST',
@@ -74,6 +75,8 @@ export const CartComponent = () => {
         } catch (error) {
             alert("Error al procesar el pedido.");
             console.error(error);
+        } finally {
+            setLoading1(false);
         }
     };
 
@@ -115,16 +118,17 @@ export const CartComponent = () => {
                                     <td>{name}</td>
                                     <td className="text-green-600">{formatPrice(Number(price))}</td>
                                     <td>
-                                    <input
-                                       type="number"
-                                       value={units ?? 1} // Si `units` es undefined, usa `1`
-                                        onChange={(e) => {
-                                           const newQuantity = Number(e.target.value);
-                                           if (id) updateProductQuantity(id, newQuantity);
-                                        }}
-                                        min="1"
-                                       className={styles.quantityInput}
-                                    />
+                                        <input
+                                            type="number"
+                                            value={units ?? 1} // Si `units` es undefined, usa `1`
+                                            onChange={(e) => {
+                                                const newQuantity = Number(e.target.value);
+                                                if (id) updateProductQuantity(id, newQuantity);
+                                            }}
+                                            min="1"
+                                            max="99"  // Limitar cantidad máxima si es necesario
+                                            className={styles.quantityInput}
+                                        />
                                     </td>
                                     <td className="text-green-600">{formatPrice(Number(price) * (units ?? 1))}</td>
                                     <td>
@@ -147,12 +151,9 @@ export const CartComponent = () => {
                     </tbody>
                 </table>
             </div>
-            {/* <ModalForm isOpens={isOpen} closeModal={closeModal}>
-                rdef
-            </ModalForm> */}
-            {/* Aquí ya no necesitas el formulario de dirección */}
             <CheckoutComponent totalCart={totalCart} handleOrder={handleOrder} 
-            shippingAddress={defaultAddress} // Pasar la dirección predeterminada directamente
+                shippingAddress={defaultAddress}
+                loading={loading1}// Pasar la dirección predeterminada directamente
             />
         </div>
     );

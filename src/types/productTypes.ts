@@ -7,7 +7,7 @@ export interface itemImage {
 };
 
 export interface productsTypes {
-    id?: string;
+    id: string;
     file?: itemImage;
     imageUrl?: string;
     name: string;
@@ -19,6 +19,8 @@ export interface productsTypes {
     createdAt?: Timestamp;
     avgRating?: number;
     reviews?: Review[];
+    units?: number;
+
 };
 
 export interface cartTypes {
@@ -56,7 +58,8 @@ export interface detailProduct {
 export interface productTypeContext {
     cart: cartTypes[]; 
     setCart: (cart: cartTypes[]) => void;
-    handleAddToCard: (product: cartTypes) => void;
+    handleAddToCard: (product: cartTypes, quantity: number) => void; 
     deleteProduct: (id: string) => void;
     updateProductQuantity: (id: string, newQuantity: number) => void
+    successMessage: boolean;
 }
