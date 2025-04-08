@@ -78,10 +78,27 @@
     background-color: rgb(67, 123, 175);
     color: rgb(223, 230, 235);
     transition: 0.5s;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block; 
 }
 
 .button:hover {
     background-color: rgb(39, 124, 204)
+}
+.añadidoButon {
+  width: 15%;
+  padding: .5rem;
+  margin: 0 2rem;
+  border-radius: .2rem;
+  background-color: rgb(1, 163, 1);
+  color: rgb(223, 230, 235);
+  transition: 0.5s;
+  text-align: center;
+  border-radius: 50%;
+  font-weight: bold;
+  overflow: hidden;
 }
 
 /*//////////////////DETALLE DEL PRODUCTO////////////////////////////*/
@@ -194,9 +211,6 @@
   color: rgb(223, 230, 235);
   transition: 0.5s;
   text-align: center;
-  /* white-space: nowrap;
-  text-overflow: ellipsis;
-  display: inline-block;  */
 }
 
 .loading {
