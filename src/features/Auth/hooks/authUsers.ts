@@ -8,16 +8,16 @@ import { dataUsersTypes } from "@/types/usersTypes";
 import { DocumentData } from "firebase/firestore";
 import { setInLocalStorage } from "@/store/setInLocalStorage";
 import { getInLocalStorage } from "@/store/getInLocalStorage";
-import { usePathname, useRouter } from "next/navigation";
+// import { usePathname, useRouter } from "next/navigation";
 
 export const useAuthUsers = () => {
     const [user, setUser] = useState<dataUsersTypes | undefined | DocumentData>(undefined);
 
-    const pathName = usePathname();
-    const router = useRouter();
+    // const pathName = usePathname();
+    // const router = useRouter();
 
-    const protecttedRoutes = ['/dashboard'];
-    const isInProtectedRoute = protecttedRoutes.includes(pathName);
+    // const protecttedRoutes = ['/dashboard'];
+    // const isInProtectedRoute = protecttedRoutes.includes(pathName);
 
     useEffect(() => {
         let unsubscribe: (() => void) | null = null;
@@ -40,9 +40,9 @@ export const useAuthUsers = () => {
                     }
                 });
             } else {
-                if (isInProtectedRoute) {
-                    router.push('/login');
-                }
+                // if (isInProtectedRoute) {
+                //     router.push('/login');
+                // }
                 setUser(undefined);
                 if (unsubscribe) unsubscribe(); // Detener la suscripción si el usuario cierra sesión
             }

@@ -11,13 +11,16 @@ import userImg from '../../../public/user.webp';
 import cart from '../../../public/cart (1).webp';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/ProductCartContext';
+import { LoaderUi } from '../UI/LoaderUi';
 
 export const Nav = () => {
     const [scrollY, setScrollY] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
+    const [loading, setLoading] = useState(false);
     const user = useAuthUsers();
     const router = useRouter();
     const { totalItems } = useCart();
+
 
     const handleScroll = () => {
         setScrollY(window.scrollY > 350);
@@ -30,10 +33,17 @@ export const Nav = () => {
         };
     }, []);
 
-    const handleSignOut = () => {
-        signOut();
-        router.push('/login');
-    }
+    const handleSignOut = async () => {
+        try {
+          setLoading(true);
+          await signOut();
+          router.replace('/login');
+        } catch (error: unknown) {
+          console.log('Error al cerrar sesión:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
     
     return (
         <>
@@ -76,7 +86,7 @@ export const Nav = () => {
                     <Link href= '/account/profile' className={NavStyle.menuItem}>Perfil</Link>
                     <Link href= '' className={NavStyle.menuItem}>Configuración</Link>
                     <button className={NavStyle.logout} onClick={handleSignOut}>
-                        Cerrar sesión
+                        {loading ? <LoaderUi/> : 'Cerrar sesión'}
                     </button>
                 </div>
             )}

@@ -18,3 +18,32 @@
         transform: rotate(360deg);
     }
     }
+
+    .globalLoading {
+        margin: auto;
+        display: flex;
+    }
+    .globalLoading > h2 {
+        margin: auto 3rem;
+    }
+    
+    .Loading {
+        width: 5.5rem;
+        height: 5.5rem;
+        border: .7rem solid #cad1dd;
+        border-bottom-color: rgb(67, 123, 175);
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        padding: 0rem;
+        }
+    
+        @keyframes rotation {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+        }

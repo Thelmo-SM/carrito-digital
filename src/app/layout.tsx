@@ -3,8 +3,8 @@
 // import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
-import { redirect, usePathname } from "next/navigation";
+// import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
+// import { redirect, usePathname } from "next/navigation";
 import Style from '@/styles/layout.module.css';
 import Nav from "@/components/Header/NavComponent";
 import { ProductCartProvider } from "@/store/ProductCartContext";
@@ -26,15 +26,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const user = useAuthUsers();
-  const pathName = usePathname();
+  // const user = useAuthUsers();
+  // const pathName = usePathname();
   
-  const authRoutes = ['/login', '/register', '/forgot-password'];
-  const isInAuthRoute = authRoutes.includes(pathName);
+  // const authRoutes = ['/login', '/register', '/forgot-password'];
+  // const isInAuthRoute = authRoutes.includes(pathName);
   
-  if(user && isInAuthRoute) {
-    return redirect('/dashboard');
-  }
+  // if(user && isInAuthRoute) {
+  //   return redirect('/dashboard');
+  // }
   
 
 
