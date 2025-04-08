@@ -10,12 +10,14 @@ import userImg from '../../../public/user.webp';
 //import cartImg from '../../../public/cart.webp';
 import cart from '../../../public/cart (1).webp';
 import { useRouter } from 'next/navigation';
+import { useCart } from '@/store/ProductCartContext';
 
 export const Nav = () => {
     const [scrollY, setScrollY] = useState(false);
     const [openMenu, setOpenMenu] = useState(false);
     const user = useAuthUsers();
     const router = useRouter();
+    const { totalItems } = useCart();
 
     const handleScroll = () => {
         setScrollY(window.scrollY > 350);
@@ -39,8 +41,13 @@ export const Nav = () => {
                 <Link href='/' className={NavStyle.links}>Home</Link>
                 <Link href='/products' className={NavStyle.links}>Productos</Link>
                 <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
-                <Link href='/cart' className={NavStyle.links}>
-                <Image src={cart} width={30} height={30} alt='' />
+                <Link href='/cart' className={NavStyle.linksCart}>
+                <Image src={cart} width={30} height={30} alt='' 
+                
+                />
+                {totalItems > 0 && (
+                     <span className={NavStyle.cartItemCount}>{totalItems}</span>
+                    )}
                 </Link>
                 
                 {user ? (

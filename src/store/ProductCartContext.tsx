@@ -11,7 +11,8 @@ const ProductCartContext = createContext<productTypeContext>({
     handleAddToCard: () => {}, 
     deleteProduct: () => {},
     updateProductQuantity: () => {},
-    successMessage: false
+    successMessage: false,
+    totalItems: 0,
 });
 
 export const ProductCartProvider = ({ children }: { children: React.ReactNode }) => {
@@ -95,8 +96,10 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
         );
       };
 
+      const totalItems = cart.reduce((total, product) => total + (product.units ?? 0), 0);
+
     return (
-        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct, updateProductQuantity, successMessage }}>
+        <ProductCartContext.Provider value={{ cart, setCart, handleAddToCard, deleteProduct, updateProductQuantity, successMessage, totalItems }}>
             {children}
         </ProductCartContext.Provider>
     );

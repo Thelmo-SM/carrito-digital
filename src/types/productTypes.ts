@@ -62,4 +62,5 @@ export interface productTypeContext {
     deleteProduct: (id: string) => void;
     updateProductQuantity: (id: string, newQuantity: number) => void
     successMessage: boolean;
+    totalItems: number;
 }
