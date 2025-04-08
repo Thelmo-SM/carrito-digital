@@ -21,6 +21,8 @@ export const ProductsComponent = () => {
   const [sortType, setSortType] = useState<string>("latest");
   const [loading, setLoading] = useState<boolean>(false);
   const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);
+  const [addedProducts, setAddedProducts] = useState<{ [key: string]: boolean }>({});
+
   const [currentPage, setCurrentPage] = useState(1);
   const { cart, handleAddToCard, updateProductQuantity } = useCart();
   const quantity: number = 1; 
@@ -146,6 +148,20 @@ export const ProductsComponent = () => {
         quantity // Pasamos la cantidad seleccionada por el usuario
       );
     }
+
+        // Establecer estado de producto agregado
+        setAddedProducts((prevState) => ({
+          ...prevState,
+          [product.id]: true,  // Asumiendo que 'id' es el identificador único del producto
+        }));
+
+        // Reiniciar estado después de 3 segundos
+        setTimeout(() => {
+          setAddedProducts((prevState) => ({
+            ...prevState,
+            [product.id]: false,  // Asumiendo que 'id' es el identificador único del producto
+          }));
+        }, 3000);
   };
   
 
@@ -201,9 +217,9 @@ export const ProductsComponent = () => {
               </Link>
               <button 
                      onClick={() => handleAddProduct(product)} // Pasamos el producto completo
-                      className={Style.button}
+                      className={`${addedProducts[product.id] ? Style.añadidoButon: Style.button}`}
                     >
-                AÑADIR AL CARRITO
+                {addedProducts[product.id] ? '✔' : 'AÑADIR AL CARRITO'}
                 </button>
             </div>
           ))

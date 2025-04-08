@@ -17,6 +17,7 @@ export const FeaturedProducts = () => {
   const [visibleProducts, setVisibleProducts] = useState<productsTypes[]>([]);  
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
+  const [addedProducts, setAddedProducts] = useState<{ [key: string]: boolean }>({});
   const { cart, handleAddToCard, updateProductQuantity } = useCart();
   const quantity: number = 1; 
 
@@ -82,6 +83,21 @@ export const FeaturedProducts = () => {
         quantity // Pasamos la cantidad seleccionada por el usuario
       );
     }
+
+    
+        // Establecer estado de producto agregado
+        setAddedProducts((prevState) => ({
+          ...prevState,
+          [product.id]: true,  // Asumiendo que 'id' es el identificador único del producto
+        }));
+
+        // Reiniciar estado después de 3 segundos
+        setTimeout(() => {
+          setAddedProducts((prevState) => ({
+            ...prevState,
+            [product.id]: false,  // Asumiendo que 'id' es el identificador único del producto
+          }));
+        }, 3000);
   };
 
   return (
@@ -110,9 +126,11 @@ export const FeaturedProducts = () => {
             <p>Reseñas: <span className={Style.span}>{product.avgRating}</span></p>
             <Link href={`/products/${product.id}`} className={Style.detalle}>Ver detalles</Link>
             <button 
-                     onClick={() => handleAddProduct(product)} 
-                      className={Style.button}
-                    >AÑADIR AL CARRITO</button>
+                     onClick={() => handleAddProduct(product)} // Pasamos el producto completo
+                      className={`${addedProducts[product.id] ? Style.añadidoButon: Style.button}`}
+                    >
+                {addedProducts[product.id] ? '✔' : 'AÑADIR AL CARRITO'}
+                </button>
           </div>
         ))}
       </div>
