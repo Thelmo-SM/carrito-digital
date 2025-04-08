@@ -70,7 +70,11 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
     } catch (error: unknown) {
             console.log(error);
     } finally {
-        setSuccessMessage(true)
+        setSuccessMessage(true);
+
+        setTimeout(() => {
+          setSuccessMessage(false);
+        }, 3000);
     }
     };
 

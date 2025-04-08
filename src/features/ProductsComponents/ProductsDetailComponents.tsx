@@ -20,6 +20,7 @@ export const ProductDetailComponent = ({
   const { cart, successMessage, handleAddToCard, updateProductQuantity } = useCart();
   const [userNames, setUserNames] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const fetchUserNames = async () => {
@@ -76,6 +77,9 @@ export const ProductDetailComponent = ({
 
   return (
     <div className={Style.dContainer}>
+            <div className={Style.successMessage}>
+            {successMessage && <p>✅ Articulo agregado correctamente.</p>}
+          </div>
       <div className={Style.details}>
         <div className={Style.subDcontainer1}>
           {imageUrl ? (
@@ -118,9 +122,9 @@ export const ProductDetailComponent = ({
             <button onClick={handleIncrease} className={Style.increase}>+</button>
           </div>
 
-          <div className={Style.compra}>
+          <div className={`${success ? Style.añadido: Style.compra}`}>
             <button onClick={handleAddProduct}>
-              {successMessage ? 'AÑADIDO' :'AÑADIR AL CARRITO'}
+              {success ? '✔' :'AÑADIR AL CARRITO'}
             </button>
           </div>
         </div>
