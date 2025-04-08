@@ -70,13 +70,14 @@ export const ProductCartProvider = ({ children }: { children: React.ReactNode })
     } catch (error: unknown) {
             console.log(error);
     } finally {
-        setSuccessMessage(true);
+        // setSuccessMessage(true);
 
-        setTimeout(() => {
-          setSuccessMessage(false);
-        }, 3000);
+        // setTimeout(() => {
+        //   setSuccessMessage(false);
+        // }, 3000);
     }
     };
+    console.log(setSuccessMessage)
 
     const deleteProduct = (id: string) => {
         const updatedCart = cart.filter((product) => product.id !== id.toString());

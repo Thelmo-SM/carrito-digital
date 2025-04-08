@@ -7,6 +7,7 @@ import { detailProduct } from "@/types/productTypes";
 import { useCart } from "@/store/ProductCartContext";
 import { getUserName } from "@/utils/firebase";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export const ProductDetailComponent = ({
   id,
@@ -17,10 +18,10 @@ export const ProductDetailComponent = ({
   imageUrl,
   reviews,
 }: detailProduct) => {
-  const { cart, successMessage, handleAddToCard, updateProductQuantity } = useCart();
+  const { cart,  handleAddToCard, updateProductQuantity } = useCart();
   const [userNames, setUserNames] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
-  const [success, setSuccess] = useState(false);
+  const [isProductAdded, setIsProductAdded] = useState(false); // Nuevo estado
 
   useEffect(() => {
     const fetchUserNames = async () => {
@@ -73,13 +74,29 @@ export const ProductDetailComponent = ({
         quantity // Pasamos la cantidad seleccionada por el usuario
       );
     }
+
+    // Establecer estado de producto agregado
+    setIsProductAdded(true);
+
+    // Reiniciar estado después de 3 segundos
+    setTimeout(() => {
+      setIsProductAdded(false);
+    }, 3000);
   };
 
   return (
     <div className={Style.dContainer}>
-            <div className={Style.successMessage}>
-            {successMessage && <p>✅ Articulo agregado correctamente.</p>}
-          </div>
+        <Link 
+        className={Style.volver}
+        href='/products'
+        >
+          Volver
+        </Link>
+      {/* Mensaje de éxito */}
+      <div className={Style.successMessage}>
+        {isProductAdded && <p>✅ Artículo añadido al carrito.</p>}
+      </div>
+      
       <div className={Style.details}>
         <div className={Style.subDcontainer1}>
           {imageUrl ? (
@@ -122,9 +139,9 @@ export const ProductDetailComponent = ({
             <button onClick={handleIncrease} className={Style.increase}>+</button>
           </div>
 
-          <div className={`${success ? Style.añadido: Style.compra}`}>
+          <div className={isProductAdded ? Style.añadido : Style.compra}>
             <button onClick={handleAddProduct}>
-              {success ? '✔' :'AÑADIR AL CARRITO'}
+              {isProductAdded ? '✔' : 'AÑADIR AL CARRITO'}
             </button>
           </div>
         </div>
