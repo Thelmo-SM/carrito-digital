@@ -10,6 +10,10 @@ import { productsTypes } from "@/types/productTypes";
 import FeaturedCategories from "./FeaturedCategories";
 import { LoaderUi } from "../UI/LoaderUi";
 import { useCart } from "@/store/ProductCartContext";
+import ModalForm from "../Modals/modalForm";
+import { useModalForm } from "@/hooks/useModalForm";
+import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
+import { IsAuthenticated } from "../UI/Message";
 
 export const FeaturedProducts = () => {
   const [products, setProducts] = useState<productsTypes[]>([]);
@@ -18,10 +22,14 @@ export const FeaturedProducts = () => {
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1); 
   const [addedProducts, setAddedProducts] = useState<{ [key: string]: boolean }>({});
+
+  const { isOpen, openModal, closeModal } = useModalForm();
   const { cart, handleAddToCard, updateProductQuantity } = useCart();
   const quantity: number = 1; 
 
   const productsPerPage = 8;
+
+  const user = useAuthUsers(); // Verifica si el usuario está autenticado
 
   const onSelectCategory = (category: string | null) => {
     setSelectedCategory(category);
@@ -63,6 +71,12 @@ export const FeaturedProducts = () => {
   }, [currentPage, products]);
 
   const handleAddProduct = (product: productsTypes) => {
+    if (!user) {
+      // Si no está autenticado, abrir el modal
+      openModal();
+      return; // Evitar agregar el producto al carrito
+    }
+
     const { id, name, soldUnits, price, imageUrl } = product;
   
     const existingProduct = cart.find(item => item.id === id);
@@ -84,20 +98,19 @@ export const FeaturedProducts = () => {
       );
     }
 
-    
-        // Establecer estado de producto agregado
-        setAddedProducts((prevState) => ({
-          ...prevState,
-          [product.id]: true,  // Asumiendo que 'id' es el identificador único del producto
-        }));
+    // Establecer estado de producto agregado
+    setAddedProducts((prevState) => ({
+      ...prevState,
+      [product.id]: true,  // Asumiendo que 'id' es el identificador único del producto
+    }));
 
-        // Reiniciar estado después de 3 segundos
-        setTimeout(() => {
-          setAddedProducts((prevState) => ({
-            ...prevState,
-            [product.id]: false,  // Asumiendo que 'id' es el identificador único del producto
-          }));
-        }, 3000);
+    // Reiniciar estado después de 3 segundos
+    setTimeout(() => {
+      setAddedProducts((prevState) => ({
+        ...prevState,
+        [product.id]: false,  // Asumiendo que 'id' es el identificador único del producto
+      }));
+    }, 3000);
   };
 
   return (
@@ -126,11 +139,11 @@ export const FeaturedProducts = () => {
             <p>Reseñas: <span className={Style.span}>{product.avgRating}</span></p>
             <Link href={`/products/${product.id}`} className={Style.detalle}>Ver detalles</Link>
             <button 
-                     onClick={() => handleAddProduct(product)} // Pasamos el producto completo
-                      className={`${addedProducts[product.id] ? Style.añadidoButon: Style.button}`}
-                    >
-                {addedProducts[product.id] ? '✔' : 'AÑADIR AL CARRITO'}
-                </button>
+              onClick={() => handleAddProduct(product)} // Pasamos el producto completo
+              className={`${addedProducts[product.id] ? Style.añadidoButon: Style.button}`}
+            >
+              {addedProducts[product.id] ? '✔' : 'AÑADIR AL CARRITO'}
+            </button>
           </div>
         ))}
       </div>
@@ -148,6 +161,12 @@ export const FeaturedProducts = () => {
           </button>
         )}
       </div>
+
+      <ModalForm isOpens={isOpen} closeModal={closeModal}>
+        
+          <IsAuthenticated />
+        
+      </ModalForm>
     </div>
   );
 };

@@ -27,3 +27,26 @@ export const ValidateMessgeErrror = ({children}: MessageProp) => {
     );
 };
 
+export const IsAuthenticated = () => {
+    return (
+        <div className={style.overlay}>
+          <div className={style.modal}>
+            <h2 className={style.title}>¡Necesitas iniciar sesión!</h2>
+            <p className={style.message}>
+              Para agregar productos al carrito, primero debes iniciar sesión. Si no tienes una cuenta, por favor regístrate.
+            </p>
+            <div className={style.buttons}>
+              <button className={style.closeButton}
+               onClick={() => window.location.href = '/register'}
+              >
+                Registrarse</button>
+              <button className={style.loginButton} 
+              onClick={() => window.location.href = '/login'}
+              >
+                Iniciar sesión</button>
+            </div>
+          </div>
+        </div>
+      );
+}
+

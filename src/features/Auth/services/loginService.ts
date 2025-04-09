@@ -1,9 +1,21 @@
 import { auth } from '@/utils/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { getIdToken, signInWithEmailAndPassword, User  } from 'firebase/auth';
+import Cookies from "js-cookie";
+
+const setTokenInCookie = async (user: User ) => {
+  const token = await getIdToken(user, true);
+  Cookies.set('__session', token, {
+    secure: true,
+    sameSite: 'strict',
+    path: '/',
+  });
+  console.log('Token guardado en la cookie:', token);
+};
 
 export const loginService = async (user: {email:string, password:string}) => {
     try {
         const userLogin =   await signInWithEmailAndPassword(auth, user.email, user.password);
+        await setTokenInCookie(userLogin.user);
         return { success: true, user: userLogin };
     } catch (error: unknown) {
         if (error instanceof Error && "code" in error) {
