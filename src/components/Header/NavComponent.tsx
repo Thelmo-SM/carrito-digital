@@ -7,91 +7,95 @@ import { signOut } from '@/utils/firebase';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
 import userImg from '../../../public/user.webp';
-//import cartImg from '../../../public/cart.webp';
 import cart from '../../../public/cart (1).webp';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/ProductCartContext';
 import { LoaderUi } from '../UI/LoaderUi';
 
 export const Nav = () => {
-    const [scrollY, setScrollY] = useState(false);
-    const [openMenu, setOpenMenu] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const user = useAuthUsers();
-    const router = useRouter();
-    const { totalItems } = useCart();
+  const [scrollY, setScrollY] = useState(false);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const user = useAuthUsers();
+  const router = useRouter();
+  const { totalItems } = useCart();
 
-
+  useEffect(() => {
     const handleScroll = () => {
-        setScrollY(window.scrollY > 350);
+      setScrollY(window.scrollY > 350);
     };
 
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    const handleSignOut = async () => {
-        try {
-          setLoading(true);
-          await signOut();
-          router.replace('/login');
-        } catch (error: unknown) {
-          console.log('Error al cerrar sesión:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-    
-    return (
-        <>
-            <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
-                <Link href='/' className={NavStyle.links}>Home</Link>
-                <Link href='/products' className={NavStyle.links}>Productos</Link>
-                <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
-                <Link href='/cart' className={NavStyle.linksCart}>
-                <Image src={cart} width={30} height={30} alt='' 
-                
-                />
-                {totalItems > 0 && (
-                     <span className={NavStyle.cartItemCount}>{totalItems}</span>
-                    )}
-                </Link>
-                
-                {user ? (
-                    <button
-                        onClick={() => setOpenMenu(!openMenu)}
-                        className={NavStyle.profileButton}
-                    >
-                        <Image 
-                            src={user.image || userImg} 
-                            width={30} 
-                            height={50} 
-                            alt='' 
-                            className={NavStyle.userImg}
-                        />
-                    </button>
-                ) : (
-                    <Link href='/login' className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}>
-                        Acceso
-                    </Link>
-                )}
-            </nav>
+  const handleSignOut = async () => {
+    try {
+      setLoading(true);
+      await signOut();
+      router.replace('/login');
+    } catch (error: unknown) {
+      console.log('Error al cerrar sesión:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-            {/* Menú desplegable fuera del `nav` */}
-            {openMenu && (
-                <div className={NavStyle.dropdownMenu}>
-                    <Link href= '/account/profile' className={NavStyle.menuItem}>Perfil</Link>
-                    <Link href= '' className={NavStyle.menuItem}>Configuración</Link>
-                    <button className={NavStyle.logout} onClick={handleSignOut}>
-                        {loading ? <LoaderUi/> : 'Cerrar sesión'}
-                    </button>
-                </div>
-            )}
-        </>
-    );
+  return (
+    <>
+      <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
+        <Link href='/' className={NavStyle.links}>Home</Link>
+        <Link href='/products' className={NavStyle.links}>Productos</Link>
+        {user && (
+        <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
+        )}
+
+        <Link href='/cart' className={NavStyle.linksCart}>
+          <Image src={cart} width={30} height={30} alt='Cart' />
+          {totalItems > 0 && (
+            <span className={NavStyle.cartItemCount}>{totalItems}</span>
+          )}
+        </Link>
+
+        {user ? (
+          <button
+            onClick={() => setOpenMenu(!openMenu)}
+            className={NavStyle.profileButton}
+            aria-label="Abrir menú de usuario"
+          >
+            <Image
+              src={user.image || userImg}
+              width={30}
+              height={30}
+              alt='Usuario'
+              className={NavStyle.userImg}
+            />
+          </button>
+        ) : (
+          <Link
+            href='/login'
+            className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
+          >
+            Acceso
+          </Link>
+        )}
+      </nav>
+
+      {/* Menú desplegable */}
+      {user && openMenu && (
+        <div className={NavStyle.dropdownMenu}>
+          <span className={NavStyle.userName}>
+            {user.name || 'Usuario'}
+          </span>
+          <Link href='/account/profile' className={NavStyle.menuItem}>Perfil</Link>
+          <Link href='/account/settings' className={NavStyle.menuItem}>Configuración</Link>
+          <button className={NavStyle.logout} onClick={handleSignOut}>
+            {loading ? <LoaderUi /> : 'Cerrar sesión'}
+          </button>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default Nav;

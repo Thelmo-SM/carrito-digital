@@ -2,6 +2,7 @@ import { loginTypes, LoginErrors } from "@/types/usersTypes";
 import { useCallback, useState } from "react";
 import { loginService } from "../services/loginService";
 import { FirebaseError } from "firebase/app";
+import { useRouter } from "next/navigation";
 
 
 
@@ -11,6 +12,7 @@ import { FirebaseError } from "firebase/app";
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const router = useRouter();
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -42,9 +44,10 @@ import { FirebaseError } from "firebase/app";
           if(!data.success) {
             setErrorMessage(data.message ?? null);
             setTimeout(() => setErrorMessage(null), 2500);
-            setSuccess(false)
+            setSuccess(false);
           } else {
             setSuccess(true);
+            router.push('/products');
           }
           console.log('Mensaje en la consola: ', data);
         } catch (error: unknown) {

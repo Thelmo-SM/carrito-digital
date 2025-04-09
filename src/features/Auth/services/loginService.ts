@@ -9,6 +9,7 @@ const setTokenInCookie = async (user: User ) => {
     sameSite: 'strict',
     path: '/',
   });
+  console.log('Token guardado en la cookie:', token);
 };
 
 export const loginService = async (user: {email:string, password:string}) => {
