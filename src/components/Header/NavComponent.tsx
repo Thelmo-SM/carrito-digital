@@ -22,7 +22,7 @@ export const Nav = () => {
   const user = useAuthUsers();
   const { isOpen, openModal, closeModal } = useModalForm();
   const router = useRouter();
-  const { totalItems } = useCart();
+  const { totalItems, setCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +37,7 @@ export const Nav = () => {
     try {
       setLoading(true);
       await signOut();
+      setCart([]); // Limpiar el carrito del estado
       router.replace('/login');
     } catch (error: unknown) {
       console.log('Error al cerrar sesión:', error);
@@ -65,9 +66,9 @@ export const Nav = () => {
         onClick={isUser}
         >
           <Image src={cart} width={30} height={30} alt='Cart' />
-          {totalItems > 0 && (
-            <span className={NavStyle.cartItemCount}>{totalItems}</span>
-          )}
+          <span className={NavStyle.cartItemCount}>
+           {user && totalItems > 0 ? totalItems : 0}
+          </span>
         </Link>
 
         {user ? (

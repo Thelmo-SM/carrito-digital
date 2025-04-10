@@ -57,18 +57,28 @@
     border-radius: .2rem;
     margin-top: 1rem;
     color: rgb(223, 230, 235);
+    transition: 0.5s;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: inline-block; 
 }
 .button:hover {
     background-color: rgb(39, 124, 204);
     transition: 0.9s;
 }
 .buttonSuccess {
-    background-color: rgb(1, 163, 1);
-    padding: 1rem;
-    width: 100%;
+    width: 10%;
+    padding: .5rem;
+    margin: auto;
     border-radius: .2rem;
-    margin-top: 1rem;
+    background-color: rgb(1, 163, 1);
     color: rgb(223, 230, 235);
+    transition: 0.5s;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: bold;
+    overflow: hidden;
 }
 
 
@@ -108,6 +118,20 @@
     border-radius: .2rem;
 }
 
+/* .successButton {
+    width: 15%;
+    padding: .5rem;
+    margin: 0 2rem;
+    border-radius: .2rem;
+    background-color: rgb(1, 163, 1);
+    color: rgb(223, 230, 235);
+    transition: 0.5s;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: bold;
+    overflow: hidden;
+  }
+ */
 
 
 

@@ -74,11 +74,11 @@ export const ReviewsComponent = () => {
                           <li key={index}>
                             <p>Calificación: {review.rating}⭐</p>
                             <p>Comentario: {review.comment}</p>
-                            <Link href={`/products/${product.id}`} className={styles.vermas}>
-                              Ver producto
-                            </Link>
                           </li>
                         ))}
+                        <Link href={`/products/${product.id}`} className={styles.vermas}>
+                              Ver producto
+                        </Link>
                       </ul>
                     </div>
                   </li>
