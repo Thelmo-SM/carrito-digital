@@ -7,6 +7,10 @@ import { detailProduct } from "@/types/productTypes";
 import { useCart } from "@/store/ProductCartContext";
 import { getUserName } from "@/utils/firebase";
 import { useEffect, useState } from "react";
+import { IsAuthenticated } from "@/components/UI/Message";
+import ModalForm from "@/components/Modals/modalForm";
+import { useModalForm } from "@/hooks/useModalForm";
+import { useAuthUsers } from "../Auth/hooks/authUsers";
 import Link from "next/link";
 
 export const ProductDetailComponent = ({
@@ -21,7 +25,9 @@ export const ProductDetailComponent = ({
   const { cart,  handleAddToCard, updateProductQuantity } = useCart();
   const [userNames, setUserNames] = useState<string[]>([]);
   const [quantity, setQuantity] = useState(1);
-  const [isProductAdded, setIsProductAdded] = useState(false); // Nuevo estado
+  const [isProductAdded, setIsProductAdded] = useState(false);
+  const { isOpen, openModal, closeModal } = useModalForm();
+  const user = useAuthUsers();
 
   useEffect(() => {
     const fetchUserNames = async () => {
@@ -56,6 +62,12 @@ export const ProductDetailComponent = ({
 
   // Manejar la adición al carrito con la cantidad ajustada
   const handleAddProduct = () => {
+    if (!user) {
+      // Si no está autenticado, abrir el modal
+      openModal();
+      return; // Evitar agregar el producto al carrito
+    }
+
     const existingProduct = cart.find(item => item.id === id);
   
     if (existingProduct) {
@@ -164,6 +176,12 @@ export const ProductDetailComponent = ({
           <p>No hay reseñas para este producto.</p>
         )}
       </div>
+
+      <ModalForm isOpens={isOpen} closeModal={closeModal}>
+              
+              <IsAuthenticated />
+            
+      </ModalForm>
     </div>
   );
 };

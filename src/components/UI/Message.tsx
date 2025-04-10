@@ -1,4 +1,6 @@
  import style from '@/styles/form.module.css';
+ import cartXImg from '../../../public/cart-x.webp';
+ import Image from 'next/image';
 
 
 interface MessageProp {
@@ -31,6 +33,9 @@ export const IsAuthenticated = () => {
     return (
         <div className={style.overlay}>
           <div className={style.modal}>
+            <Image src={cartXImg} width={180} height={180} alt='' 
+            className={style.imgMessage}
+            />
             <h2 className={style.title}>¡Necesitas iniciar sesión!</h2>
             <p className={style.message}>
               Para agregar productos al carrito, primero debes iniciar sesión. Si no tienes una cuenta, por favor regístrate.
