@@ -126,8 +126,10 @@ export const createOrder = async (userId: string, products: { id: string, name: 
       createdAt: serverTimestamp() // Timestamp de cuando se crea la orden
     });
 
-    console.log("Orden creada con ID: ", orderRef.id); // Log del ID de la orden creada
-    return orderRef.id; // Retornamos el ID de la orden creada
+    const orderId = orderRef.id; // Aquí obtienes el orderId único generado por Firebase
+    console.log("Orden creada con éxito, ID:", orderId);
+
+    return orderId;  // Retornamos el ID de la orden creada
 
   } catch (error) {
     console.error("Error al crear la orden:", error);
@@ -290,14 +292,48 @@ async function updateAverageRating(productId: string) {
 }
 
 // Agregar una reseña
-export async function addReview({ productId, userId, rating, comment }: { productId: string, userId: string, rating: number, comment: string }) {
-  if (rating < 1 || rating > 5) throw new Error("Rating debe estar entre 1 y 5");
+export const addReview = async (orderId: string, userId: string, productId: string, review: Review) => {
+  // Accede a la colección de reseñas para el producto específico
+  const reviewsCollectionRef = collection(db, "products", productId, "reviews");
 
-  const reviewsRef = collection(db, `products/${productId}/reviews`);
-  await addDoc(reviewsRef, { userId, rating, comment, createdAt: new Date() });
-  
-  await updateAverageRating(productId);
-}
+  // Estructura de datos para la reseña
+  const reviewData = {
+    orderId: orderId,  // Asegurándote de que el orderId se pase correctamente
+    userId: userId,
+    rating: review.rating,
+    comment: review.comment,
+    createdAt: new Date(), // Fecha de creación de la reseña
+  };
+
+  // Verificar si `orderId`, `userId` y `productId` están definidos antes de intentar agregar la reseña
+  if (reviewData.orderId && reviewData.userId && productId) {
+    try {
+      // Agregar la reseña a la colección de reseñas del producto específico
+      await addDoc(reviewsCollectionRef, reviewData);
+      console.log("Reseña agregada exitosamente");
+    } catch (error) {
+      console.error("Error al agregar reseña:", error);
+    }
+  } else {
+    console.error("Faltan campos necesarios para la reseña.");
+  }
+};
+
+// Función para agregar una reseña a un producto
+export const addReviewToProduct = async (productId: string, reviewData: Review) => {
+  try {
+    // Referencia a la colección de reseñas dentro del producto específico
+    const reviewsCollectionRef = collection(db, "products", productId, "reviews");
+    
+    // Agregar la reseña a Firestore
+    await addDoc(reviewsCollectionRef, reviewData);
+
+    console.log("Reseña agregada correctamente al producto:", productId);
+  } catch (error) {
+    console.error("Error al agregar reseña al producto:", error);
+    throw new Error("No se pudo agregar la reseña.");
+  }
+};
 
 // Obtener productos con sus reseñas
 export async function getProductsWithReviews() {
@@ -499,6 +535,60 @@ export async function getProductWithReviews(productId: string): Promise<detailPr
     return null;
   }
 }
+
+
+
+// Obtener reseñas de productos en una orden específica
+export async function getProductReviewsForOrder(orderId: string) {
+  const ordersRef = collection(db, "orders");
+  const ordersSnapshot = await getDocs(ordersRef);
+
+  // Buscar la orden con el id proporcionado
+  const orderDoc = ordersSnapshot.docs.find((doc) => doc.id === orderId);
+
+  if (!orderDoc) {
+    throw new Error("Orden no encontrada");
+  }
+
+  const orderData = orderDoc.data();
+
+  // Obtener productos con sus reseñas de la orden
+  const productsWithReviews = await Promise.all(orderData.products.map(async (product) => {
+    const productRef = doc(db, `products/${product.id}`);
+    const productSnap = await getDoc(productRef);
+
+    if (!productSnap.exists()) return null;
+
+    const productData = productSnap.data();
+
+    // Obtener solo las reseñas de esa orden
+    const reviewsRef = collection(db, `products/${product.id}/reviews`);
+    const reviewsSnapshot = await getDocs(reviewsRef);
+    const reviews = reviewsSnapshot.docs
+      .map((reviewDoc) => ({ id: reviewDoc.id, ...reviewDoc.data() }))
+      .filter((review) => review.orderId === orderId); // Filtrar por orderId
+
+    return {
+      id: product.id,
+      name: productData?.name,
+      description: productData?.description,
+      price: productData?.price,
+      reviews, // Solo reseñas de esa orden
+    };
+  }));
+
+  // Filtrar productos nulos
+  const validProducts = productsWithReviews.filter((product) => product !== null);
+
+  return {
+    orderId,
+    total: orderData.total,
+    status: orderData.status,
+    createdAt: orderData.createdAt.toDate(),
+    products: validProducts,  // Productos con reseñas de la orden
+  };
+}
+
 
 //Nombre del usuario que realizo la reseña 
 export const getUserName = async (userId: string) => {

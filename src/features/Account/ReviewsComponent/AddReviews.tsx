@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { addReview } from "@/utils/firebase"; // Ajusta la ruta según tu estructura
+import { addReviewToProduct } from "@/utils/firebase"; // Asegúrate de que la ruta sea correcta
 import style from '@/styles/account.module.css';
 import { ValidateMessgeErrror } from "@/components/UI/Message";
+import { Timestamp } from "firebase/firestore"; // Asegúrate de importar Timestamp de Firestore
 
 const ReviewForm = ({ productId, userId }: { productId: string, userId: string }) => {
   const [rating, setRating] = useState(5);
@@ -28,7 +29,6 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
     e.preventDefault();
 
     if (!userId || !productId) {
-      // setMessage("❌ Error: Usuario o producto no definidos.");
       console.error("Error: userId o productId están indefinidos", { userId, productId });
       return;
     }
@@ -41,10 +41,17 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
     setLoading(true);
 
     try {
-      await addReview({ userId, productId, rating, comment });
+      const reviewData = {
+        userId,
+        rating,
+        comment,
+        orderId: "orderIdHere", // Aquí debes obtener el orderId correspondiente
+        createdAt: new Date(Timestamp.now().toMillis()), // Convertir Timestamp a Date
+      };
+
+      await addReviewToProduct(productId, reviewData);
       setMessage("✅ Reseña agregada correctamente.");
       setComment(""); // Limpiar el comentario después de enviarlo
-      console.log(message)
     } catch (error) {
       setMessage("❌ Error al agregar la reseña.");
       console.error("Error al enviar la reseña:", error);
@@ -78,14 +85,11 @@ const ReviewForm = ({ productId, userId }: { productId: string, userId: string }
               onChange={(e) => setComment(e.target.value)}
               rows={3}
             ></textarea>
-            {errors.comment && <ValidateMessgeErrror>
-              {errors.comment}
-              </ValidateMessgeErrror>}
-              {message && <p>{message}</p>}
+            {errors.comment && <ValidateMessgeErrror>{errors.comment}</ValidateMessgeErrror>}
+            {message && <p>{message}</p>}
 
             <button
               type="submit"
-
               className={style.button}
             >
               {loading ? "Enviando..." : "Enviar Reseña"}

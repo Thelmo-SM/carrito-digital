@@ -2,8 +2,8 @@
 
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useEffect, useState } from "react";
-import { getProductsUserReviews } from "@/utils/firebase";
-import {  ProductOrder1, Review } from "@/types/ordersTypes";
+import { getProductsUserReviews } from "@/utils/firebase"; // Asegúrate de tener la función correcta.
+import { ProductOrder1, Review } from "@/types/ordersTypes";
 import styles from "@/styles/account.module.css";
 import Link from "next/link";
 import { LoaderUi } from "@/components/UI/LoaderUi";
@@ -25,6 +25,7 @@ export const ReviewsComponent = () => {
         // Filtramos solo los productos que tienen reseñas del usuario actual
         const filteredOrders: ProductOrder1[] = productsOrders
           .map(order => ({
+
             ...order,
             products: order.products
               .map(product => ({
@@ -46,6 +47,7 @@ export const ReviewsComponent = () => {
 
     fetchProductsWithReviews(); // Llamamos a la función para obtener y filtrar los productos
   }, [user]);
+
 
   return (
     <div className={styles.subContainer}>
@@ -74,11 +76,11 @@ export const ReviewsComponent = () => {
                           <li key={index}>
                             <p>Calificación: {review.rating}⭐</p>
                             <p>Comentario: {review.comment}</p>
-                            <Link href={`/products/${product.id}`} className={styles.vermas}>
-                              Ver producto
-                            </Link>
                           </li>
                         ))}
+                        <Link href={`/products/${product.id}`} className={styles.vermas}>
+                              Ver producto
+                        </Link>
                       </ul>
                     </div>
                   </li>

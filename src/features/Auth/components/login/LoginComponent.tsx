@@ -71,7 +71,7 @@ export const LoginComponent = () => {
             >
           {loading ? <div>
             <LoaderUi/>
-            </div> : success ? 'Exito': 'Iniciar sesión'}
+            </div> : success ? '✔': 'Iniciar sesión'}
           </button>
           <Link href='/register'
           className={Style.Link}
