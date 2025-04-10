@@ -13,7 +13,7 @@ import { useState } from 'react';
 export const CartComponent = () => {
     const user = useAuthUsers();
     const [loading1, setLoading1] = useState(false);
-    const { cart, deleteProduct, updateProductQuantity } = useCart();
+    const { cart, deleteProduct, updateProductQuantity, setCart } = useCart();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
 
     const handleOrder = async () => {
@@ -66,9 +66,13 @@ export const CartComponent = () => {
     
             const data = await response.json();
             window.location = data.sessionUrl;
-    
+            
             if (response.ok) {
                 alert(`Pedido realizado exitosamente. ID de pedido: ${data.orderId}`);
+                setCart([]);
+                if (user?.uid) {
+                    localStorage.removeItem(`cart_${user?.uid}`);
+                }
             } else {
                 alert("Hubo un problema al procesar el pedido.");
             }
