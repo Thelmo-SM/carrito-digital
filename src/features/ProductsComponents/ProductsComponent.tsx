@@ -13,6 +13,10 @@ import { SortFilter } from "./Filters/SortFilter";
 import { CategoryFilter } from "./Filters/CategoryFilter";
 import { LoaderUi } from "@/components/UI/LoaderUi";
 import { useCart } from "@/store/ProductCartContext";
+import { IsAuthenticated } from "@/components/UI/Message";
+import ModalForm from "@/components/Modals/modalForm";
+import { useModalForm } from "@/hooks/useModalForm";
+import { useAuthUsers } from "../Auth/hooks/authUsers";
 
 export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);
@@ -25,6 +29,8 @@ export const ProductsComponent = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const { cart, handleAddToCard, updateProductQuantity } = useCart();
+  const { isOpen, openModal, closeModal } = useModalForm();
+    const user = useAuthUsers();
   const quantity: number = 1; 
 
   // Obtener productos
@@ -128,6 +134,13 @@ export const ProductsComponent = () => {
   };
 
   const handleAddProduct = (product: productsTypes) => {
+    if (!user) {
+      // Si no está autenticado, abrir el modal
+      openModal();
+      return; // Evitar agregar el producto al carrito
+    }
+
+
     const { id, name, soldUnits, price, imageUrl } = product;
   
     const existingProduct = cart.find(item => item.id === id);
@@ -235,6 +248,12 @@ export const ProductsComponent = () => {
           </button>
         ) : ''}
       </div>
+
+      <ModalForm isOpens={isOpen} closeModal={closeModal}>
+            
+            <IsAuthenticated />
+            
+      </ModalForm>
     </section>
   );
 };

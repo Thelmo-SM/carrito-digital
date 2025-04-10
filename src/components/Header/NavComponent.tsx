@@ -11,12 +11,16 @@ import cart from '../../../public/cart (1).webp';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/ProductCartContext';
 import { LoaderUi } from '../UI/LoaderUi';
+import ModalForm from '../Modals/modalForm';
+import { IsAuthenticated } from '../UI/Message';
+import { useModalForm } from '@/hooks/useModalForm';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useAuthUsers();
+  const { isOpen, openModal, closeModal } = useModalForm();
   const router = useRouter();
   const { totalItems } = useCart();
 
@@ -41,6 +45,12 @@ export const Nav = () => {
     }
   };
 
+  const isUser = () => {
+    if(!user) {
+      openModal();
+    };
+  };
+  
   return (
     <>
       <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
@@ -50,7 +60,10 @@ export const Nav = () => {
         <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
         )}
 
-        <Link href='/cart' className={NavStyle.linksCart}>
+        <Link href={!user ? '/' : '/cart'} 
+        className={NavStyle.linksCart}
+        onClick={isUser}
+        >
           <Image src={cart} width={30} height={30} alt='Cart' />
           {totalItems > 0 && (
             <span className={NavStyle.cartItemCount}>{totalItems}</span>
@@ -94,6 +107,11 @@ export const Nav = () => {
           </button>
         </div>
       )}
+      <ModalForm isOpens={isOpen} closeModal={closeModal}>
+                    
+             <IsAuthenticated />
+                    
+      </ModalForm>
     </>
   );
 };

@@ -118,7 +118,7 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
   }
   
   /* Modal con el mensaje */
@@ -179,5 +179,13 @@
 .closeButton:hover {
     background-color: rgb(39, 124, 204);
     color: rgb(223, 230, 235);
+}
+
+.imgMessage {
+    background-color: rgb(67, 123, 175);
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
 }
 
