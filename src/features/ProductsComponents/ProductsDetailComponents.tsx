@@ -164,7 +164,7 @@ export const ProductDetailComponent = ({
         {reviews.length > 0 ? (
           <div className={Style.reviews}>
             {reviews.map((review, index) => (
-              <div key={review.userId} className={Style.review}>
+              <div key={review.id} className={Style.review}>
                 <p><strong>Usuario:</strong> {userNames[index]}</p>
                 <p><strong>Calificación:</strong> <span className={Style.rating}>{review.rating}</span></p>
                 <p className={Style.comment}><strong>Comentario:</strong> {review.comment}</p>

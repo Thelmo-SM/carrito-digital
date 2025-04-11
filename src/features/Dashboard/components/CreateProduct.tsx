@@ -24,8 +24,21 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
     handleChange,
     handleSubmit,
     handleFileChange,
-    handleCategoryChange
+    handleCategoryChange,
+    handleCategoryRemove
   } = useCreateItems(initialProductsValues, getProduct);
+
+  const categories = [
+    "Computadoras",
+    "Laptops",
+    "Tablets",
+    "Gaming",
+    "Bocinas",
+    "Almacenamiento",
+    "Imagen y Sonido",
+    "Oficina",
+    'TV',
+  ];
 
   return (
     <div className={Style.container}>
@@ -74,15 +87,47 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
           />
         </div>
         <div>
-          <label htmlFor="categorie_id">Categoría</label>
-          <input
-            type="text"
-            id="categorie_id"
-            name="categorie"
-            value={form.categorie.join(", ")}
-            onChange={handleCategoryChange}
-          />
-        </div>
+         <label htmlFor="categorie_id">Categoría</label>
+          <select
+            multiple
+           id="categorie_id"
+           name="categorie"
+            value={form.categorie} 
+           onChange={handleCategoryChange}
+            className={Style.input}
+
+          >
+           {categories.map((category) => (
+             <option key={category} value={category}
+             className={Style.option}
+             >
+               {category}
+             </option>
+           ))}
+         </select>
+
+  {form.categorie.length > 0 && (
+    <div className={Style.selectedCategories}>
+      <p>Categorías seleccionadas:</p>
+      <ul>
+        {form.categorie.map((cat, idx) => (
+          <li key={idx} className={Style.categoryItem}>
+            {cat} 
+            <button
+              type="button"
+              onClick={() => handleCategoryRemove(cat)}
+              className={Style.removeCategory}
+            >
+              Eliminar
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
+
         <div>
           <label htmlFor="description_id">Descripción</label>
           <textarea

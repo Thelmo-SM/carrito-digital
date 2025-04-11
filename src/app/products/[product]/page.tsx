@@ -43,7 +43,7 @@ export const DetailProduct = async ({ params }: DatilIdProps) => {
             price={price} 
             soldUnits={soldUnits} 
             imageUrl={imageUrl} 
-            key={id} 
+            // key={id} 
             id={id!} 
             reviews={reviews}  // Pasar las reseñas al componente
         />

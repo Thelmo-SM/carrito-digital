@@ -3,9 +3,38 @@
     width: 100%;
     margin: 0 auto;
     overflow: hidden;
-    padding: 0;
+    padding: 4rem 0 0 0;
   }
   
+  .carouselContainer > h1 {
+    font-size: 2rem;
+    padding: 2rem 0;
+    text-align: center;
+    margin: 1rem 0;
+    /* box-shadow: 0 .1rem .9rem .2rem #cad1dd; */
+    
+    /* Efecto de escritura */
+    overflow: hidden; /* Oculta el texto mientras se escribe */
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+    /* border-right: 3px solid #444444; Añade un cursor de escritura */
+    animation: typing 2s steps(40) 1s 1 normal both, blink 0.75s step-end infinite;
+  }
+  
+  /* Animación de escritura */
+  @keyframes typing {
+    from {
+      width: 0;
+      color: rgb(67, 123, 175);;
+    }
+    to {
+      width: 100%;
+      color: #444444;
+      box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    }
+  }
+
+  /*///////////////////////////////////*/
+
   .carouselTrack {
     display: flex;
     transition: transform 0.5s ease-in-out;
