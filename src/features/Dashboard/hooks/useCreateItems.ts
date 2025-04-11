@@ -27,12 +27,28 @@ export const useCreateItems = (
     }
   };
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setForm((prev) => ({
-      ...prev,
-      categorie: value.split(",").map((cat) => cat.trim()),
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    
+    // Agregar las nuevas categorías seleccionadas sin reemplazar las anteriores
+    setForm(prevForm => {
+      // Fusionamos las categorías previas con las nuevas seleccionadas
+      const updatedCategories = Array.from(new Set([...prevForm.categorie, ...selectedOptions])); // Usamos Set para evitar duplicados
+      return {
+        ...prevForm,
+        categorie: updatedCategories
+      };
+    });
+  
+    console.log("Categorias seleccionadas:", selectedOptions);
+  };
+  const handleCategoryRemove = (category: string) => {
+    setForm(prevForm => ({
+      ...prevForm,
+      categorie: prevForm.categorie.filter(cat => cat !== category)
     }));
+    console.log("Categoría eliminada:", category);
   };
 
   // Cambiar la ruta para guardar en la colección global 'products'
@@ -88,6 +104,7 @@ export const useCreateItems = (
     handleChange,
     handleSubmit,
     handleFileChange,
-    handleCategoryChange
+    handleCategoryChange,
+    handleCategoryRemove
   };
 };

@@ -39,6 +39,7 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 3rem;
+    
   }
 
   .imgContainer {
@@ -116,6 +117,12 @@
 }
 .noDocuments {
   margin: 4rem 0;
+}
+.orderContainer {
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
 }
 .orderDetails {
   padding: 24px;

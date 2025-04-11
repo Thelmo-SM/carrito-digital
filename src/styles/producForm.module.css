@@ -107,3 +107,44 @@
     margin: .4rem auto;
     width: 100%;
 }
+
+.selectedCategories {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #e0e8f0;
+    border-radius: 0.3rem;
+    font-size: 0.9rem;
+  }
+  
+  .selectedCategories p {
+    margin: 0;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .categoryItem {
+    display: inline-block;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    padding: 0.2rem 0.5rem;
+    margin: 0.2rem;
+    border-radius: .2rem;
+    font-size: 0.85rem;
+  }
+
+  .removeCategory {
+    background-color: #dc3545;
+    color: #e0e8f0;
+    font-weight: bold;
+    padding: .3rem 1rem;
+    margin: 0 0 0 1rem;
+    border-radius: .2rem;
+  }
+
+  .option {
+    border-radius: .2rem;
+    margin: 1rem;
+    padding: .5rem 2rem;
+    color: rgb(223, 230, 235);
+    background-color: rgb(67, 123, 175);
+  }

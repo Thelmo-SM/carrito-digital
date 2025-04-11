@@ -36,6 +36,7 @@ export const HomeComponent = () => {
     return (
       <div>
          <article className={styles.carouselContainer}>
+        <h1>Bienvenido/a a tu carrito digital</h1>
         <div className={styles.carouselTrack} style={{ transform: `translateX(-${current * 100}%)` }}>
           {images.map((src, index) => (
             <div key={index} className={styles.slide}>

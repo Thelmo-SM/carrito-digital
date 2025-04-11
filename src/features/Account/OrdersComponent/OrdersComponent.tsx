@@ -50,9 +50,11 @@ export const OrdersComponent = () => {
           <p>{"Cargando tus pedidos..."}</p>
           </div>
       ) : orders.length === 0 ? <p>No hay compras para mostrar.</p> :(
-        <ul className={style.cardContainer}>
+        <ul className={style.orderContainer}>
           {orders.map((order) => (
-            <li key={order.id}>
+            <li key={order.id}
+            className={style.cardContainer}
+            >
               <h3>Pedido #{order.id}</h3>
               <p>Total: ${order.total}</p>
               <p>Estado: {order.status}</p>

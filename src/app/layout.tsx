@@ -7,6 +7,7 @@ import "./globals.css";
 // import { redirect, usePathname } from "next/navigation";
 import Style from '@/styles/layout.module.css';
 import Nav from "@/components/Header/NavComponent";
+import Footer from "@/components/Footer/Footer";
 import { ProductCartProvider } from "@/store/ProductCartContext";
 import { AddressProvider } from "@/store/AddressContext";
 
@@ -48,6 +49,7 @@ export default function RootLayout({
         <main className={Style.container}>
         {children}
         </main>
+        <Footer />
       </body>
     </html>
     </AddressProvider>
