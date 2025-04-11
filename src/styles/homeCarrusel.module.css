@@ -17,7 +17,7 @@
     overflow: hidden; /* Oculta el texto mientras se escribe */
     white-space: nowrap; /* Evita que el texto se divida en varias líneas */
     /* border-right: 3px solid #444444; Añade un cursor de escritura */
-    animation: typing 2s steps(40) 1s 1 normal both, blink 0.75s step-end infinite;
+    animation: typing 2s steps(60) 0.5s 1 normal both, blink 0.7s step-end infinite;
   }
   
   /* Animación de escritura */

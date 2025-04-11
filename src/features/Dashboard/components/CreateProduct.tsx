@@ -2,6 +2,7 @@ import { useCreateItems } from "../hooks/useCreateItems";
 import { productsTypes } from "@/types/productTypes";
 import Style from '@/styles/producForm.module.css'
 import Image from "next/image";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 const initialProductsValues: productsTypes = {
   file: { path: '', url: '' },
@@ -14,19 +15,22 @@ const initialProductsValues: productsTypes = {
 
 type CreateProductProps = {
   getProduct: () => Promise<void>;
+  closeModal?: () => void;
 };
 
-export const CreateProduct = ({ getProduct }: CreateProductProps) => {
+export const CreateProduct = ({ getProduct, closeModal = () => {} }: CreateProductProps) => {
 
   const {
     form,
     imagePreview,
+    loading,
+    success,
     handleChange,
     handleSubmit,
     handleFileChange,
     handleCategoryChange,
     handleCategoryRemove
-  } = useCreateItems(initialProductsValues, getProduct);
+  } = useCreateItems(initialProductsValues, getProduct, closeModal);
 
   const categories = [
     "Computadoras",
@@ -138,7 +142,13 @@ export const CreateProduct = ({ getProduct }: CreateProductProps) => {
             className={Style.textarea}
           ></textarea>
         </div>
-        <button type="submit">Crear</button>
+        <button type="submit"
+        className={`${ success ? Style.buttonSuccess : Style.formButton}`}
+        >
+          {loading ? (
+          <LoaderUi />
+          ) : success ? '✔ Producto creado' : 'Crear producto'}
+        </button>
       </form>
     </div>
   );

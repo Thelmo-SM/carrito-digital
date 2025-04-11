@@ -4,11 +4,14 @@ import { productsTypes } from "@/types/productTypes";
 
 export const useCreateItems = (
   initialValue: productsTypes,
-  getItems: () => Promise<void>
+  getItems: () => Promise<void>,
+  closeModal: () => void
 ) => {
   const [form, setForm] = useState(initialValue);
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -63,44 +66,56 @@ export const useCreateItems = (
 
   const handleSubmit = async (e: React.FormEvent, items: productsTypes) => {
     e.preventDefault();
-
+    setLoading(true);
+  
     if (!file) {
       console.log("No se ha seleccionado ninguna imagen");
+      setLoading(false);
       return;
     }
-
+  
     try {
       const formData = new FormData();
       formData.append("image", file);
-
+  
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
-    
+  
       const data = await response.json();
-      setForm(initialValue);
+      setForm(initialValue); // Resetea los valores del formulario a los valores iniciales
+      setFile(null); // Limpia el archivo de imagen
+      setImagePreview(null); // Limpia la vista previa de la imagen
       console.log("Respuesta de Cloudinary:", data);
-    
+  
       if (!response.ok || !data.secure_url) {
         console.error("Error al subir la imagen a Cloudinary:", data.message || "URL no disponible");
         return;
       }
-
+  
       // Guardar el producto con la URL de la imagen en la colección pública
       const newItem = { ...items, imageUrl: data.secure_url };
       await itemCollection(newItem);
-
+  
       console.log("Producto guardado con imagen en 'products'");
       getItems(); // Recargar productos
+      closeModal();
+      setSuccess(true);
     } catch (error) {
       console.error("Error en el proceso de subida:", error);
+    } finally {
+      setLoading(false);
+      setSuccess(false);
     }
   };
+  
 
   return {
     form,
     imagePreview,
+    loading,
+    success,
     handleChange,
     handleSubmit,
     handleFileChange,

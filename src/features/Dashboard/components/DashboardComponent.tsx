@@ -83,7 +83,7 @@ export const DashboardComponent = () => {
 
         <ModalForm isOpens={isOpen} closeModal={closeModal}>
           {modalType === 'create' ? (
-            <CreateProduct getProduct={getItems} />
+            <CreateProduct getProduct={getItems} closeModal={closeModal}/>
           ) : modalType === 'edit' && selectedProduct ? (
             <UpdateProducts product={selectedProduct} getProduct={getItems} />
           ) : null}
