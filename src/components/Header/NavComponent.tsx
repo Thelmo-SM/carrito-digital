@@ -2,7 +2,7 @@
 
 import NavStyle from '@/styles/nav.module.css';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { signOut } from '@/utils/firebase';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import Image from 'next/image';
@@ -18,28 +18,47 @@ import { useModalForm } from '@/hooks/useModalForm';
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const user = useAuthUsers();
   const { isOpen, openModal, closeModal } = useModalForm();
   const router = useRouter();
   const { totalItems, setCart } = useCart();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY > 350);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Cerrar menú al hacer clic fuera
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setOpenMenu(false);
+      }
+    };
+
+    if (openMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenu]);
 
   const handleSignOut = async () => {
     try {
       setLoading(true);
       await signOut();
-      setCart([]); // Limpiar el carrito del estado
+      setCart([]); // Limpiar carrito
       router.replace('/login');
-    } catch (error: unknown) {
+    } catch (error) {
       console.log('Error al cerrar sesión:', error);
     } finally {
       setLoading(false);
@@ -47,27 +66,26 @@ export const Nav = () => {
   };
 
   const isUser = () => {
-    if(!user) {
-      openModal();
-    };
+    if (!user) openModal();
   };
-  
+
   return (
     <>
       <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
         <Link href='/' className={NavStyle.links}>Home</Link>
         <Link href='/products' className={NavStyle.links}>Productos</Link>
         {user && (
-        <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
+          <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
         )}
 
-        <Link href={!user ? '/' : '/cart'} 
-        className={NavStyle.linksCart}
-        onClick={isUser}
+        <Link
+          href={!user ? '/' : '/cart'}
+          className={NavStyle.linksCart}
+          onClick={isUser}
         >
           <Image src={cart} width={30} height={30} alt='Cart' />
           <span className={NavStyle.cartItemCount}>
-           {user && totalItems > 0 ? totalItems : 0}
+            {user && totalItems > 0 ? totalItems : 0}
           </span>
         </Link>
 
@@ -95,23 +113,52 @@ export const Nav = () => {
         )}
       </nav>
 
-      {/* Menú desplegable */}
-      {user && openMenu && (
-        <div className={NavStyle.dropdownMenu}>
+      {/* Menú desplegable con animación y ref */}
+      {user &&  (
+        <div
+          ref={dropdownRef}
+          className={`${NavStyle.dropdownMenu} ${openMenu ? NavStyle.show : ''}`}
+        >
           <span className={NavStyle.userName}>
             {user.name || 'Usuario'}
           </span>
-          <Link href='/account/profile' className={NavStyle.menuItem}>Perfil</Link>
-          <Link href='/account/settings' className={NavStyle.menuItem}>Configuración</Link>
+          <Link href='/account/profile' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >Perfil
+          </Link>
+          <Link href='/account/orders' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >
+            Tus pedidos
+            </Link>
+          <Link href='/account/reviews' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >
+            Tus reseñas
+            </Link>
+          <Link href='/account/addresses' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >
+            Direcciones
+            </Link>
+          <Link href='' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >
+            Notificaciones
+            </Link>
+          <Link href='/account/settings' className={NavStyle.menuItem}
+          onClick={() => setOpenMenu(false)}
+          >
+            Configuración
+            </Link>
           <button className={NavStyle.logout} onClick={handleSignOut}>
             {loading ? <LoaderUi /> : 'Cerrar sesión'}
           </button>
         </div>
       )}
+
       <ModalForm isOpens={isOpen} closeModal={closeModal}>
-                    
-             <IsAuthenticated />
-                    
+        <IsAuthenticated />
       </ModalForm>
     </>
   );

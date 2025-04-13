@@ -1,31 +1,13 @@
-import styles from '@/styles/account.module.css';
-import Link from 'next/link';
+// import styles from '@/styles/account.module.css';
+import styles from '@/styles/DashboardSidebar.module.css';
+import Style from '@/styles/account.module.css';
+import AccountSidebar from '@/features/Account/AccountSidebar';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
     return (
-      <div className={styles.container}>
-        <header className={styles.headerContainer}>
-          {/* Aquí puedes incluir un header global */}
-          <nav className={styles.nav}>
-          <div>
-          <Link href= '/account/profile' >Perfil</Link>
-          </div>
-          <div>
-          <Link href= '/account/orders' >Tus pedidos</Link>
-          </div>
-          <div>
-          <Link href= '/account/reviews' >Tus reseñas</Link>
-          </div>
-          <div>
-          <Link href= '/account/addresses' >Direcciones</Link>
-          </div>
-          <div>
-          <Link href= '' >Notificaciones</Link>
-          </div>
-          </nav>
-
-        </header>
-        <main className="flex-1">{children}</main>
+      <div className={Style.container}>
+        <AccountSidebar />
+        <main className={styles.mainContent}>{children}</main>
       </div>
     );
   };
