@@ -1,0 +1,40 @@
+.container {
+    padding: 1.5rem;
+    background: white;
+    border-radius: 0.5rem;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .cell {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
+  
+  .entregado {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .pendiente {
+    background-color: #fef9c3;
+    color: #92400e;
+  }
+  
+  .cancelado {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  

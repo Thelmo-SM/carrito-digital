@@ -124,7 +124,7 @@
   flex-wrap: wrap;
   gap: 4rem;
 }
-.orderDetails {
+.orderDetailsEntregado {
   padding: 24px;
   background-color: rgb(222, 226, 230);
   border-radius: .2rem;
@@ -134,6 +134,17 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.orderDetails {
+  margin: auto
+}
+
+.orderDetails .productItem {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .title {
@@ -295,4 +306,18 @@
 }
 .email {
   color: rgb(67, 123, 175);;
+}
+
+.statusP {
+  color: rgb(155, 115, 115);
+  margin-left: .3rem;
+}
+.statusSuccess {
+  color:  rgb(1, 163, 1);
+  margin-left: .3rem;
+}
+
+.verProduct {
+padding: 5rem 0;
+color: rgb(67, 123, 175);
 }

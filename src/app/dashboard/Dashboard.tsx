@@ -1,7 +1,13 @@
-import DashboardComponent from "@/features/Dashboard/components/DashboardComponent";
+import RecentOrders from "@/features/Dashboard/components/RecentOrders";
+import SalesChart from "@/features/Dashboard/components/SalesChart";
+import SummaryCards from "@/features/Dashboard/components/SummaryCards";
 
 export default function Dashboard() {
     return (
-        <DashboardComponent />
+        <>
+            <SummaryCards />
+            <SalesChart />
+            <RecentOrders />
+        </>
     );
 };

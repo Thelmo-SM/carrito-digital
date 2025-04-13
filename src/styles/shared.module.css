@@ -1,0 +1,13 @@
+
+
+.btn {
+    margin: .5rem;
+    background-color: rgb(67, 123, 175);
+    color: #d1d9e6;
+    padding: .3rem 1rem;
+    border-radius: .2rem;
+    transition: 0.2s;
+}
+.btn:hover {
+    background-color: rgb(39, 124, 204);
+}

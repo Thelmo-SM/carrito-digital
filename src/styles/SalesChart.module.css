@@ -1,0 +1,14 @@
+.chartContainer {
+  background-color: rgb(223, 230, 235);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    margin-bottom: 2rem;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #444444;
+  }
+  

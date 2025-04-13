@@ -1,0 +1,50 @@
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sidebar {
+    width: 240px;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    padding: 2rem 1rem;
+  }
+  
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: rgb(223, 230, 235);
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar li {
+    margin-bottom: 1rem;
+  }
+  
+  .sidebar a {
+    color: rgb(223, 230, 235);
+    text-decoration: none;
+    
+    padding: 0 1.4rem;
+    margin: 2rem 0;
+    transition: 0.5s;
+    padding: .1rem 1rem;
+    border-radius: .2rem;
+  }
+  
+  .sidebar a:hover {
+    box-shadow: 0 .1rem .9rem .1rem #d1d9e6;
+    text-decoration: none;
+  }
+  
+  .mainContent {
+    flex: 1;
+    padding: 10rem 5rem;
+    background-color: rgb(222, 226, 230);
+  }
+  

@@ -72,7 +72,7 @@ export const DashboardComponent = () => {
 
     return (
       <div className={Style.container}>
-      <h2>Administración</h2>
+      <h2>Administración de productos</h2>
       <h3>{user?.email}</h3>
 
       <div className={Style.form}>
