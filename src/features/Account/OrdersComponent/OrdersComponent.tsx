@@ -10,6 +10,7 @@ import ReviewForm from "../ReviewsComponent/AddReviews";
 import { useModalForm } from "@/hooks/useModalForm";
 import ModalForm from "@/components/Modals/modalForm";
 import { LoaderUi } from "@/components/UI/LoaderUi";
+import Link from "next/link";
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState<orderTypes[]>([]);
@@ -57,7 +58,12 @@ export const OrdersComponent = () => {
             >
               <h3>Pedido #{order.id}</h3>
               <p>Total: ${order.total}</p>
-              <p>Estado: {order.status}</p>
+              <p>Estado:  
+                 <span 
+                className={`${order.status === 'Entregado' ? style.statusSuccess : style.statusP}`}>
+                 {order.status}
+                </span>
+              </p>
               <p>Fecha: {new Date(order.createdAt).toLocaleDateString()}</p>
               <button onClick={() => {
                handleOrderClick(order)
@@ -76,11 +82,15 @@ export const OrdersComponent = () => {
       {/* Mostrar detalles si hay una orden seleccionada */}
       {selectedOrder && (
           <ModalForm isOpens={isOpen} closeModal={closeModal}>
-        <div className={style.orderDetails}>
+        <div className={`${selectedOrder.status === 'Entregado' ? style.orderDetailsEntregado : style.orderDetails}`}>
           <h2 className={style.title}>Detalles del Pedido #{selectedOrder.id}</h2>
           <div className={style.status}>
           <p  className={style.text}>Total: ${selectedOrder.total}</p>
-          <p className={style.text}>Estado: {selectedOrder.status}</p>
+          <p className={style.text}>Estado: 
+          <span className={`${selectedOrder.status === 'Entregado' ? style.statusSuccess : style.statusP}`}> 
+          {selectedOrder.status}
+          </span>
+          </p>
           <p className={style.text}>Fecha: {new Date(selectedOrder.createdAt).toLocaleDateString()}</p>
           </div>
           <h3 className={style.text}>Productos:</h3>
@@ -101,8 +111,19 @@ export const OrdersComponent = () => {
                 <div className={style.productInfo}>
                   <span className={style.productInfo}>{product.name}</span> - ${product.price} x {product.quantity}
                   </div>
+                  <Link href={`/products/${product.id}`}
+                  className={style.verProduct}
+                  >
+                  ver producto
+                  </Link>
                   </div>
-                <ReviewForm productId={product.id} userId={user?.uid} key={index}/>
+                {
+                selectedOrder.status === 'Entregado' &&
+                <ReviewForm 
+                productId={product.id} 
+                userId={user?.uid} 
+                key={index}/>
+                }
               </li>
             ))}
           </ul>

@@ -1,0 +1,26 @@
+.container {
+    padding: 1rem;
+    background-color: rgb(223, 230, 235);
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #444444;
+  }
+  
+  .cell {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  

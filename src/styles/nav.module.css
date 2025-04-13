@@ -107,6 +107,18 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    /* position: absolute; */
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 10;
+  }
+  .dropdownMenu.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 
   .menuItem {
@@ -131,6 +143,7 @@
     transition: 0.2s;
     width: 100%;
   }
+  
 
   .logout:hover {
     background-color: #f54e5e;
@@ -168,4 +181,18 @@
 .linksCart:hover {
     box-shadow: 0 .1rem .9rem .1rem #d1d9e6;
     text-decoration: none;
+}
+
+.userName {
+  font-size: 1.3em;
+  color: #444444;
+  font-weight: bold;
+  margin: 0;
+  padding: 0 1.4rem;
+  margin: auto 0;
+  transition: 0.5s;
+  padding: .1rem 1rem;
+  border-radius: .2rem;
+  position: relative;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
 }

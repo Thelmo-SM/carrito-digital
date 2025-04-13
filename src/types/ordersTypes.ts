@@ -5,6 +5,7 @@ export interface orderTypes {
     createdAt: Date; // Cambia a Date si quieres usar objetos Date reales
     products: ProductOrderTypes[];
     shippingAddress: ShippingAddress | null;
+    client?: string;
   }
 
 export interface ProductOrderTypes {

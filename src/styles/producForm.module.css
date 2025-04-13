@@ -63,15 +63,16 @@
     padding: .1rem;
 }
 
-.formContainer > button {
+.formButton {
     background-color: rgb(67, 123, 175);
     padding: .8rem;
     width: 100%;
     border-radius: .2rem;
     margin-top: 1rem;
     color: rgb(223, 230, 235);
+    transition: 0.5s;
 }
-.formContainer > button:hover {
+.formButton:hover {
     background-color: rgb(39, 124, 204);
     transition: 0.9s;
 }
@@ -148,3 +149,16 @@
     color: rgb(223, 230, 235);
     background-color: rgb(67, 123, 175);
   }
+
+  .buttonSuccess {
+    width: fit-content;
+    padding: 0.5rem 1rem;
+    margin: 1rem auto;
+    border-radius: 0.5rem;
+    background-color: rgb(1, 163, 1);
+    color: white;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+    display: block;
+  }
+  

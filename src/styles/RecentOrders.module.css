@@ -1,0 +1,51 @@
+.container {
+    background-color: rgb(223, 230, 235);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  }
+  
+  .title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #444444;
+  }
+  
+  .tableWrapper {
+    overflow-x: auto;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table th,
+  .table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .badge {
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .entregado {
+    background-color: #dcfce7;
+    color: #166534;
+  }
+  
+  .pendiente {
+    background-color: #fef9c3;
+    color: #92400e;
+  }
+  
+  .cancelado {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  

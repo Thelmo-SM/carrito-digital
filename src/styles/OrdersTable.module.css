@@ -1,0 +1,26 @@
+.container {
+    padding: 1.5rem;
+    background: rgb(223, 230, 235);
+    border-radius: 0.2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #444444;
+  }
+  
+  .cell {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  
+  .badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
