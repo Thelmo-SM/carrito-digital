@@ -6,7 +6,27 @@ export interface orderTypes {
     products: ProductOrderTypes[];
     shippingAddress: ShippingAddress | null;
     client?: string;
+    orderId?: string;
+    sessionId: string;
+    userId: string;
   }
+
+  export type Product = {
+    id: string;
+    imageUrl: string;
+    name: string;
+    price: string;  // Lo cambiamos a string para que coincida con los datos
+    quantity: number;
+  };
+
+  export type OrderDetailComponentProps = {
+    id: string;
+    total: number;
+    status: string;
+    createdAt: Date;
+    products: Product[];
+    shippingAddress: ShippingAddress;
+  };
 
 export interface ProductOrderTypes {
     id: string;

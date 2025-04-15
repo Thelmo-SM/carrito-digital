@@ -1,0 +1,69 @@
+.container {
+    font-family: 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .orderInfo,
+  .shippingAddress,
+  .products {
+    margin-bottom: 2rem;
+  }
+  
+  .orderInfo p,
+  .shippingAddress p,
+  .products p {
+    font-size: 1rem;
+    color: #555;
+  }
+  
+  .shippingAddress h3,
+  .products h3 {
+    font-size: 1.25rem;
+    color: #222;
+    margin-bottom: 0.5rem;
+  }
+  
+  .products ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .product {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+  }
+  
+  .product img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 1rem;
+  }
+  
+  .product div {
+    flex-grow: 1;
+  }
+  
+  .product p {
+    margin: 0.2rem 0;
+  }
+  
+  .product p strong {
+    color: #000;
+  }
+  

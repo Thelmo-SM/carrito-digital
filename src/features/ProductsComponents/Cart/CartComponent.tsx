@@ -18,71 +18,69 @@ export const CartComponent = () => {
 
     const handleOrder = async () => {
         if (!user?.uid) {
-            alert("Por favor, inicie sesión para realizar un pedido.");
-            return;
+          alert("Por favor, inicie sesión para realizar un pedido.");
+          return;
         }
-        
+      
         if (cart.length === 0) {
-            alert("El carrito está vacío.");
-            return;
+          alert("El carrito está vacío.");
+          return;
         }
-        
+      
         const productIds = cart.map(item => item.id).filter(id => id !== null);
         if (productIds.length === 0) {
-            alert("No hay productos válidos en el carrito.");
-            return;
+          alert("No hay productos válidos en el carrito.");
+          return;
         }
-        
+      
         // Verificar si la dirección de envío es válida
         if (!defaultAddress) {
-            alert("No tienes una dirección de envío predeterminada.");
-            return;
+          alert("No tienes una dirección de envío predeterminada.");
+          return;
         }
-        
+      
         // Preparar los datos para el backend
         const orderData = {
-            userId: user.uid,
-            products: cart.map(item => ({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                quantity: item.units ?? 1,
-                imageUrl: item.imageUrl
-            })),
-            total: totalCart,
-            shippingAddress: defaultAddress,  // Usar la dirección predeterminada
+          userId: user.uid,
+          products: cart.map(item => ({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            quantity: item.units ?? 1,
+            imageUrl: item.imageUrl
+          })),
+          total: totalCart,
+          shippingAddress: defaultAddress,  // Usar la dirección predeterminada
         };
-        
+      
         try {
-            setLoading1(true);
-            // Enviar los datos al backend para crear el pedido
-            const response = await fetch('/api/checkout', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            });
-    
-            const data = await response.json();
-            window.location = data.sessionUrl;
-            
-            if (response.ok) {
-                alert(`Pedido realizado exitosamente. ID de pedido: ${data.orderId}`);
-                setCart([]);
-                if (user?.uid) {
-                    localStorage.removeItem(`cart_${user?.uid}`);
-                }
-            } else {
-                alert("Hubo un problema al procesar el pedido.");
-            }
+          setLoading1(true);
+          // Enviar los datos al backend para crear el pedido
+          const response = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+          });
+      
+          const data = await response.json();
+      
+          // Revisar si la respuesta contiene la URL de Stripe
+          if (response.ok && data.url) {
+            // Redirigir al usuario a la URL de Stripe
+            window.location = data.url;
+          } else {
+            console.error('Error en la respuesta:', data);
+            alert("Hubo un problema al procesar el pedido.");
+          }
         } catch (error) {
-            alert("Error al procesar el pedido.");
-            console.error(error);
+          alert("Error al procesar el pedido.");
+          console.error(error);
         } finally {
-            setLoading1(false);
+          setLoading1(false);
         }
-    };
+      };
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
 

@@ -40,6 +40,7 @@ export const OrdersComponent = () => {
 
   const handleOrderClick = (order: orderTypes) => {
     setSelectedOrder(order); // Establecer la orden seleccionada
+    console.log(order);
   };
 
   return (
@@ -53,9 +54,11 @@ export const OrdersComponent = () => {
       ) : orders.length === 0 ? <p>No hay compras para mostrar.</p> :(
         <ul className={style.orderContainer}>
           {orders.map((order) => (
+            
             <li key={order.id}
             className={style.cardContainer}
             >
+            <Link href={`/account/orders/${order.sessionId}`}>Ver detalle</Link>
               <h3>Pedido #{order.id}</h3>
               <p>Total: ${order.total}</p>
               <p>Estado:  

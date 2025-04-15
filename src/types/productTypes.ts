@@ -54,6 +54,7 @@ export interface detailProduct {
     imageUrl: string;
     reviews: Review[];
   }
+  
 
 export interface productTypeContext {
     cart: cartTypes[]; 
