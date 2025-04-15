@@ -7,10 +7,14 @@ import { OrderDetailComponentProps } from '@/types/ordersTypes';
 import styles from '@/styles/OrderDetailComponent.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import ReviewForm from '../ReviewsComponent/AddReviews';
+import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 
 const OrderDetailComponent = () => {
   const { session_id } = useParams();
   const [order, setOrder] = useState<OrderDetailComponentProps | null>(null);
+  const [showReviewForm, setShowReviewForm] = useState<{ [productId: string]: boolean }>({});
+  const user = useAuthUsers();
 
   useEffect(() => {
     const fetchOrder = async () => {
@@ -28,42 +32,78 @@ const OrderDetailComponent = () => {
 
   const { id, total, status, createdAt, products, shippingAddress } = order;
 
+  const toggleReviewForm = (productId: string) => {
+    setShowReviewForm((prev) => ({
+      ...prev,
+      [productId]: !prev[productId],
+    }));
+  };
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Detalles de la Orden</h2>
-      
+
       <div className={styles.orderInfo}>
         <p><strong>ID de la orden:</strong> {id}</p>
-        <p><strong>Fecha de compra:</strong> {createdAt.toLocaleDateString()}</p>
-        <p><strong>Estado:</strong> {status}</p>
+        <p><strong>Fecha de compra:</strong> {new Date(createdAt).toLocaleDateString()}</p>
+        <p><strong>Estado:</strong> <span className={`${status === 'Entregado' ? styles.statusSuccess: ''}`}>{status}</span></p>
         <p><strong>Total:</strong> RD${total.toLocaleString()}</p>
       </div>
-      
+
       <div className={styles.shippingAddress}>
         <h3>Dirección de envío</h3>
         <p>{shippingAddress.street}</p>
         <p>{shippingAddress.city}, {shippingAddress.state}</p>
         <p>{shippingAddress.postalCode}, {shippingAddress.country}</p>
       </div>
-      
+
       <div className={styles.products}>
         <h3>Productos comprados</h3>
         <ul>
           {products.map((product) => (
-            <li key={product.id} className={styles.product}>
-              <Image src={product.imageUrl} 
+          <li key={product.id} className={styles.product}>
+          <div className={styles.productTop}>
+            <Image 
+              src={product.imageUrl} 
               alt={product.name} 
               className={styles.productImage} 
-              width={400} height={400}
-              />
-              <div>
-                <p><strong>{product.name}</strong></p>
-                <p>Precio: RD${product.price}</p>
-                <p>Cantidad: {product.quantity}</p>
-                <p><strong>Total: RD${(parseInt(product.price) * product.quantity).toLocaleString()}</strong></p>
+              width={100} 
+              height={100}
+            />
+        
+            <div className={styles.productContent}>
+              <p><strong>{product.name}</strong></p>
+              <p>Precio: RD${product.price}</p>
+              <p>Cantidad: {product.quantity}</p>
+              <p><strong>Total: RD${(parseInt(product.price) * product.quantity).toLocaleString()}</strong></p>
+        
+              <div className={styles.actions}>
+                <Link href={`/products/${product.id}`} className={styles.verProduct}>
+                  Ver producto
+                </Link>
+        
+                {status === 'Entregado' && (
+                  <button
+                    onClick={() => toggleReviewForm(product.id)}
+                    className={styles.reviewButton}
+                  >
+                    {showReviewForm[product.id] ? 'Ocultar reseña' : 'Dejar reseña'}
+                  </button>
+                )}
               </div>
-              <Link href={`/products/${product.id}`}>Ver producto</Link>
-            </li>
+            </div>
+          </div>
+        
+          {showReviewForm[product.id] && (
+            <div className={styles.reviewFormContainer}>
+              <ReviewForm
+                productId={product.id}
+                userId={user?.uid}
+                key={`form-${product.id}`}
+              />
+            </div>
+          )}
+        </li>
           ))}
         </ul>
       </div>
