@@ -1,0 +1,67 @@
+/* SuccessPage.module.css */
+
+.container {
+    background-color: #f9fafb; /* Fondo suave */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #1f2937; /* Gris oscuro */
+    margin-bottom: 1rem;
+  }
+  
+  .card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    margin-top: 1.5rem;
+  }
+  
+  .card p {
+    font-size: 1.125rem;
+    color: #4b5563; /* Gris claro */
+    margin-bottom: 1.25rem;
+  }
+  
+  .card .orderDetails {
+    border-top: 1px solid #e5e7eb; /* Línea sutil */
+    padding-top: 1rem;
+  }
+  
+  .orderDetails p {
+    margin: 0.5rem 0;
+  }
+  
+  .button {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 1rem;
+    border: none;
+    margin-top: 2rem;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #45a049;
+  }
+  
+  .errorMessage {
+    color: #dc2626; /* Rojo */
+    font-weight: bold;
+    margin-top: 2rem;
+  }
+  

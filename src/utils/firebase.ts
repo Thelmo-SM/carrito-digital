@@ -169,7 +169,8 @@ export const getUserOrders = async (userId: string) => {
           status: orderData.status,
           createdAt: orderData.createdAt ? orderData.createdAt.toDate() : null,
           products: productDetails.filter((product) => product !== null),
-          shippingAddress: orderData.shippingAddress || {}
+          shippingAddress: orderData.shippingAddress || {},
+          sessionId: orderData.sessionId
         };
       })
     );

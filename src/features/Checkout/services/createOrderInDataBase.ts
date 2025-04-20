@@ -1,5 +1,6 @@
 // /utils/firebase.ts
 import { collection, addDoc } from 'firebase/firestore';
+import { OrderTypes1 } from '@/types/ordersTypes';
 import { db } from '@/utils/firebase';  // Importa la instancia de Firestore
 
 export const createOrderInDatabase = async (orderData) => {
@@ -9,6 +10,7 @@ export const createOrderInDatabase = async (orderData) => {
 
         // Agregar el pedido a Firestore
         const orderRef = await addDoc(ordersCollection, {
+            sessionId: orderData.sessionId,
             userId: orderData.userId,
             products: orderData.products,
             total: orderData.total,

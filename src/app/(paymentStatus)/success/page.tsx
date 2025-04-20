@@ -1,9 +1,9 @@
-
+import SuccessPage from "@/features/Checkout/SuccessPage";
 
 export const success = () => {
     return (
         <section >
-            <h1>success</h1>
+            <SuccessPage />
         </section>
     )
 }
