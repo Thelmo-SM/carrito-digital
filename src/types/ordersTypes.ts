@@ -39,8 +39,8 @@ export interface ProductOrderTypes {
   }
 
   export interface ShippingAddress {
-    id?: string
-    street: string;
+    id?: string;
+    street: string;  // Cambia "treets" por "street"
     city: string;
     state: string;
     postalCode: string;

@@ -1,4 +1,4 @@
-import { createOrderInDatabase } from "@/features/Checkout/services/createOrderInDataBase";
+// pages/api/checkout.ts
 import { NextRequest, NextResponse } from "next/server";
 import { ProductOrderTypes } from "@/types/ordersTypes";
 import Stripe from "stripe";
@@ -19,7 +19,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    console.log('Intentando crear sesión en Stripe...');
+    // Creamos la sesión de pago en Stripe
+    //const createdAt = new Date().toISOString();
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
@@ -36,7 +37,14 @@ export async function POST(req: NextRequest) {
         },
         quantity: product.quantity,
       })),
-      client_reference_id: body.userId, // Útil para el webhook
+      client_reference_id: body.userId,
+      metadata: {
+        userId: body.userId,
+        total: body.total.toString(),
+        products: JSON.stringify(body.products),
+        shippingAddress: JSON.stringify(body.shippingAddress),
+        
+      },
     });
 
     // Verificar que session.id esté presente
@@ -45,17 +53,9 @@ export async function POST(req: NextRequest) {
         JSON.stringify({ error: "Error: No se generó el ID de sesión de Stripe." }),
         { status: 500 }
       );
+    } else {
+      console.log('EEEEEESSSSSSS ES EL SESION ID DE STRIPE: ', session.id);
     }
-
-    // Guardar el pedido en la base de datos con el sessionId
-    await createOrderInDatabase({
-      userId: body.userId,
-      products: body.products,
-      total: body.total,
-      shippingAddress: body.shippingAddress,
-      status: "pending", // El estado puede ser "pending" hasta que el pago se complete
-      sessionId: session.id, // Almacenamos el sessionId para el seguimiento
-    });
 
     // Responder con la URL de Stripe para redirigir al usuario al pago
     return new NextResponse(JSON.stringify({ url: session.url }), { status: 200 });

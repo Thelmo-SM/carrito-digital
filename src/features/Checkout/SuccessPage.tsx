@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { orderTypes } from '@/types/ordersTypes';
 import { useRouter } from 'next/navigation';
+import { LoaderStatusd } from '@/components/UI/LoaderUi';
 import styles from '@/styles/SuccessPage.module.css';
 
 type VerifyResponse = {
@@ -15,41 +16,56 @@ const SuccessPage = () => {
   const [loading, setLoading] = useState(true);
   const [order, setOrder] = useState<VerifyResponse | null>(null);
   const searchParams = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
-    const session_id = searchParams.get('session_id'); // Capturar el session_id de la URL
-    console.log('Session ID:', session_id);  
-
-    if (session_id) {
-      // Realizar la llamada al endpoint para verificar el pago
-      fetch(`/api/verify-payment?session_id=${session_id}`)
-        .then((res) => res.json())
-        .then((data) => {
-          console.log('Respuesta del servidor:', data); // Verifica la respuesta aquí
-          if (data.status === 'paid') {
-            if (data.order) {
-              setOrder(data); // Mostrar detalles de la orden si existe
-            } else {
-              console.error('La orden es nula');
-              setOrder(null);
-              alert('Hubo un problema con la orden. Intenta nuevamente.');
-            }
+    const session_id = searchParams.get('session_id');
+    console.log('Session ID:', session_id);
+  
+    const fetchOrder = async (retries = 5) => {
+      if (!session_id) return;
+    
+      try {
+        const res = await fetch(`/api/verify-payment?session_id=${session_id}`);
+        const data = await res.json();
+        console.log('Respuesta del servidor:', data); // Verificar la respuesta completa
+        
+        if (data.status === 'paid' && data.order) {
+          setOrder(data);
+        } else {
+          if (retries > 0) {
+            console.log(`Reintentando... (${6 - retries}/5)`);
+            await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundo
+            fetchOrder(retries - 1); // Reintentar después de esperar
           } else {
-            console.error('El pago no fue exitoso');
+            console.error('No se pudo obtener la orden después de varios intentos');
+            alert('Hubo un problema con la orden. Intenta nuevamente.');
             setOrder(null);
-            alert('Hubo un problema con el pago.');
           }
-        })
-        .catch((error) => {
-          console.error('Error al verificar el pago:', error);
-          alert('Hubo un error al verificar el pago. Intenta nuevamente.');
-        })
-        .finally(() => setLoading(false));
-    }
-  }, [searchParams]); // Usar searchParams en lugar de router.query
+        }
+      } catch (error) {
+        console.error('Error al verificar el pago:', error);
+        alert('Hubo un error al verificar el pago. Intenta nuevamente.');
+        setOrder(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchOrder();
+  }, [searchParams]);
 
-  if (loading) return <p>Cargando...</p>;
+  if (loading) {
+    return (
+      <div className={styles.loadingContainer}>
+        <h2>Estamos procesando tu pedido...</h2>
+        <LoaderStatusd>
+        Esto puede tardar unos segundos. No cierres esta página.
+        </LoaderStatusd>
+        {/* <div className={styles.spinner}></div> */}
+      </div>
+    );
+  }
 
   const handleRedirect = () => {
     if (order && order.order) {
@@ -64,22 +80,31 @@ const SuccessPage = () => {
         order.order ? (
           <div className={styles.card}>
             <p>Tu pedido ID: <strong>{order.order.id}</strong></p>
-            <p><strong>Cliente:</strong> {order.order.client}</p>
+            <p><strong>Cliente:</strong> {order.order.client} {order.order.client}</p>
             <p><strong>Total:</strong> ${order.order.total}</p>
             <div className={styles.orderDetails}>
-              <p><strong>Dirección de Envío:</strong> {order.order.shippingAddress?.street}, {order.order.shippingAddress?.city}, {order.order.shippingAddress?.state}, {order.order.shippingAddress?.country}</p>
+              <p><strong>Dirección de Envío:</strong> 
+                {order.order.shippingAddress ? 
+                  `${order.order.shippingAddress.state}, ${order.order.shippingAddress.city}, ${order.order.shippingAddress.state}, ${order.order.shippingAddress.country}` 
+                  : "Dirección no disponible"
+                }
+              </p>
               <p><strong>Estado de la Orden:</strong> {order.order.status}</p>
               <h3>Productos:</h3>
-              {order.order.products.map((product, index) => (
-                <div key={index}>
-                  <p><strong>{product.name}</strong></p>
-                  <p>Cantidad: {product.quantity} - Precio: ${product.price}</p>
-                </div>
-              ))}
+              {Array.isArray(order.order.products) && order.order.products.length > 0 ? (
+                order.order.products.map((product, index) => (
+                  <div key={index}>
+                    <p><strong>{product.name}</strong></p>
+                    <p>Cantidad: {product.quantity} - Precio: ${product.price}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No hay productos en esta orden.</p>
+              )}
             </div>
             <button 
-            className={styles.button}
-            onClick={handleRedirect}
+              className={styles.button}
+              onClick={handleRedirect}
             >
               Ver más detalles
             </button>
@@ -95,4 +120,3 @@ const SuccessPage = () => {
 };
 
 export default SuccessPage;
-

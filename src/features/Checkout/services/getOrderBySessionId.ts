@@ -11,23 +11,23 @@ export const getOrderBySessionId = async (sessionId: string): Promise<orderTypes
     const q = query(ordersRef, where('sessionId', '==', sessionId), limit(1));
     const querySnapshot = await getDocs(q);
 
-    console.log('querySnapshot:', querySnapshot); // Ver los datos obtenidos de Firestore
+  
 
     // Si no hay resultados, logueamos el error y retornamos null
     if (querySnapshot.empty) {
-      console.log('No se encontró una orden con el sessionId:', sessionId);
+      // console.log('No se encontró una orden con el sessionId:', sessionId);
       return null;
     }
 
     // Si encontramos resultados, obtenemos el primer documento
     const doc = querySnapshot.docs[0];
-    console.log('Orden encontrada:', doc.data());
+    // console.log('Orden encontrada:', doc.data());
 
     // Extraemos los datos del documento
     const data = doc.data();
 
     // Retornamos el objeto `orderTypes` con los datos extraídos
-    console.log('Buscando orden con sessionId:', sessionId);
+    // console.log('Buscando orden con sessionId:', sessionId);
     return {
       id: doc.id,  // ID del documento
       total: data.total,  // Total de la orden

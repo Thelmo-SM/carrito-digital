@@ -39,6 +39,8 @@ const OrderDetailComponent = () => {
     }));
   };
 
+  const totalProductos = products.reduce((acc, product) => acc + product.quantity, 0);
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Detalles de la Orden</h2>
@@ -46,6 +48,7 @@ const OrderDetailComponent = () => {
       <div className={styles.orderInfo}>
         <p><strong>ID de la orden:</strong> {id}</p>
         <p><strong>Fecha de compra:</strong> {new Date(createdAt).toLocaleDateString()}</p>
+        <p><strong>Catidad de productos:</strong> {totalProductos}</p>
         <p><strong>Estado:</strong> <span className={`${status === 'Entregado' ? styles.statusSuccess: ''}`}>{status}</span></p>
         <p><strong>Total:</strong> RD${total.toLocaleString()}</p>
       </div>

@@ -27,26 +27,26 @@ const verifyTokenAPI = async (token: string, req: NextRequest) => {
 };
 
 export async function middleware(req: NextRequest) {
-  const { pathname } = req.nextUrl;
+//   const { pathname } = req.nextUrl;
 
-  if (protectedRoutes.some((route) => pathname.startsWith(route))) {
-    const token = req.cookies.get('__session')?.value;
-    console.log('TOKEN en middleware:', token);
+//   if (protectedRoutes.some((route) => pathname.startsWith(route))) {
+//     const token = req.cookies.get('__session')?.value;
+//     console.log('TOKEN en middleware:', token);
 
-    if (!token) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
+//     if (!token) {
+//       return NextResponse.redirect(new URL('/login', req.url));
+//     }
 
-    const isValid = await verifyTokenAPI(token, req);
+//     const isValid = await verifyTokenAPI(token, req);
 
-    if (!isValid) {
-      return NextResponse.redirect(new URL('/login', req.url));
-    }
-  }
+//     if (!isValid) {
+//       return NextResponse.redirect(new URL('/login', req.url));
+//     }
+//   }
 
-  return NextResponse.next();
-}
+//   return NextResponse.next();
+// }
 
-export const config = {
-  matcher: ['/dashboard/:path*', '/account/:path*', '/admin/:path*'],
+// export const config = {
+//   matcher: ['/dashboard/:path*', '/account/:path*', '/admin/:path*'],
 };

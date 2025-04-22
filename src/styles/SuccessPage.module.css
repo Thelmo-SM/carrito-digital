@@ -1,40 +1,39 @@
 /* SuccessPage.module.css */
 
 .container {
-    background-color: #f9fafb; /* Fondo suave */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
   }
   
   .title {
     font-size: 2rem;
     font-weight: 600;
-    color: #1f2937; /* Gris oscuro */
+    color: #444444;
     margin-bottom: 1rem;
   }
   
   .card {
-    background-color: white;
-    border-radius: 8px;
+    color: rgb(223, 230, 235);
+    border-radius: .2rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     width: 100%;
-    max-width: 600px;
+    max-width: 50rem;
     margin-top: 1.5rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
   }
   
   .card p {
     font-size: 1.125rem;
-    color: #4b5563; /* Gris claro */
+    color: #444444;
     margin-bottom: 1.25rem;
   }
   
   .card .orderDetails {
-    border-top: 1px solid #e5e7eb; /* Línea sutil */
+    border-top: 1px solid #444444;
     padding-top: 1rem;
   }
   
@@ -43,20 +42,20 @@
   }
   
   .button {
-    background-color: #4CAF50; /* Verde */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    padding: .5rem;
+    border-radius: .2rem;
     text-align: center;
     cursor: pointer;
     font-size: 1rem;
     border: none;
     margin-top: 2rem;
-    transition: background-color 0.3s;
+    transition: 0.5s;
   }
   
   .button:hover {
-    background-color: #45a049;
+    background-color: rgb(39, 124, 204);
   }
   
   .errorMessage {
@@ -65,3 +64,38 @@
     margin-top: 2rem;
   }
   
+
+  .loadingContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    text-align: center;
+    padding: 2rem;
+    color: #333;
+  }
+  
+  .loadingContainer h2 {
+    font-size: 1.4rem;
+    color: #444444;
+  }
+  
+  .loadingContainer p {
+    color: #444444;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ddd;
+    border-top: 4px solid #0070f3;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-top: 1.5rem;
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
