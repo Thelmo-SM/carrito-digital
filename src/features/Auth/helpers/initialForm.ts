@@ -5,7 +5,8 @@ export const initialRegister: usersTypes = {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    role: 'client'
 };
 
 export const initialLogin: loginTypes = {

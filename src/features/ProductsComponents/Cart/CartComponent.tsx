@@ -8,79 +8,94 @@ import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 import CheckoutComponent from '../../Checkout/CheckoutComponent';
 import { useState } from 'react';
+import ModalForm from '@/components/Modals/modalForm';
+import { useModalForm } from '@/hooks/useModalForm';
 //import { LoaderUi } from '@/components/UI/LoaderUi';
+
+
 
 export const CartComponent = () => {
     const user = useAuthUsers();
     const [loading1, setLoading1] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const { cart, deleteProduct, updateProductQuantity, setCart } = useCart();
+    const { isOpen, openModal, closeModal } = useModalForm();
     const { defaultAddress, loading } = useAddresses(); // Obtener la dirección predeterminada
 
     const handleOrder = async () => {
-        if (!user?.uid) {
-          alert("Por favor, inicie sesión para realizar un pedido.");
-          return;
-        }
-      
-        if (cart.length === 0) {
-          alert("El carrito está vacío.");
-          return;
-        }
-      
-        const productIds = cart.map(item => item.id).filter(id => id !== null);
-        if (productIds.length === 0) {
-          alert("No hay productos válidos en el carrito.");
-          return;
-        }
-      
-        // Verificar si la dirección de envío es válida
-        if (!defaultAddress) {
-          alert("No tienes una dirección de envío predeterminada.");
-          return;
-        }
-      
-        // Preparar los datos para el backend
-        const orderData = {
-          userId: user.uid,
-          products: cart.map(item => ({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            quantity: item.units ?? 1,
-            imageUrl: item.imageUrl
-          })),
-          total: totalCart,
-          shippingAddress: defaultAddress,  // Usar la dirección predeterminada
-        };
-      
-        try {
-          setLoading1(true);
-          // Enviar los datos al backend para crear el pedido
-          const response = await fetch('/api/checkout', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(orderData),
-          });
-      
-          const data = await response.json();
-      
-          // Revisar si la respuesta contiene la URL de Stripe
-          if (response.ok && data.url) {
-            // Redirigir al usuario a la URL de Stripe
-            window.location = data.url;
-          } else {
-            console.error('Error en la respuesta:', data);
-            alert("Hubo un problema al procesar el pedido.");
-          }
-        } catch (error) {
-          alert("Error al procesar el pedido.");
-          console.error(error);
-        } finally {
-          setLoading1(false);
-        }
+      if (!user?.uid) {
+        alert("Por favor, inicie sesión para realizar un pedido.");
+        return;
+      }
+    
+      if (cart.length === 0) {
+        alert("El carrito está vacío.");
+        return;
+      }
+    
+      const productIds = cart.map(item => item.id).filter(id => id !== null);
+      if (productIds.length === 0) {
+        alert("No hay productos válidos en el carrito.");
+        return;
+      }
+    
+      // Verificar si la dirección de envío es válida
+      if (!defaultAddress) {
+        alert("No tienes una dirección de envío predeterminada.");
+        return;
+      }
+    
+      // Preparar los datos para el backend
+      const orderData = {
+        userId: user.uid,
+        products: cart.map(item => ({
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          quantity: item.units ?? 1,
+          imageUrl: item.imageUrl
+        })),
+        total: totalCart,
+        shippingAddress: defaultAddress,  // Usar la dirección predeterminada
       };
+    
+      try {
+        setLoading1(true);
+        // Enviar los datos al backend para crear el pedido
+        const response = await fetch('/api/checkout', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData),
+        });
+    
+        const data = await response.json();
+        console.log('Respuesta de la API:', data); // Imprimir la respuesta
+    
+        if (!response.ok) {
+          // Si hay un error, mostramos un mensaje adecuado
+          setErrorMessage(data.error);
+          openModal();
+          return;
+        }
+    
+        if (data.url) {
+          // Redirigir al usuario a la URL de Stripe
+          window.location = data.url;
+          setCart([]);
+        } else {
+          alert("No se pudo generar la URL de pago.");
+        }
+      } catch (error) {
+        alert("Error al procesar el pedido.");
+        console.error(error); // Esto ayuda a depurar, pero no se debería mostrar como un error en la UI
+      } finally {
+        setLoading1(false);
+      }
+    };
+    
+    
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
 
@@ -88,6 +103,9 @@ export const CartComponent = () => {
 
     return (
         <div className={styles.subContainer}>
+          {errorMessage ? <ModalForm isOpens={isOpen} closeModal={closeModal}>
+            <p>{errorMessage}</p>
+          </ModalForm>: ''}
             <div className={styles.tableAndButton}>
                 <table className={styles.tableContainer}>
                     <thead className={styles.thead}>

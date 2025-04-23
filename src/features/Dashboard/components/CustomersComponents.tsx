@@ -26,12 +26,12 @@ const CustomersTable = () => {
           {users.map((user) => (
             <tr key={user.uid}>
               <td className={styles.cell}>
-                <Image 
-                src={user.image || 'No existe imagen'}
-                width={200}
-                height={200}
-                alt={user.name}
-                className={styles.avatar}
+              <Image 
+                 src={user.image || '/default-avatar.png'}
+                 width={200}
+                 height={200}
+                 alt={user.name}
+                 className={styles.avatar}
                 />
               </td>
               <td className={styles.cell}>{user.name} {user.lastName}</td>

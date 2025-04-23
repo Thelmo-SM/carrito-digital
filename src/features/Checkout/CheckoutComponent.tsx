@@ -17,7 +17,7 @@ interface checkoutType {
 }
 
 export const CheckoutComponent = ({ totalCart, handleOrder, loading}: checkoutType) => {
-    const { defaultAddress } = useAddresses();
+    const { defaultAddress, addresses } = useAddresses();
     //const [loading, setLoading] = useState(true)
 
     return (
@@ -38,7 +38,7 @@ export const CheckoutComponent = ({ totalCart, handleOrder, loading}: checkoutTy
                 href='/account/addresses'
                 className={styles.newAddress}
                 >
-                Cambiar
+                {addresses.length === 0 ? 'Agregar dirección' :'Cambiar'}
                 </Link>
             </div>
 

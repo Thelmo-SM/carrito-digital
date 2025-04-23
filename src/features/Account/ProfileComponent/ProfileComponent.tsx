@@ -18,7 +18,7 @@ export const ProfileComponent = () => {
     const user = useAuthUsers();
     const { isOpen, openModal, closeModal } = useModalForm();
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-        const { defaultAddress, loading } = useAddresses();
+        const { defaultAddress, addresses, loading } = useAddresses();
 
     const formatDate = (timestamp?: { seconds: number; nanoseconds: number }) => {
         if (!timestamp) return "Cargando fecha...";
@@ -67,7 +67,7 @@ export const ProfileComponent = () => {
                 href='/account/addresses'
                 className={Style.newAddress}
                 >
-                Cambiar
+                {addresses.length === 0 ? 'Agregar dirección' :'Cambiar'}
                 </Link>
             </div>
             <FeaturesReviews />

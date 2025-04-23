@@ -7,6 +7,7 @@ export type usersTypes = {
     password: string;
     confirmPassword: string;
     image?: string;
+    role: 'client' | 'admin';
 };
 
 export type dataUsersTypes = {
@@ -16,6 +17,7 @@ export type dataUsersTypes = {
   email: string;
   image?: string;
   createdAt: Timestamp;
+  role: 'client' | 'admin';
 };
 
 
