@@ -43,6 +43,7 @@ export const useAuthUsers = () => {
         if (unsubscribe) unsubscribe();
       }
     };
+    
 
     const unsubscribeAuth = onAuthStateChanged(auth, handleAuthChange);
 
@@ -51,6 +52,12 @@ export const useAuthUsers = () => {
       unsubscribeAuth();
     };
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      console.log("👤 Usuario actualizado:", user);
+    }
+  }, [user]);
 
   return user;
 };

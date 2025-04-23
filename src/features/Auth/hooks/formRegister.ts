@@ -2,6 +2,7 @@ import { usersTypes, FormErrors, dataUsersTypes } from "@/types/usersTypes";
 import { useCallback, useState } from "react";
 import { registerService } from "../services/registerService";
 import { setDocument } from "@/utils/firebase";
+import { useRouter } from "next/navigation";
 
 
 
@@ -11,6 +12,7 @@ import { setDocument } from "@/utils/firebase";
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const route = useRouter();
 
     const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
         const {name, value} = e.target;
@@ -59,6 +61,7 @@ import { setDocument } from "@/utils/firebase";
             return;
           } else {
             setSuccess(true);
+            route.push('/products');
           }
       
           console.log("Usuario autenticado:", createdUser);
@@ -66,7 +69,7 @@ import { setDocument } from "@/utils/firebase";
           const { password, confirmPassword, ...noPassword } = form;
           console.log(password, confirmPassword)
       
-          await userColection({ ...noPassword, uid: createdUser.user.uid } as dataUsersTypes);
+          await userColection({ ...noPassword, uid: createdUser.user.uid, role: form.role } as dataUsersTypes);
         } catch (error: unknown) {
           console.error("Error en el hook de registro:", error);
         } finally {

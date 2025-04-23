@@ -74,7 +74,7 @@ export const Nav = () => {
       <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
         <Link href='/' className={NavStyle.links}>Home</Link>
         <Link href='/products' className={NavStyle.links}>Productos</Link>
-        {user && (
+        {user?.role === 'admin' && (
           <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
         )}
 

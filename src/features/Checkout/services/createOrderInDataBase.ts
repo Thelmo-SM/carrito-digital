@@ -1,28 +1,38 @@
-// /utils/firebase.ts
 import { collection, addDoc } from 'firebase/firestore';
-import { OrderTypes1 } from '@/types/ordersTypes';
-import { db } from '@/utils/firebase';  // Importa la instancia de Firestore
+import { db } from '@/utils/firebase';
+import { orderTypes } from '@/types/ordersTypes';
 
-export const createOrderInDatabase = async (orderData) => {
-    try {
-        // Obtener la referencia a la colección 'orders'
-        const ordersCollection = collection(db, 'orders');
+export const createOrderInDatabase = async (orderData: orderTypes) => {
+  try {
+    const ordersCollection = collection(db, 'orders');
+    const createdAt = new Date();
 
-        // Agregar el pedido a Firestore
-        const orderRef = await addDoc(ordersCollection, {
-            sessionId: orderData.sessionId,
-            userId: orderData.userId,
-            products: orderData.products,
-            total: orderData.total,
-            shippingAddress: orderData.shippingAddress,
-            status: 'pending', // O el estado que consideres apropiado
-            createdAt: new Date(),
-        });
+    const orderRef = await addDoc(ordersCollection, {
+      sessionId: orderData.sessionId,
+      userId: orderData.userId,
+      products: orderData.products,
+      total: orderData.total,
+      shippingAddress: orderData.shippingAddress,
+      status: 'paid', // o 'pending', si prefieres manejarlo después
+      client: orderData.client,
+      orderId: orderData.orderId,
+      createdAt,
+    });
 
-        // Retornar el ID del documento creado
-        return orderRef.id;
-    } catch (error) {
-        console.error('Error al guardar el pedido en la base de datos:', error);
-        throw new Error('Error al guardar el pedido');
-    }
+    return {
+      id: orderRef.id,
+      sessionId: orderData.sessionId,
+      userId: orderData.userId,
+      products: orderData.products,
+      total: orderData.total,
+      shippingAddress: orderData.shippingAddress,
+      status: 'paid',
+      client: orderData.client,
+      orderId: orderData.orderId,
+      createdAt,
+    };
+  } catch (error) {
+    console.error("❌ Error al guardar la orden:", error);
+    throw new Error('Error al guardar la orden');
+  }
 };
