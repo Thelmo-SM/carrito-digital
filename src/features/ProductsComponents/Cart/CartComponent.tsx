@@ -10,6 +10,7 @@ import CheckoutComponent from '../../Checkout/CheckoutComponent';
 import { useState } from 'react';
 import ModalForm from '@/components/Modals/modalForm';
 import { useModalForm } from '@/hooks/useModalForm';
+import successError from '../../../../public/checkoutError.webp';
 //import { LoaderUi } from '@/components/UI/LoaderUi';
 
 
@@ -104,7 +105,10 @@ export const CartComponent = () => {
     return (
         <div className={styles.subContainer}>
           {errorMessage ? <ModalForm isOpens={isOpen} closeModal={closeModal}>
-            <p>{errorMessage}</p>
+            <div className={styles.containerError}>
+            <p className={styles.messageError}>{errorMessage}</p>
+            <Image src={successError} width={400} height={300} alt='' className={styles.imageError} />
+            </div>
           </ModalForm>: ''}
             <div className={styles.tableAndButton}>
                 <table className={styles.tableContainer}>

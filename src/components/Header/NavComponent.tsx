@@ -14,6 +14,7 @@ import { LoaderUi } from '../UI/LoaderUi';
 import ModalForm from '../Modals/modalForm';
 import { IsAuthenticated } from '../UI/Message';
 import { useModalForm } from '@/hooks/useModalForm';
+import NavMobile from './NavMobile';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -24,6 +25,9 @@ export const Nav = () => {
   const router = useRouter();
   const { totalItems, setCart } = useCart();
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false); 
+  const [openMenuMobile, setOpenMenuMobile] = useState(false); 
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +35,22 @@ export const Nav = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleOpenMenu = () => {
+    setOpenMenuMobile(prevState => !prevState); 
+  }
+
+  useEffect(() => {
+    const checkIsMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkIsMobile(); // Ejecutar al inicio
+    window.addEventListener('resize', checkIsMobile);
+  
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  useEffect(() => {
+    console.log('Ancho:', window.innerWidth, 'Alto:', window.innerHeight);
   }, []);
 
   // Cerrar menú al hacer clic fuera
@@ -69,49 +89,71 @@ export const Nav = () => {
     if (!user) openModal();
   };
 
+
   return (
-    <>
-      <nav className={scrollY ? `${NavStyle.navScroll}` : `${NavStyle.container}`}>
-        <Link href='/' className={NavStyle.links}>Home</Link>
-        <Link href='/products' className={NavStyle.links}>Productos</Link>
-        {user?.role === 'admin' && (
-          <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
-        )}
-
-        <Link
-          href={!user ? '/' : '/cart'}
-          className={NavStyle.linksCart}
-          onClick={isUser}
+    <div>
+        <button
+          className={NavStyle.toggleMenu}
+          onClick={() => handleOpenMenu()}
         >
-          <Image src={cart} width={30} height={30} alt='Cart' />
-          <span className={NavStyle.cartItemCount}>
-            {user && totalItems > 0 ? totalItems : 0}
-          </span>
-        </Link>
+          ☰
+        </button>
+{  !isMobile ? <nav className={scrollY ? NavStyle.navScroll : NavStyle.container}>
+  <div className={NavStyle.subContainer}>
 
-        {user ? (
-          <button
-            onClick={() => setOpenMenu(!openMenu)}
-            className={NavStyle.profileButton}
-            aria-label="Abrir menú de usuario"
-          >
-            <Image
-              src={user.image || userImg}
-              width={30}
-              height={30}
-              alt='Usuario'
-              className={NavStyle.userImg}
-            />
-          </button>
-        ) : (
+        {/* Links de navegación */}
+          <Link href='/' className={NavStyle.links}>Home</Link>
+          <Link href='/products' className={NavStyle.links}>Productos</Link>
+
+          {user?.role === 'admin' && (
+            <Link href='/dashboard' className={NavStyle.links}>Dashboard</Link>
+          )}
+
           <Link
-            href='/login'
-            className={`${NavStyle.acceso} bg-purple-900 rounded-2xl text-purple-200 font-bold`}
+            href={!user ? '/' : '/cart'}
+            className={NavStyle.linksCart}
+            onClick={isUser}
           >
-            Acceso
+            <Image src={cart} width={30} height={30} alt='Cart' />
+            <span className={NavStyle.cartItemCount}>
+              {user && totalItems > 0 ? totalItems : 0}
+            </span>
           </Link>
-        )}
+
+          {user ? (
+            <>
+              <button
+                onClick={() => setOpenMenu(!openMenu)}
+                className={NavStyle.profileButton}
+                aria-label="Abrir menú de usuario"
+              >
+                <Image
+                  src={user.image || userImg}
+                  width={30}
+                  height={30}
+                  alt='Usuario'
+                  className={NavStyle.userImg}
+                />
+              </button>
+            </>
+          ) : (
+            <Link
+              href='/login'
+              className={NavStyle.acceso}
+            >
+              Acceso
+            </Link>
+          )}
+          </div>
       </nav>
+:
+      <NavMobile
+      isUser={isUser}
+      totalItems={totalItems}
+      user={user ?? null} 
+      isMenuOpen={openMenuMobile}
+      setOpenMenuMobile={setOpenMenuMobile}
+      />}
 
       {/* Menú desplegable con animación y ref */}
       {user &&  (
@@ -160,7 +202,7 @@ export const Nav = () => {
       <ModalForm isOpens={isOpen} closeModal={closeModal}>
         <IsAuthenticated />
       </ModalForm>
-    </>
+    </div>
   );
 };
 

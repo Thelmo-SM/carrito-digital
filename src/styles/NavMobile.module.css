@@ -1,0 +1,97 @@
+/* NavMobile.module.css */
+.nav {
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(67, 123, 175, 0.575);
+    backdrop-filter: blur(4.5rem);
+    width: 100%;
+
+    transform: translateY(-300%);
+    transition: 1s;
+  }
+
+  .containerShow {
+    transform: translateY(0);
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgba(67, 123, 175, 0.575);
+    backdrop-filter: blur(0.5rem);
+    width: 100%;
+    transition: 0.5s;
+  }
+  
+  .link {
+    text-decoration: none;
+    color: rgb(223, 230, 235);
+    font-size: 1rem;
+    margin:  1rem;
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    border-radius: .2rem;
+    transition: 0.5s;
+  }
+  
+  .link:hover {
+    box-shadow: 0 .1rem .9rem .1rem #d1d9e6;
+    text-decoration: none;
+  }
+  
+  .nav button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav button:focus {
+    outline: none;
+  }
+  
+  .nav img {
+    border-radius: 50%;
+  }
+  
+  .cartContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  .totalCart {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .acceso {
+    background-color: rgb(222, 226, 230);
+    color: rgb(67, 123, 175);
+    margin:  1rem;
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    border-radius: .2rem;
+    margin: auto 0;
+    transition: 0.5s;
+  }
+  
+  .acceso:hover {
+    background-color: rgb(39, 124, 204);
+    color: rgb(222, 226, 230);
+    box-shadow: 0 .1rem .9rem .1rem #d1d9e6;
+  }
+  

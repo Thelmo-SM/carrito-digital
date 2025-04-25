@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { onAuthStateChanged, getIdToken, User } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
 import { auth, db } from '@/utils/firebase';
 import { dataUsersTypes } from "@/types/usersTypes";
@@ -15,7 +15,7 @@ export const useAuthUsers = () => {
   useEffect(() => {
     let unsubscribe: (() => void) | null = null;
 
-    const handleAuthChange = async (authUser: any) => {
+    const handleAuthChange = async (authUser: User | null) => {
       if (authUser) {
         const userInLocalStorage = getInLocalStorage('user');
 
