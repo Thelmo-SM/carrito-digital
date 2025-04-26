@@ -190,9 +190,26 @@
   top: .5rem;
   right: 1.5rem;
   cursor: pointer;
-  filter: invert(1);
+  filter: invert(0);
   width: 40px;
   font-size: 2rem;
+  color: rgb(39, 124, 204);
+  box-shadow: 0 0rem .2rem .1rem #cad1dd;
+  transition: 0.2s;
+
+}
+.openToggleMenu {
+  color: rgb(222, 226, 230);
+  position: fixed;
+  z-index: 1000;
+  top: .5rem;
+  right: 1.5rem;
+  cursor: pointer;
+  filter: invert(0);
+  width: 40px;
+  font-size: 2rem;
+  box-shadow: 0 0rem .2rem .1rem #cad1dd;
+  transition: 0.2s;
 }
 
 @media (max-width: 1125px) {
@@ -204,6 +221,7 @@
       width: 90%;
       right: 5%;
       top: 5rem;
+      border: solid;
   }
 
   .navLinks.show {
