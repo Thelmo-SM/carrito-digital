@@ -84,11 +84,11 @@
   
   .prevButton, .nextButton {
     position: absolute;
-    top: 50%;
+    top: 60%;
     transform: translateY(-50%);
-    color: white;
+    color: rgb(222, 226, 230);
     border: none;
-    padding: 8px 12px;
+    padding: 1rem 1.2rem;
     border-radius: 50%;
     cursor: pointer;
     font-size: 2rem;
@@ -215,7 +215,7 @@
     .textOverlay {
       position: absolute;
       top: -29%;
-      left: 25%;
+      left: 30%;
       transform: translate(-50%, 50%);
       color: rgb(223, 230, 235);
       font-size: 2rem;
@@ -259,7 +259,7 @@
       font-size: 1rem;
       width: 100%;
       transform: translate(-50%, 30%);
-      top: -10%;
+      top: -3%;
 
       border: solid orange;
     }
@@ -273,6 +273,7 @@
     .prevButton, .nextButton {
       font-size: 1.2rem;
       padding: 4px 8px;
+      top: 75%;
     }
   
     .carouselContainer > h1 {
@@ -321,7 +322,7 @@
     .textOverlay {
       position: absolute;
       top: -30%;
-      left: 25%;
+      left: 30%;
       transform: translate(-50%, 50%);
       color: rgb(223, 230, 235);
       font-size: 1.7rem;
