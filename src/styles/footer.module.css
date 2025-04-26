@@ -1,8 +1,8 @@
 /* Footer.module.css */
 .footer {
-    background-color: rgb(67, 123, 175); /* Fondo del footer, como el color del nav */
-    color: rgb(223, 230, 235); /* Color de texto claro, similar al texto de los enlaces */
-    padding: 2rem 5rem; /* Espaciado mayor en el footer */
+    background-color: rgb(67, 123, 175);
+    color: rgb(223, 230, 235);
+    padding: 2rem 5rem;
     font-family: Arial, sans-serif;
   }
   
@@ -81,5 +81,66 @@
     font-size: 1.2rem;
     color: #444444;
     font-weight: bold;
+  }
+  
+
+  /*//////////RESPOSIVE///////////*/
+
+  @media (max-width: 1024px) {
+    .footer {
+      padding: 2rem 3rem;
+    }
+  
+    .footerContent {
+      flex-direction: column;
+      gap: 2rem;
+    }
+  
+    .branding,
+    .navLinks,
+    .contactInfo,
+    .socialLinks {
+      flex: none;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+  
+    .navLinks ul,
+    .socialLinks ul {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    .footer {
+      padding: 2rem;
+    }
+  
+    .branding h3 {
+      font-size: 1.6rem;
+    }
+  
+    .branding p {
+      font-size: 1rem;
+    }
+  
+    .navLinks h4,
+    .contactInfo h4,
+    .socialLinks h4 {
+      font-size: 1.1rem;
+    }
+  
+    .navLinks a,
+    .socialLinks a,
+    .contactInfo p {
+      font-size: 0.95rem;
+    }
+  
+    .footerBottom p {
+      font-size: 1rem;
+    }
   }
   
