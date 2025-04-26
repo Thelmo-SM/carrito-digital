@@ -43,7 +43,7 @@ export const Nav = () => {
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth <= 768);
-    checkIsMobile(); // Ejecutar al inicio
+    checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
   
     return () => window.removeEventListener('resize', checkIsMobile);
@@ -76,7 +76,7 @@ export const Nav = () => {
     try {
       setLoading(true);
       await signOut();
-      setCart([]); // Limpiar carrito
+      setCart([]);
       router.replace('/login');
     } catch (error) {
       console.log('Error al cerrar sesión:', error);
@@ -93,7 +93,7 @@ export const Nav = () => {
   return (
     <div>
         <button
-          className={NavStyle.toggleMenu}
+          className={`${openMenuMobile ? NavStyle.openToggleMenu : NavStyle.toggleMenu}`}
           onClick={() => handleOpenMenu()}
         >
           ☰
@@ -153,6 +153,7 @@ export const Nav = () => {
       user={user ?? null} 
       isMenuOpen={openMenuMobile}
       setOpenMenuMobile={setOpenMenuMobile}
+      handleSignOut={handleSignOut}
       />}
 
       {/* Menú desplegable con animación y ref */}

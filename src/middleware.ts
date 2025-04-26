@@ -4,18 +4,23 @@ import type { NextRequest } from 'next/server';
 const protectedRoutes = ['/dashboard'];
 const authRoutes = ['/login', '/register'];
 const authOnlyRoutes = ['/account'];
+const cartRoute = ['/cart'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const token = req.cookies.get('__session')?.value;
 
-  // 🔒 Si no hay token y se accede a ruta protegida
+  const requiresAuth = [
+    ...protectedRoutes,
+    ...authOnlyRoutes,
+    ...cartRoute
+  ];
+
+  // 🔒 Si no hay token y se intenta acceder a rutas que requieren autenticación
   if (!token) {
-    if (
-      protectedRoutes.some((route) => pathname.startsWith(route)) ||
-      authOnlyRoutes.some((route) => pathname.startsWith(route))
-    ) {
-      return NextResponse.redirect(new URL('/login', req.url));
+    if (requiresAuth.some((route) => pathname.startsWith(route))) {
+      const redirectTo = pathname.startsWith('/cart') ? '/' : '/login';
+      return NextResponse.redirect(new URL(redirectTo, req.url));
     }
     return NextResponse.next();
   }
@@ -53,10 +58,14 @@ export async function middleware(req: NextRequest) {
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
+    if (pathname.startsWith('/cart')) {
+      return NextResponse.redirect(new URL('/', req.url));
+    }
+
     return NextResponse.next();
   }
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/account/:path*', '/login', '/register'],
+  matcher: ['/dashboard/:path*', '/account/:path*', '/login', '/register', '/cart'],
 };
