@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { getUserAddresses, updateShippingAddress } from "@/utils/firebase";
+import { createContext, useCallback, useContext, useEffect, useState } from "react";
+//import { getUserAddresses, updateShippingAddress } from "@/utils/firebase";
+import { updateShippingAddress, getUserAddresses } from "@/features/Account/services/shippingAddressServices";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { ShippingAddress } from "@/types/ordersTypes";
 
@@ -20,7 +21,7 @@ interface AddressContextType {
     const user = useAuthUsers();
   
     // Obtener direcciones del usuario
-    const fetchAddresses = async () => {
+    const fetchAddresses = useCallback(async () => {
       if (!user?.uid) return;
   
       setLoading(true);
@@ -32,7 +33,11 @@ interface AddressContextType {
       } finally {
         setLoading(false);
       }
-    };
+    }, [user?.uid]); // Agregar user?.uid como dependencia
+  
+    // useEffect(() => {
+    //   fetchAddresses();
+    // }, [fetchAddresses]);
   
     // Establecer una dirección como predeterminada
     const setDefaultAddress = async (id: string) => {
@@ -54,7 +59,7 @@ interface AddressContextType {
   
     useEffect(() => {
       fetchAddresses();
-    }, [user?.uid!]);
+    }, [user?.uid, fetchAddresses]);
   
     const defaultAddress = addresses.find((address) => address.isDefault) || null;
   

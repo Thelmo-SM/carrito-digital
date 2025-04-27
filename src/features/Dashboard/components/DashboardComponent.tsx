@@ -8,7 +8,7 @@ import { useModalForm } from '@/hooks/useModalForm';
 import ModalForm from '@/components/Modals/modalForm';
 import CreateProduct from './CreateProduct';
 import { productsTypes } from "@/types/productTypes";
-import { deleteDocument, getCollection } from "@/utils/firebase";
+import { deleteDocument, getCollection } from '../services/addDocumentServices';
 import { useEffect, useState } from 'react';
 import { formatPrice } from '../helpers/formatPrice';
 import Image from 'next/image';

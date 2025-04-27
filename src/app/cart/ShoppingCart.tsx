@@ -1,5 +1,5 @@
 
-import CartComponent from '@/features/ProductsComponents/Cart/CartComponent';
+import CartComponent from '@/features/ProductsComponents/components/Cart/CartComponent';
 import styles from '@/styles/cart.module.css';
 
 export const ShoppingCart = () => {

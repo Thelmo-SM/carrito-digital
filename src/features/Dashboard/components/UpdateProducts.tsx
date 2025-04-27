@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Style from '@/styles/producForm.module.css';
 import { productsTypes } from '@/types/productTypes';
-import { updateDocument } from '@/utils/firebase';
+import { updateDocument } from '../services/addDocumentServices';
 import Image from 'next/image';
 
 interface UpdateProductsProps {

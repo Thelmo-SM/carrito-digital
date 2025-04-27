@@ -1,6 +1,5 @@
 'use client';
 
-
-export const setInLocalStorage = (key: string, value: any) => {
-    return localStorage.setItem(key, JSON.stringify(value));
+export const setInLocalStorage = <T>(key: string, value: T): void => {
+    localStorage.setItem(key, JSON.stringify(value));
 }

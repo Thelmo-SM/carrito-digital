@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addDocument } from "@/utils/firebase";
+import { addDocument } from "../services/addDocumentServices"; 
 import { productsTypes } from "@/types/productTypes";
 
 export const useCreateItems = (

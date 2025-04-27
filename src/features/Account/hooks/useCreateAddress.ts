@@ -1,7 +1,8 @@
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useAddresses } from "@/store/AddressContext";
 import { ShippingAddress } from "@/types/ordersTypes";
-import { createShippingAddress, getUserAddresses } from "@/utils/firebase";
+// import { createShippingAddress, getUserAddresses } from "@/utils/firebase";
+import { createShippingAddress, getUserAddresses } from "../services/shippingAddressServices";
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -73,22 +74,20 @@ import { useCallback, useEffect, useState } from "react";
       };
 
         // Obtener direcciones del usuario
-        const fetchAddresses = async () => {
-          try {
-            if (user?.uid) {
-              const userAddresses = await getUserAddresses(user?.uid);
+        const fetchAddresses = useCallback(async () => {
+          if (user?.uid) {
+            try {
+              const userAddresses = await getUserAddresses(user.uid);
               setAddresses(userAddresses);
+            } catch (error) {
+              console.error("Error cargando direcciones:", error);
             }
-          } catch (error) {
-            console.error("Error cargando direcciones:", error);
           }
-        };
+        }, [user?.uid]); // Dependencia para evitar re-creación innecesaria
       
         useEffect(() => {
-          if (user?.uid) {
-            fetchAddresses();
-          }
-        }, [user?.uid!]);
+          fetchAddresses();
+        }, [user?.uid, fetchAddresses]); 
       
     return {
         form,

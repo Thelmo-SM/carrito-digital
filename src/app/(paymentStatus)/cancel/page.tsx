@@ -1,9 +1,9 @@
-export const cancel = () => {
+const cancel: React.FC = () => { 
     return (
-        <section >
+        <section>
             <h1>cancel</h1>
         </section>
-    )
+    );
 }
 
 export default cancel;

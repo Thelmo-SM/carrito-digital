@@ -1,16 +1,18 @@
 'use client';
 
 import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
-import Style from '@/styles/products.module.css';
+// import Style from '@/styles/products.module.css';
+import Style from '../../../styles/DetailsProduct.module.css'
 import Image from "next/image";
 import { detailProduct } from "@/types/productTypes";
 import { useCart } from "@/store/ProductCartContext";
-import { getUserName } from "@/utils/firebase";
+// import { getUserName } from "@/utils/firebase";
+import { getUserName } from "@/features/Account/services/reviewsServices";
 import { useEffect, useState } from "react";
 import { IsAuthenticated } from "@/components/UI/Message";
 import ModalForm from "@/components/Modals/modalForm";
 import { useModalForm } from "@/hooks/useModalForm";
-import { useAuthUsers } from "../Auth/hooks/authUsers";
+import { useAuthUsers } from "../../Auth/hooks/authUsers";
 import Link from "next/link";
 
 export const ProductDetailComponent = ({

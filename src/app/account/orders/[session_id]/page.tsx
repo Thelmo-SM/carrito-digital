@@ -1,23 +1,24 @@
 import { getOrderDetail } from "@/features/Account/services/orderDetail";
 import { Metadata } from "next";
 import OrderDetailComponent from "@/features/Account/OrdersComponent/orderDetailComponent";
+import { PageProps } from "../../../../../.next/types/app/page";
 
-type OrderIdProps = {
+type Props = PageProps & {
   params: {
-    session_id: string;
+    session_id: string; // Mantén esta propiedad tal cual
   };
 };
 
-// Generación de metadatos para la página de detalles del pedido
-export async function generateMetadata({ params }: OrderIdProps): Promise<Metadata> {
+// Aquí generamos los metadatos de la página
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const order = await getOrderDetail(params.session_id);
 
   return {
-    title: order ? `Orden ID: ${order.id}` : "Orden no encontrada",
+    title: order ? `Orden ID: ${order.id}` : 'Orden no encontrada',
   };
 }
 
-// Componente de la página
-export default function OrderDetailPage({  }: OrderIdProps) {
-  return <OrderDetailComponent />;
+// El componente de la página
+export default function OrderDetailPage({ params }: Props) {
+  return <OrderDetailComponent session_id={params.session_id} />;
 }

@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getTopRatedProducts } from "@/utils/firebase";
+//import { getTopRatedProducts } from "@/utils/firebase";
+import { getTopRatedProducts } from "../services/productsServices";
 import { productsTypes } from "@/types/productTypes";
 import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
 import Image from "next/image";
@@ -16,7 +17,8 @@ import { useCart } from "@/store/ProductCartContext";
 import { IsAuthenticated } from "@/components/UI/Message";
 import ModalForm from "@/components/Modals/modalForm";
 import { useModalForm } from "@/hooks/useModalForm";
-import { useAuthUsers } from "../Auth/hooks/authUsers";
+import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
+import { Timestamp } from "firebase/firestore";
 
 export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);
@@ -91,39 +93,49 @@ export const ProductsComponent = () => {
   // 🔹 Filtrar por categoría y búsqueda
   const filteredProducts = useMemo(() => {
     let products = [...visibleProducts];
-
+  
+    // Filtrar por categoría
     if (selectedCategory !== "Todos") {
       products = products.filter((product) =>
         product.categorie.includes(selectedCategory)
       );
     }
-
+  
+    // Filtrar por búsqueda
     if (searchQuery) {
       products = products.filter((product) =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
-
+  
+    // Ordenar por precio
     if (sortType === "low-high") {
       products.sort((a, b) => Number(a.price) - Number(b.price));
     } else if (sortType === "high-low") {
       products.sort((a, b) => Number(b.price) - Number(a.price));
     } else if (sortType === "latest") {
+      // Ordenar por fecha
       products.sort((a, b) => {
-        const dateA = a.createdAt ? a.createdAt.toDate().getTime() : 0;
-        const dateB = b.createdAt ? b.createdAt.toDate().getTime() : 0;
-        return dateB - dateA;
+        const dateA = a.createdAt instanceof Timestamp
+          ? a.createdAt.toDate().getTime()
+          : 0;  // Si no es un Timestamp, usar 0
+        const dateB = b.createdAt instanceof Timestamp
+          ? b.createdAt.toDate().getTime()
+          : 0;  // Si no es un Timestamp, usar 0
+        return dateB - dateA; // Orden descendente
       });
     } else if (sortType === "popularity") {
+      // Ordenar por popularidad
       products.sort((a, b) => {
         const reviewsA = a.reviews?.length || 0;
         const reviewsB = b.reviews?.length || 0;
         return reviewsB - reviewsA;
       });
     }
-
+  
     return products;
   }, [visibleProducts, selectedCategory, searchQuery, sortType]);
+  
 
   const handleSortChange = (value: string) => {
     if (value === "default") {

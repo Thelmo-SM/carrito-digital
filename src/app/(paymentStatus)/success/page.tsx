@@ -1,6 +1,6 @@
 import SuccessPage from "@/features/Checkout/SuccessPage";
 
-export const success = () => {
+const success: React.FC = () => {
     return (
         <section >
             <SuccessPage />
