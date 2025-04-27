@@ -14,13 +14,20 @@ export const verifyTokenAPI = async (token: string) => {
       return false;
     }
 
-    const data = await res.json();
+    // Verifica que la respuesta sea de tipo JSON
+    const contentType = res.headers.get('Content-Type');
+    if (contentType && contentType.includes('application/json')) {
+      const data = await res.json();
 
-    if (data.success) {
-      return true; // Token válido
+      if (data.success) {
+        return true; // Token válido
+      } else {
+        console.error('Error: Token inválido o no encontrado.');
+        return false; // Token inválido
+      }
     } else {
-      console.error('Error: Token inválido o no encontrado.');
-      return false; // Token inválido
+      console.error('Error: La respuesta no es un JSON válido.');
+      return false; // Respuesta no válida
     }
   } catch (error) {
     console.error('Error al verificar el token:', error);
