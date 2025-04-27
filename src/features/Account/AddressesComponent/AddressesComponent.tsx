@@ -46,7 +46,17 @@ export const AddressesComponent = () => {
                 <strong>{address.isDefault ? "★ " : ""}</strong>
                 <p>{address.street}, {address.city}, {address.state}, {address.postalCode}, {address.country}</p>
                 {!address.isDefault && (
-                  <button onClick={() => setDefaultAddress(address.id)}>Establecer como predeterminada</button>
+                  <button
+                  onClick={() => {
+                    if (address.id) {
+                      setDefaultAddress(address.id);
+                    } else {
+                      console.error("ID de la dirección no disponible.");
+                    }
+                  }}
+                >
+                  Establecer como predeterminada
+                </button>
                 )}
               </li>
             ))}

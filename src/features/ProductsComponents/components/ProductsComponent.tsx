@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { getTopRatedProducts } from "@/utils/firebase";
+//import { getTopRatedProducts } from "@/utils/firebase";
+import { getTopRatedProducts } from "../services/productsServices";
 import { productsTypes } from "@/types/productTypes";
 import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
 import Image from "next/image";
@@ -16,7 +17,7 @@ import { useCart } from "@/store/ProductCartContext";
 import { IsAuthenticated } from "@/components/UI/Message";
 import ModalForm from "@/components/Modals/modalForm";
 import { useModalForm } from "@/hooks/useModalForm";
-import { useAuthUsers } from "../Auth/hooks/authUsers";
+import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 
 export const ProductsComponent = () => {
   const [itemData, setItemData] = useState<productsTypes[]>([]);

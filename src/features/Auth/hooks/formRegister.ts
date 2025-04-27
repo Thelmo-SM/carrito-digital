@@ -4,7 +4,7 @@ import { registerService } from "../services/registerService";
 import { setDocument } from "@/utils/firebase";
 import { useRouter } from "next/navigation";
 
-
+//setDocument
 
  export const useRegister = (initialValue: usersTypes, validateForm: (values: usersTypes) => FormErrors) => {
     const [form, setForm] = useState(initialValue);

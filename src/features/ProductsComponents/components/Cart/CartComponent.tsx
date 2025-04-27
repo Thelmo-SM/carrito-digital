@@ -6,11 +6,11 @@ import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { useAddresses } from "@/store/AddressContext";  // Asegúrate de importar el hook para obtener las direcciones
 import Image from 'next/image';
 import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
-import CheckoutComponent from '../../Checkout/CheckoutComponent';
+import CheckoutComponent from '../../../Checkout/CheckoutComponent';
 import { useState } from 'react';
 import ModalForm from '@/components/Modals/modalForm';
 import { useModalForm } from '@/hooks/useModalForm';
-import successError from '../../../../public/checkoutError.webp';
+import successError from '../../../../../public/checkoutError.webp';
 //import { LoaderUi } from '@/components/UI/LoaderUi';
 
 

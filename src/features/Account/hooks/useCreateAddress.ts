@@ -1,7 +1,8 @@
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useAddresses } from "@/store/AddressContext";
 import { ShippingAddress } from "@/types/ordersTypes";
-import { createShippingAddress, getUserAddresses } from "@/utils/firebase";
+// import { createShippingAddress, getUserAddresses } from "@/utils/firebase";
+import { createShippingAddress, getUserAddresses } from "../services/shippingAddressServices";
 import { useCallback, useEffect, useState } from "react";
 
 

@@ -1,11 +1,10 @@
 // Import the functions you need from the SDKs you need
 import { Review, ShippingAddress } from "@/types/ordersTypes";
 import { detailProduct, productsTypes } from "@/types/productTypes";
-import { usersTypes } from "@/types/usersTypes";
 import { initializeApp } from "firebase/app";
-import { getAuth, sendPasswordResetEmail, updateEmail, updatePassword, updateProfile } from "firebase/auth";
+import { getAuth, sendPasswordResetEmail, updateEmail, updatePassword } from "firebase/auth";
 import { addDoc, collection, deleteDoc, getDoc, getDocs, getFirestore, query, where } from "firebase/firestore";
-import { doc, serverTimestamp, setDoc, updateDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc, updateDoc, FieldValue } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 const APYKEY = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
@@ -34,10 +33,17 @@ export default app;
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-export const setDocument = (path: string, data: any) => {
-    data.createdAt = serverTimestamp();
-    return setDoc(doc(db, path), data);
+//////////////////////////
+type WithCreatedAt<T> = T & { createdAt: FieldValue };
+
+export const setDocument = <T extends object>(path: string, data: T) => {
+  const newData: WithCreatedAt<T> = {
+    ...data,
+    createdAt: serverTimestamp(),
+  };
+  return setDoc(doc(db, path), newData);
 };
+
 
 export const getDocument = async (path: string) => {
   return (await getDoc(doc(db, path))).data();
@@ -53,18 +59,19 @@ export const sendResetEmail = (email: string) => {
 }
 
 // Actualizar perfil del usuario
-export const updateUserProfile = async (uid: string, updatedData: any) => {
-  try {
-    const userDocRef = doc(db, "users", uid); // Asegúrate de estar apuntando al documento correcto
-    await updateDoc(userDocRef, updatedData); // Actualiza solo los campos que cambiaron
-    console.log("Perfil actualizado correctamente");
-  } catch (error) {
-    console.error("Error al actualizar el perfil:", error);
-    throw error;
-  }
-};
+//HECHO
+// export const updateUserProfile = async (uid: string, updatedData: any) => {
+//   try {
+//     const userDocRef = doc(db, "users", uid); // Asegúrate de estar apuntando al documento correcto
+//     await updateDoc(userDocRef, updatedData); // Actualiza solo los campos que cambiaron
+//     console.log("Perfil actualizado correctamente");
+//   } catch (error) {
+//     console.error("Error al actualizar el perfil:", error);
+//     throw error;
+//   }
+// };
 
-
+//PENDIENTE
 export const updateUserEmail = async (newEmail: string) => {
   if (!auth.currentUser) return;
   await updateEmail(auth.currentUser, newEmail);
@@ -139,6 +146,7 @@ export const createOrder = async (userId: string, products: { id: string, name: 
 
 
 // Obtener todas las órdenes de un usuario específico
+//HECHO
 export const getUserOrders = async (userId: string) => {
   try {
     const userOrdersSnapshot = await getDocs(
@@ -200,6 +208,7 @@ export const saveShippingAddress = async (userId: string, address: any) => {
 };
 
 //Crear direcciones
+//HECHO
 export const createShippingAddress = async (userId: string, address: any, isDefault: boolean) => {
   try {
     const addressesRef = collection(db, "shippingAddresses");
@@ -227,6 +236,7 @@ export const createShippingAddress = async (userId: string, address: any, isDefa
 };
 
 //Ver direcciones
+//HECHO
 export const getUserAddresses = async (userId: string): Promise<ShippingAddress[]> => {
   try {
     const addressesSnapshot = await getDocs(
@@ -432,7 +442,7 @@ export async function getProductsUserReviews(userId: string) {
 
   return orders;
 }
-
+//HECHO
 export async function getTopRatedProducts(): Promise<productsTypes[]> {
   const productsRef = collection(db, "products");
   const productsSnapshot = await getDocs(productsRef);

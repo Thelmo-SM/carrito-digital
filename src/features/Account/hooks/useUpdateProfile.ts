@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { usersTypes } from "@/types/usersTypes";
 //import { updateUser } from "@/features/Auth/services/registerService";
-import { updateUserProfile } from "@/utils/firebase";
+//import { updateUserProfile } from "@/utils/firebase";
+import { updateUserProfile } from "./userAccountServices";
 
-type SimpleAddress = Omit<usersTypes, "uid" | "createdAt"> & {
+type SimpleAddress = Omit<usersTypes, "uid" | "createdAt" | "role"> & {
   image: string;
 };
 interface UpdateProfileProps {
@@ -101,12 +102,14 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
       }
     }
 
-    // Si no se cambia el password, no lo incluyas en el objeto de datos
     const updatedUserData = {
       ...form,
       image, // Solo se incluye la nueva imagen si fue subida
-      password: form.password && form.password.trim() !== "" ? form.password : undefined, // Incluye password solo si tiene valor
+      // Incluye password solo si tiene valor
+      password: form.password && form.password.trim() !== "" ? form.password : undefined,
     };
+    
+    // Eliminar el campo password si no se ha actualizado
     if (updatedUserData.password === undefined) {
       delete updatedUserData.password;
     }

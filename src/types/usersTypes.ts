@@ -20,6 +20,16 @@ export type dataUsersTypes = {
   role: 'client' | 'admin';
 };
 
+export type UptdateUsersTypes = {
+  name: string;
+  lastName: string;
+  email:string
+  password?: string;
+  confirmPassword: string;
+  image?: string;
+  role: 'client' | 'admin';
+};
+
 
 export type loginTypes = {
     email:string

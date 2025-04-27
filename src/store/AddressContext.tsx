@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserAddresses, updateShippingAddress } from "@/utils/firebase";
+//import { getUserAddresses, updateShippingAddress } from "@/utils/firebase";
+import { updateShippingAddress, getUserAddresses } from "@/features/Account/services/shippingAddressServices";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { ShippingAddress } from "@/types/ordersTypes";
 

@@ -1,4 +1,4 @@
-import ProductsComponent from "@/features/ProductsComponents/ProductsComponent"
+import ProductsComponent from "@/features/ProductsComponents/components/ProductsComponent"
 
 
 

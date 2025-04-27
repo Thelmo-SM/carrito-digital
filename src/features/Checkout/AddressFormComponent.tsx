@@ -4,8 +4,13 @@
 import { useState } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { saveShippingAddress } from "@/utils/firebase";
+import { ShippingAddress } from "@/types/ordersTypes";
 
-export const AddressFormComponent = ({ onAddressSaved }) => {
+interface AddressFormComponentProps {
+    onAddressSaved: (address: ShippingAddress) => void;
+  }
+
+export const AddressFormComponent = ({ onAddressSaved }: AddressFormComponentProps) => {
     const user = useAuthUsers();
     const [address, setAddress] = useState({
         street: "",
@@ -15,7 +20,7 @@ export const AddressFormComponent = ({ onAddressSaved }) => {
         country: "",
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setAddress((prevAddress) => ({
             ...prevAddress,
@@ -23,7 +28,7 @@ export const AddressFormComponent = ({ onAddressSaved }) => {
         }));
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         if (!user?.uid) {

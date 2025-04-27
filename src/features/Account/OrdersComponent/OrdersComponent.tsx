@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from "react";
-import { getUserOrders } from "@/utils/firebase";
+//import { getUserOrders } from "@/utils/firebase";
+import { getUserOrders } from "../services/ordersServices";
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 import { orderTypes } from '@/types/ordersTypes';
 import style from '@/styles/account.module.css';
@@ -16,20 +17,27 @@ export const OrdersComponent = () => {
 
   useEffect(() => {
     if (!user?.uid) return;
-
+  
     setLoading(true);
-
+  
     const fetchOrders = async () => {
       try {
         const userOrders = await getUserOrders(user.uid);
-        setOrders(userOrders);
+  
+        // Asegurarnos de que cada orden tenga 'userId'
+        const ordersWithUserId = userOrders.map(order => ({
+          ...order,
+          userId: user.uid, // Asignamos el userId al objeto
+        }));
+  
+        setOrders(ordersWithUserId);
       } catch (error) {
         console.error("Error cargando órdenes:", error);
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchOrders();
   }, [user]);
 
