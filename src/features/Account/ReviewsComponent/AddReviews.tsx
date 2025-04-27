@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { addReviewToProduct } from "@/utils/firebase"; // Asegúrate de que la ruta sea correcta
+import { addReviewToProduct } from "../services/reviewsServices";
 import style from '@/styles/account.module.css';
 import { ValidateMessgeErrror } from "@/components/UI/Message";
-import { Timestamp } from "firebase/firestore"; // Asegúrate de importar Timestamp de Firestore
+import { Timestamp } from "firebase/firestore";
 
 const ReviewForm = ({ productId, userId }: { productId: string, userId: string }) => {
   const [rating, setRating] = useState(5);

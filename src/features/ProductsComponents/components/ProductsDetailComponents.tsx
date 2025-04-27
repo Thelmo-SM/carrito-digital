@@ -6,7 +6,8 @@ import Style from '../../../styles/DetailsProduct.module.css'
 import Image from "next/image";
 import { detailProduct } from "@/types/productTypes";
 import { useCart } from "@/store/ProductCartContext";
-import { getUserName } from "@/utils/firebase";
+// import { getUserName } from "@/utils/firebase";
+import { getUserName } from "@/features/Account/services/reviewsServices";
 import { useEffect, useState } from "react";
 import { IsAuthenticated } from "@/components/UI/Message";
 import ModalForm from "@/components/Modals/modalForm";

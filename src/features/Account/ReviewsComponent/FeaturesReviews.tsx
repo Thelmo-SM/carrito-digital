@@ -2,7 +2,7 @@
 
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useEffect, useState } from "react";
-import { getProductsUserReviews } from "@/utils/firebase";
+import { getProductsUserReviews } from "@/features/ProductsComponents/services/productWithReviewsServices";
 import {  ProductOrder1, Review } from "@/types/ordersTypes";
 import styles from "@/styles/account.module.css";
 import Link from "next/link";

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from "react";
-import { getTopRatedProducts } from "@/utils/firebase";
+import { getTopRatedProducts } from "@/features/ProductsComponents/services/productsServices";
 import Style from '@/styles/products.module.css';
 import Image from "next/image";
 import Link from "next/link";

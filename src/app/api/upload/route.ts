@@ -3,6 +3,12 @@ import { NextResponse } from "next/server";
 // import { writeFile } from "fs/promises";
 import { cloudinary } from "@/utils/cloudinary";
 
+interface CloudinaryResponse {
+  secure_url: string;
+  public_id: string;
+  format: string;
+}
+
 export async function POST(request: Request) {
     const data = await request.formData();
   
@@ -30,5 +36,5 @@ export async function POST(request: Request) {
   console.log(response); // Verifica la respuesta completa
   
   // Ahora enviamos el secure_url en la respuesta
-  return NextResponse.json({ secure_url: (response as any).secure_url });
+  return NextResponse.json({ secure_url: (response as CloudinaryResponse).secure_url });
   }

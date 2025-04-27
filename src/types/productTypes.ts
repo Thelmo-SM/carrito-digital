@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore";
+import { FieldValue, Timestamp } from "firebase/firestore";
 import { Review } from "./ordersTypes";
 
 export interface itemImage {
@@ -16,7 +16,7 @@ export interface productsTypes {
     categorie: string[];
     description: string;
     isFeature?: boolean;
-    createdAt?: Timestamp;
+    createdAt?: FieldValue;
     avgRating?: number;
     reviews?: Review[];
     units?: number;

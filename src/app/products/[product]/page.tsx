@@ -1,5 +1,5 @@
 //import { productsTypes } from "@/types/productTypes";
-import { getProductWithReviews } from "@/utils/firebase";  // Importa la función correctamente
+import { getProductWithReviews } from "@/features/ProductsComponents/services/productWithReviewsServices";
 import { Metadata } from "next";
 import ProductDetailComponent from "@/features/ProductsComponents/components/ProductsDetailComponents";
 

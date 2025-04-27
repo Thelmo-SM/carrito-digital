@@ -3,7 +3,7 @@ import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { usersTypes } from "@/types/usersTypes";
 //import { updateUser } from "@/features/Auth/services/registerService";
 //import { updateUserProfile } from "@/utils/firebase";
-import { updateUserProfile } from "./userAccountServices";
+import { updateUserProfile } from "../services/userAccountServices";
 
 type SimpleAddress = Omit<usersTypes, "uid" | "createdAt" | "role"> & {
   image: string;

@@ -2,27 +2,25 @@
 
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { useEffect, useState } from "react";
-import { getProductsUserReviews } from "@/utils/firebase"; // Asegúrate de tener la función correcta.
+import { getProductsUserReviews } from "@/features/ProductsComponents/services/productWithReviewsServices";
 import { ProductOrder1, Review } from "@/types/ordersTypes";
 import styles from "@/styles/account.module.css";
 import Link from "next/link";
 import { LoaderUi } from "@/components/UI/LoaderUi";
 
 export const ReviewsComponent = () => {
-  const [productsWithReviews, setProductsWithReviews] = useState<ProductOrder1[]>([]); // Asegúrate de usar el tipo correcto
+  const [productsWithReviews, setProductsWithReviews] = useState<ProductOrder1[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const user = useAuthUsers(); // Obtenemos el usuario actual
+  const user = useAuthUsers();
 
   useEffect(() => {
     const fetchProductsWithReviews = async () => {
       setLoading(true);
       try {
-        if (!user?.uid) return; // Si no hay usuario, no hacer nada
+        if (!user?.uid) return;
 
         const productsOrders = await getProductsUserReviews(user.uid);
-
-        // Filtramos solo los productos que tienen reseñas del usuario actual
         const filteredOrders: ProductOrder1[] = productsOrders
           .map(order => ({
 
@@ -30,13 +28,13 @@ export const ReviewsComponent = () => {
             products: order.products
               .map(product => ({
                 ...product,
-                reviews: product.reviews.filter((review: Review) => review.userId === user?.uid) // Tipamos 'review' aquí como Review
+                reviews: product.reviews.filter((review: Review) => review.userId === user?.uid)
               }))
-              .filter(product => product.reviews.length > 0) // Eliminamos productos sin reseñas
+              .filter(product => product.reviews.length > 0)
           }))
-          .filter(order => order.products.length > 0); // Eliminamos órdenes sin productos con reseñas
+          .filter(order => order.products.length > 0);
 
-        setProductsWithReviews(filteredOrders); // Actualizamos el estado con los productos filtrados
+        setProductsWithReviews(filteredOrders);
       } catch (error) {
         console.error("Error al obtener productos con reseñas:", error);
         setError("Hubo un error al obtener los productos con reseñas.");
@@ -45,7 +43,7 @@ export const ReviewsComponent = () => {
       }
     };
 
-    fetchProductsWithReviews(); // Llamamos a la función para obtener y filtrar los productos
+    fetchProductsWithReviews();
   }, [user]);
 
 

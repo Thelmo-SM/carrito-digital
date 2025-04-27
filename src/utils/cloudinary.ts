@@ -9,19 +9,31 @@ cloudinary.config({
 
 export { cloudinary };
 
+const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+
 // Función para subir una imagen desde un archivo local
 const uploadImage = async (imageFile: File) => {
     try {
-        const uploadResult = await cloudinary.uploader.upload(imageFile.path, {
-            public_id: `products/${imageFile.name}`, // Se puede cambiar el public_id según lo necesites
+        const formData = new FormData();
+        formData.append("file", imageFile);
+        formData.append("upload_preset", uploadPreset!);
+
+        // Realizar la solicitud a Cloudinary usando fetch
+        const uploadResult = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+            method: "POST",
+            body: formData,
         });
-        console.log('Imagen subida:', uploadResult);
-        return uploadResult;
+
+        const result = await uploadResult.json(); // Obtener la respuesta
+        console.log("Imagen subida:", result);
+        return result;
     } catch (error) {
-        console.error('Error al subir la imagen:', error);
-        throw new Error('Error al subir la imagen');
+        console.error("Error al subir la imagen:", error);
+        throw new Error("Error al subir la imagen");
     }
 };
+
 
 // Función para optimizar la URL de una imagen
 const getOptimizedImageUrl = (publicId: string) => {
