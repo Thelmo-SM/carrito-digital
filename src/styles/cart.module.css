@@ -207,3 +207,225 @@
   height: auto;
   border-radius: 0.5rem;
 }
+
+/*//////////////Responsive/////////////////*/
+
+@media (min-width: 1025px) and (max-width: 1250px) {
+  .container {
+    margin: 5rem auto;
+    padding: 0 2rem;
+    max-width: 95%;
+  }
+
+  .subContainer {
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .tableAndButton {
+    flex: 1.5;
+    max-width: 650px;
+    transform: scale(0.95);
+    transform-origin: top left;
+  }
+
+  .totalContainer {
+    flex: 1;
+    max-width: 320px;
+    padding: 1.5rem;
+    transform: scale(0.95);
+    transform-origin: top right;
+  }
+
+  .tableContainer td {
+    font-size: 0.95rem;
+    max-width: 20rem;
+  }
+
+  .tableContainer input {
+    width: 3.5rem;
+  }
+
+  .finalizarB {
+    font-size: 1rem;
+    padding: .6rem 0;
+  }
+
+  .messageError {
+    font-size: 1.2rem;
+    padding: 2.5rem;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .container {
+    margin: 4rem 2rem;
+  }
+
+  .subContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .totalContainer {
+    margin-left: 0;
+    width: 100%;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  .detalleTotal {
+    width: 100%;
+    padding: 1rem 2rem;
+    text-align: center;
+  }
+
+  .finalizarB {
+    width: 100%;
+  }
+
+  .tableAndButton,
+  .tableContainer {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .addressContainer {
+    width: 100%;
+  }
+
+  .messageError {
+    padding: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .titulo {
+    font-size: 1.6rem;
+    padding: 1rem;
+  }
+
+  .totalContainer > .activeButton,
+  .totalContainer > .disabledButton {
+    padding: .6rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .detalleTotal > h2 {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .detalleTotal > p {
+    font-size: 0.95rem;
+    margin: 1rem 0;
+  }
+
+  .cartButton,
+  .newAddress {
+    font-size: 0.95rem;
+    padding: .4rem .8rem;
+  }
+
+  .addressContainer {
+    font-size: 0.95rem;
+  }
+
+  .containerError {
+    padding: 1rem;
+  }
+
+  .messageError {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+
+@media (max-width: 1024px) {
+  .container {
+    margin: 4rem 2rem;
+  }
+
+  .subContainer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .totalContainer {
+    margin-left: 0;
+    width: 100%;
+    align-items: center;
+    padding: 2rem 1rem;
+  }
+
+  .detalleTotal {
+    width: 100%;
+    padding: 1rem 2rem;
+    text-align: center;
+  }
+
+  .finalizarB {
+    width: 100%;
+  }
+
+  .tableAndButton,
+  .tableContainer {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .addressContainer {
+    width: 100%;
+  }
+
+  .messageError {
+    padding: 2rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .titulo {
+    font-size: 1.6rem;
+    padding: 1rem;
+  }
+
+  .totalContainer > .activeButton,
+  .totalContainer > .disabledButton {
+    padding: .6rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .detalleTotal > h2 {
+    font-size: 1.2rem;
+    margin: 1rem 0;
+  }
+
+  .detalleTotal > p {
+    font-size: 0.95rem;
+    margin: 1rem 0;
+  }
+
+  .cartButton,
+  .newAddress {
+    font-size: 0.95rem;
+    padding: .4rem .8rem;
+  }
+
+  .addressContainer {
+    font-size: 0.95rem;
+  }
+
+  .containerError {
+    padding: 1rem;
+  }
+
+  .messageError {
+    padding: 1.5rem;
+    font-size: 1rem;
+  }
+}

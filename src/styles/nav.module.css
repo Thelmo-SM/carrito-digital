@@ -221,7 +221,6 @@
       width: 90%;
       right: 5%;
       top: 5rem;
-      border: solid;
   }
 
   .navLinks.show {
@@ -257,4 +256,11 @@
   .toggleMenu {
     display: none;
   }
+}
+
+@media (max-width: 768) {
+  .dropdownMenu {
+    display: none;
+}
+
 }

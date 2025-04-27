@@ -24,7 +24,7 @@ export const RegisterComponent = () => {
 
     return (
       <div className={Style.container}>
-        <div>
+        <div className={Style.image}>
           <Image src={img} width={440} height={600} alt=""/>
         </div>
         <form onSubmit={handleSubmit}

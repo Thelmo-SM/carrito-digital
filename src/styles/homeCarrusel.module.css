@@ -260,8 +260,6 @@
       width: 100%;
       transform: translate(-50%, 30%);
       top: -3%;
-
-      border: solid orange;
     }
   
     .verMas {
@@ -293,8 +291,6 @@
       width: 100%;
       transform: translate(-50%, 30%);
       top: -0%;
-
-      border: solid blue;
     }
   
     .verMas {
@@ -329,8 +325,6 @@
       z-index: 10;
       width: 50%;
       text-align: center;
-
-      border: solid red;
     }
   
     .verMas {
