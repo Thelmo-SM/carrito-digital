@@ -1,6 +1,6 @@
 import { productsTypes } from "@/types/productTypes";
 import { dataUsersTypes } from "@/types/usersTypes";
-import { deleteDocument } from "@/utils/firebase";
+import { deleteDocument } from "./addDocumentServices";
 
 
 export const deleteItem = async (item:productsTypes, userId: dataUsersTypes) => {

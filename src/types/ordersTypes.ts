@@ -7,8 +7,8 @@ export interface orderTypes {
     shippingAddress: ShippingAddress | null;
     client?: string;
     orderId?: string;
-    sessionId: string;
-    userId: string;
+    sessionId?: string;
+    userId?: string;
   }
 
   export type Product = {

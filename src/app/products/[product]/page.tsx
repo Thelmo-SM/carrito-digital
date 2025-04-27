@@ -1,9 +1,9 @@
-//import { productsTypes } from "@/types/productTypes";
-import { getProductWithReviews } from "@/features/ProductsComponents/services/productWithReviewsServices";
 import { Metadata } from "next";
+import { getProductWithReviews } from "@/features/ProductsComponents/services/productWithReviewsServices";
 import ProductDetailComponent from "@/features/ProductsComponents/components/ProductsDetailComponents";
+import { PageProps } from "../../../../.next/types/app/page";  // Asegúrate de que PageProps esté correctamente importado
 
-type DatilIdProps = {
+type DatilIdProps = PageProps & {
     params: {
         product: string;
     };
@@ -16,25 +16,26 @@ export const generateMetadata = async ({ params }: DatilIdProps): Promise<Metada
         };
     }
 
-    const product = await getProductWithReviews(params.product);  // Llamar a la nueva función
+    const product = await getProductWithReviews(params.product);
 
     return {
         title: product ? product.name : "Producto no encontrado",
     };
 };
 
-export const DetailProduct = async ({ params }: DatilIdProps) => {
+// En Next.js, debes asegurarte de que el componente Page sea síncrono
+const DetailProduct = async ({ params }: DatilIdProps) => {
     if (!params?.product) {
         return <h1>Error: No se encontró el producto</h1>;
     }
 
-    const product = await getProductWithReviews(params.product);  // Llamar a la nueva función
+    const product = await getProductWithReviews(params.product);
 
     if (!product) {
         return <h1>Producto no encontrado</h1>;
     }
 
-    const { name, description, price, soldUnits, imageUrl, id, reviews } = product;  // Obtener también las reseñas
+    const { name, description, price, soldUnits, imageUrl, id, reviews } = product;
 
     return (
         <ProductDetailComponent 
@@ -43,9 +44,8 @@ export const DetailProduct = async ({ params }: DatilIdProps) => {
             price={price} 
             soldUnits={soldUnits} 
             imageUrl={imageUrl} 
-            // key={id} 
             id={id!} 
-            reviews={reviews}  // Pasar las reseñas al componente
+            reviews={reviews} 
         />
     );
 };

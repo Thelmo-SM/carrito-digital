@@ -5,6 +5,7 @@ import Image from "next/image";
 import { LoaderUi } from "@/components/UI/LoaderUi";
 
 const initialProductsValues: productsTypes = {
+  id: '',
   file: { path: '', url: '' },
   name: '',
   price: 0,

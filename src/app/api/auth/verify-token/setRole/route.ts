@@ -1,19 +1,20 @@
-//app/api/auth/setRole/route.ts
-import { authAdmin } from '@/utils/firebaseAdmin';
-import { NextApiRequest, NextApiResponse } from 'next';
+// src/app/api/auth/setRole/route.ts
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { uid, role } = req.body;
+import { authAdmin } from '@/utils/firebaseAdmin';
+import { NextRequest, NextResponse } from 'next/server';
+
+
+export async function POST(req: NextRequest) {
+  const { uid, role } = await req.json();
 
   if (!uid || !role) {
-    return res.status(400).json({ message: 'UID y rol son requeridos' });
+    return NextResponse.json({ message: 'UID y rol son requeridos' }, { status: 400 });
   }
 
   try {
-    await authAdmin.setCustomUserClaims(uid, { role }); // 👈 Aquí defines el rol
-    res.status(200).json({ message: `Rol '${role}' asignado al usuario ${uid}` });
-  } catch (error) {
-    res.status(500).json({ error: 'Error asignando el rol' });
-    return error;
+    await authAdmin.setCustomUserClaims(uid, { role });
+    return NextResponse.json({ message: `Rol '${role}' asignado al usuario ${uid}` }, { status: 200 });
+  } catch {
+    return NextResponse.json({ error: 'Error asignando el rol' }, { status: 500 });
   }
 }

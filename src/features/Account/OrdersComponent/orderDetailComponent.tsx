@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+// import { useParams } from 'next/navigation';
 import { getOrderDetail } from '@/features/Account/services/orderDetail';
 import { OrderDetailComponentProps } from '@/types/ordersTypes';
 import styles from '@/styles/OrderDetailComponent.module.css';
@@ -10,8 +10,12 @@ import Link from 'next/link';
 import ReviewForm from '../ReviewsComponent/AddReviews';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
 
-const OrderDetailComponent = () => {
-  const { session_id } = useParams();
+interface OrderDetailComponentProps1 {
+  session_id: string; // Add the session_id prop here
+}
+
+const OrderDetailComponent = ({ session_id }: OrderDetailComponentProps1) => {
+  // const { session_id } = useParams();
   const [order, setOrder] = useState<OrderDetailComponentProps | null>(null);
   const [showReviewForm, setShowReviewForm] = useState<{ [productId: string]: boolean }>({});
   const user = useAuthUsers();

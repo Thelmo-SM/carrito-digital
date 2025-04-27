@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
-import { saveShippingAddress } from "@/utils/firebase";
+import { saveShippingAddress } from "./services/addressServices";
 import { ShippingAddress } from "@/types/ordersTypes";
 
 interface AddressFormComponentProps {

@@ -11,6 +11,8 @@ import { useState } from 'react';
 import ModalForm from '@/components/Modals/modalForm';
 import { useModalForm } from '@/hooks/useModalForm';
 import successError from '../../../../../public/checkoutError.webp';
+import { LoaderUi } from '@/components/UI/LoaderUi';
+import Style from '@/styles/products.module.css';
 //import { LoaderUi } from '@/components/UI/LoaderUi';
 
 
@@ -100,7 +102,10 @@ export const CartComponent = () => {
 
     const totalCart = cart.reduce((acc, item) => acc + (item.price || 0) * (item.units ?? 1), 0);
 
-    if (loading) return <p>Cargando direcciones...</p>; // Si las direcciones aún están cargando
+    if (loading) return           <div className={Style.loading}>
+    <LoaderUi />
+    <p>Cargandonpm...</p>
+  </div>; // Si las direcciones aún están cargando
 
     return (
         <div className={styles.subContainer}>
