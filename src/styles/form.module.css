@@ -213,3 +213,66 @@
     box-shadow: 0 .1rem .9rem .2rem #cad1dd;
 }
 
+
+/*///////////RESPONSIVE//////////////*/
+
+@media (min-width: 1024px) and (max-width: 1180px) {
+    .container {
+        border: solid red;
+        padding-top: 6rem;
+    }
+    .formContainer {
+      width: 50%;
+      margin: 2rem;
+      padding:1.5rem;
+    }
+    .imagePreview {
+      width: 50%;
+    }
+  }
+  
+  @media (min-width: 480px) and (max-width: 1023px) {
+    .container {
+      flex-direction: column;
+      padding: 2rem 1rem;
+    }
+    .formContainer {
+      width: 80%;
+      margin: 1rem 0;
+      padding: 1.5rem;
+    }
+    .imagePreview {
+      width: 70%;
+    }
+    .buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+    .loginButton,
+    .closeButton {
+      width: 70%;
+    }
+    .image {
+        display: none;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .formContainer {
+      width: 100%;
+      margin: 0;
+      padding: 1rem;
+    }
+    .imagePreview {
+      width: 90%;
+    }
+    .button,
+    .loginButton,
+    .closeButton {
+      width: 100%;
+    }
+    .image {
+        display: none;
+    }
+  }
+  
