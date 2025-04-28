@@ -55,10 +55,12 @@ export async function middleware(req: NextRequest) {
       protectedRoutes.some((route) => pathname.startsWith(route)) ||
       authOnlyRoutes.some((route) => pathname.startsWith(route))
     ) {
+      // Si el token no es válido o hubo un error en la verificación, redirigir a login
       return NextResponse.redirect(new URL('/login', req.url));
     }
 
     if (pathname.startsWith('/cart')) {
+      // Si falla en el carrito, redirigir a la página principal
       return NextResponse.redirect(new URL('/', req.url));
     }
 
