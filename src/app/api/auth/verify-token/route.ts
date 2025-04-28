@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from 'next/server';
 
 // app/api/auth/verify-token/route.ts
 export async function POST(req: NextRequest) {
-  const { token } = await req.json();
+  const { idToken } = await req.json();
 
-  if (!token) {
+  if (!idToken) {
     return NextResponse.json({ message: 'Token no proporcionado' }, { status: 400 });
   }
 
   try {
-    const decodedToken = await authAdmin.verifyIdToken(token);
+    const decodedToken = await authAdmin.verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
     const userDoc = await db.collection('users').doc(uid).get();
