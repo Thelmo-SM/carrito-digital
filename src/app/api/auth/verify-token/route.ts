@@ -1,20 +1,32 @@
-import { authAdmin } from "@/utils/firebaseAdmin"; // Asegúrate que esta importación esté bien
+import { authAdmin } from "@/utils/firebaseAdmin";
+
+interface Body {
+  idToken: string;
+}
 
 export async function POST(req: Request) {
+  let body: Body;
+
   try {
-    // Intentar parsear el body, atrapando errores
-    const body = await req.json().catch(() => null);
+    body = await req.json() as Body;
+  } catch (err) {
+    console.error('Failed to parse JSON body:', err);
+    return new Response(
+      JSON.stringify({ success: false, message: 'Invalid JSON body' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 
-    if (!body || !body.idToken) {
-      return new Response(
-        JSON.stringify({ success: false, message: 'No idToken provided' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
-    }
+  if (!body?.idToken) {
+    return new Response(
+      JSON.stringify({ success: false, message: 'No idToken provided' }),
+      { status: 400, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
 
+  try {
     const { idToken } = body;
 
-    // Verificar el token con Firebase Admin
     const decodedToken = await authAdmin.verifyIdToken(idToken);
 
     const { uid, name, lastName, email, image, createdAt, role = 'client', confirmPassword } = decodedToken;
