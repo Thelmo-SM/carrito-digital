@@ -8,7 +8,7 @@ const cartRoute = ['/cart'];
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
-  const token = req.cookies.get('__session')?.value;
+  const idToken = req.cookies.get('__session')?.value;
 
   const requiresAuth = [
     ...protectedRoutes,
@@ -17,25 +17,34 @@ export async function middleware(req: NextRequest) {
   ];
 
   // 🔒 Si no hay token y se intenta acceder a rutas que requieren autenticación
-  if (!token) {
+  if (!idToken) {
     if (requiresAuth.some((route) => pathname.startsWith(route))) {
       const redirectTo = pathname.startsWith('/cart') ? '/' : '/login';
       return NextResponse.redirect(new URL(redirectTo, req.url));
     }
     return NextResponse.next();
   }
+  console.log('Este es el token: ', idToken);
 
   try {
-    // 📡 Verificar token con tu API interna
     const res = await fetch(`${req.nextUrl.origin}/api/auth/verify-token`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ idToken: idToken }), // Aquí envías el token
     });
-
+  
     if (!res.ok) throw new Error('Token inválido');
+  
+    const data = await res.json();  // Aquí obtenemos la respuesta JSON
 
-    const { role, success } = await res.json();
+    // Verifica si la respuesta es válida antes de usarla
+    if (!data || !data.success) {
+      throw new Error('Respuesta inesperada del servidor');
+    }
+
+    const { role, success } = data;  // Usamos los datos directamente de la variable `data`
 
     // ✅ Usuario logueado intentando acceder a login/register
     if (authRoutes.includes(pathname) && success) {
