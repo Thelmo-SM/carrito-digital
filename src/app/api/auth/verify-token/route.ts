@@ -1,35 +1,36 @@
 // app/api/auth/verify-token/route.ts
-import { authAdmin, db } from '@/utils/firebaseAdmin'; // Asegúrate de exportar `db` desde firebaseAdmin
-import { NextRequest, NextResponse } from 'next/server';
+import { authAdmin } from '@/utils/firebaseAdmin'; // Asegúrate de exportar `db` desde firebaseAdmin
+// import { NextRequest, NextResponse } from 'next/server';
 
 // app/api/auth/verify-token/route.ts
-export async function POST(req: NextRequest) {
-  const { idToken } = await req.json();
-
-  if (!idToken) {
-    return NextResponse.json({ message: 'Token no proporcionado' }, { status: 400 });
-  }
-
+export async function POST(req: Request) {
   try {
-    const decodedToken = await authAdmin.verifyIdToken(idToken);
-    const uid = decodedToken.uid;
-
-    const userDoc = await db.collection('users').doc(uid).get();
-
-    if (!userDoc.exists) {
-      return NextResponse.json({ message: 'Usuario no encontrado en Firestore' }, { status: 404 });
+    // Primero intenta parsear el body
+    const body = await req.json().catch(() => null); // Si falla, body será null
+    if (!body || !body.idToken) {
+      return new Response(
+        JSON.stringify({ success: false, message: 'No idToken provided' }),
+        { status: 400 }
+      );
     }
 
-    const userData = userDoc.data();
-    const role = userData?.role || 'client'; // fallback por si no tiene rol
+    const { idToken } = body;
 
-    const responseData = { success: true, user: userData, role };
-    console.log('Response data:', responseData);  // Verificación del contenido de la respuesta
-    return NextResponse.json(responseData, { status: 200 });
+    // Verificamos el token con Firebase Admin
+    const decodedToken = await authAdmin.verifyIdToken(idToken);
 
+    const role = decodedToken.role || 'client'; // Ajusta si tienes otro campo
+
+    // Opcionalmente puedes devolver más cosas
+    return new Response(
+      JSON.stringify({ success: true, user: decodedToken, role }),
+      { status: 200 }
+    );
   } catch (error) {
-    console.error('Error al verificar token:', error);
-    return NextResponse.json({ message: 'Token inválido o expirado' }, { status: 401 });
+    console.error('Error in /api/auth/verify-token:', error);
+    return new Response(
+      JSON.stringify({ success: false, message: 'Internal Server Error' }),
+      { status: 500 }
+    );
   }
 }
-
