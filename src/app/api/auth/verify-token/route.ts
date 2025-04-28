@@ -1,36 +1,47 @@
-// app/api/auth/verify-token/route.ts
-import { authAdmin } from '@/utils/firebaseAdmin'; // Asegúrate de exportar `db` desde firebaseAdmin
-// import { NextRequest, NextResponse } from 'next/server';
+import { authAdmin } from "@/utils/firebaseAdmin"; // Asegúrate que esta importación esté bien
 
-// app/api/auth/verify-token/route.ts
 export async function POST(req: Request) {
   try {
-    // Primero intenta parsear el body
-    const body = await req.json().catch(() => null); // Si falla, body será null
+    // Intentar parsear el body, atrapando errores
+    const body = await req.json().catch(() => null);
+
     if (!body || !body.idToken) {
       return new Response(
         JSON.stringify({ success: false, message: 'No idToken provided' }),
-        { status: 400 }
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     const { idToken } = body;
 
-    // Verificamos el token con Firebase Admin
+    // Verificar el token con Firebase Admin
     const decodedToken = await authAdmin.verifyIdToken(idToken);
 
-    const role = decodedToken.role || 'client'; // Ajusta si tienes otro campo
+    const { uid, name, lastName, email, image, createdAt, role = 'client', confirmPassword } = decodedToken;
 
-    // Opcionalmente puedes devolver más cosas
     return new Response(
-      JSON.stringify({ success: true, user: decodedToken, role }),
-      { status: 200 }
+      JSON.stringify({
+        success: true,
+        user: {
+          uid,
+          name,
+          lastName,
+          email,
+          image,
+          createdAt,
+          confirmPassword: confirmPassword ?? '',
+          role,
+        },
+        role,
+      }),
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
     );
   } catch (error) {
-    console.error('Error in /api/auth/verify-token:', error);
+    console.error('Error verifying token:', error);
+
     return new Response(
       JSON.stringify({ success: false, message: 'Internal Server Error' }),
-      { status: 500 }
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
     );
   }
 }
