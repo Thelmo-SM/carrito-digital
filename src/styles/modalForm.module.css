@@ -69,3 +69,11 @@
         padding: 1rem;  /* Reduce el padding para mejor ajuste en pantallas pequeñas */
     }
 }
+
+@media (max-width: 768px) {
+    .modalClose {
+        width: 30%;
+        left: 0rem;
+        right: auto;
+    }
+}
