@@ -2,15 +2,15 @@ import { v2 as cloudinary } from 'cloudinary';
 
 
 cloudinary.config({ 
-    cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME, 
-    api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY, 
-    api_secret: process.env.NEXT_PUBLIC_CLOUDINARY_API_SECRET,
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+    api_key: process.env.CLOUDINARY_API_KEY, 
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 export { cloudinary };
 
-const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
+const cloudName = process.env.CLOUDINARY_UPLOAD_PRESET;
 
 // Función para subir una imagen desde un archivo local
 const uploadImage = async (imageFile: File) => {
