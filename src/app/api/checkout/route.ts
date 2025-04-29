@@ -18,7 +18,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // Crear el string de metadata
   const productsMetadata = JSON.stringify(body.products);
 
   // Verificar si el tamaño de metadata excede los 500 caracteres
