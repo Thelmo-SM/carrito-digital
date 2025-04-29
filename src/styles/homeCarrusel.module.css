@@ -134,7 +134,7 @@
     
   }
 
-  @media (min-width) {
+  @media (min-width: 1800px) {
     .textOverlay {
       position: absolute;
       top: 0%;
