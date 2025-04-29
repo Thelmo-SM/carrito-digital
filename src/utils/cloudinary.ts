@@ -9,8 +9,9 @@ cloudinary.config({
 
 export { cloudinary };
 
-const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
-const cloudName = process.env.CLOUDINARY_UPLOAD_PRESET;
+const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
 
 // Función para subir una imagen desde un archivo local
 const uploadImage = async (imageFile: File) => {
