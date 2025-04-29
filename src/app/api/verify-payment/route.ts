@@ -1,3 +1,5 @@
+//verify-payment/route.ts
+
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getOrderBySessionId } from "@/features/Checkout/services/getOrderBySessionId";
