@@ -73,9 +73,14 @@ export const LoginComponent = () => {
             <LoaderUi/>
             </div> : success ? '✔': 'Iniciar sesión'}
           </button>
-          <Link href='/register'
+          <Link href='/forgot-password'
           className={Style.Link}
-          >¿No tienes cuenta?</Link>
+          >¿Olvidaste tu contraseña?</Link>
+
+          <p className={Style.forgotMessagge}>¿No tienes cuenta? <Link href='/register'
+          className={Style.forgotLink}
+          >Registrate</Link>
+          </p>
         </form>
         <div className={Style.image}>
           <Image src={img} width={440} height={100} alt=""

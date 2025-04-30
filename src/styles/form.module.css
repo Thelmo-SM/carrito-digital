@@ -117,6 +117,45 @@
     width: 30%;
     border-radius: .2rem;
 }
+.forgotContainer {
+  box-shadow: 0 .1rem .9rem .2rem #98b0d8;
+  padding: 1rem;
+  width: 50%;
+}
+
+.forgotMessagge {
+  text-align: center;
+  margin-top: 1rem;
+  color: #444444;
+}
+.forgotLink {
+  color: rgb(67, 123, 175);
+  font-weight: bold;
+}
+.textForgot {
+  margin: auto;
+  padding-bottom: 2rem;
+}
+
+.volver {
+  padding: .5rem 2rem;
+  margin-top: 1rem;
+  border-radius: .2rem;
+  background-color: rgb(67, 123, 175);
+  color: rgb(223, 230, 235);
+}
+.volver:hover {
+  background-color: rgb(39, 124, 204);
+  transition: 0.9s;
+}
+
+@media (max-width: 480px) {
+  .forgotContainer {
+    box-shadow: 0 .1rem .9rem .2rem #98b0d8;
+    padding: 1rem;
+    width: 100%;
+  }
+}
 
 /* .successButton {
     width: 15%;
@@ -218,7 +257,6 @@
 
 @media (min-width: 1024px) and (max-width: 1180px) {
     .container {
-        border: solid red;
         padding-top: 6rem;
     }
     .formContainer {
@@ -255,6 +293,13 @@
     .image {
         display: none;
     }
+
+
+    
+    .forgotContainer {
+      width: 100%;
+    }
+    
   }
   
   @media (max-width: 480px) {
@@ -274,6 +319,8 @@
     .image {
         display: none;
     }
+
+    
   }
   
 
@@ -323,5 +370,6 @@
       width: 100%;
       max-width: 180px;
     }
+    
   }
   
