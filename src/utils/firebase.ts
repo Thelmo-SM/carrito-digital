@@ -1,6 +1,6 @@
 
 import { initializeApp } from "firebase/app";
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { getDoc, getFirestore } from "firebase/firestore";
 import { doc, serverTimestamp, setDoc, FieldValue } from 'firebase/firestore';
 // TODO: Add SDKs for Firebase products that you want to use
@@ -51,8 +51,4 @@ export const getDocument = async (path: string) => {
 export const signOut = () => {
   localStorage.removeItem('user');
   return auth.signOut();
-}
-
-export const sendResetEmail = (email: string) => {
-  return sendPasswordResetEmail(auth, email);
 }

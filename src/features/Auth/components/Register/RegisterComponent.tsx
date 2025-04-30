@@ -131,9 +131,10 @@ export const RegisterComponent = () => {
             <LoaderUi/>
             </div> : success ? '✔' : 'Registrarse'}
           </button>
-          <Link href='/login'
-          className={Style.Link}
-          >¿Ya tienes cuenta?</Link>
+          <p className={Style.forgotMessagge}>¿Ya tienes cuenta? <Link href='/login'
+          className={Style.forgotLink}
+          >Inicia sesión</Link>
+          </p>
         </form>
         </div>
       );

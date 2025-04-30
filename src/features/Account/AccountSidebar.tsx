@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const AccountSidebar = () => {
 return (
     <aside className={styles.headerContainer}>
-      <h2 className={styles.logo}>Panel Administrativo</h2>
+      <h2 className={styles.logo}>Tu cuenta</h2>
       <nav className={styles.nav}>
         <ul>
         <li>

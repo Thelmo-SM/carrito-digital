@@ -1,10 +1,12 @@
 'use client';
 
 //import { usersTypes } from "@/types/usersTypes";
-import { sendResetEmail } from "@/utils/firebase";
+import { sendResetEmail } from "../../services/sendResetEmailService";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import style from '@/styles/form.module.css';
+import { ContainerUi, FormUi, DivForm, LabelUi, ButtonSubmitUi, InputUi } from "@/components/UI";
 
 export const ForgotPasswordComponent = () => {
   const [inputValue, setInputValue] = useState("");
@@ -21,66 +23,51 @@ export const ForgotPasswordComponent = () => {
     try {
       await sendResetEmail(inputValue);
       console.log("Email enviado exitosamente");
-      router.push("/");
+      router.push("/login");
     } catch (error) {
       console.error("Error al intentar enviar el correo: ", error);
     }
   };
 
   return (
-    <form
-      style={{ maxWidth: "400px", margin: "0 auto", padding: "20px" }}
+    <div className={style.container}>
+      <div className={style.forgotContainer}>
+    <ContainerUi>
+      <h1 className={style.title}>Recuperar contraseña</h1>
+    <FormUi
       onSubmit={onSubmit} // 🔹 Aquí ahora se pasa la función correctamente
-    >
-      <div>
-        <label htmlFor="email" style={{ display: "block", fontWeight: "bold" }}>
+      >
+      <p className={style.textForgot}>Te enviaremos un correo electrónico para que puedas recuperar tu contraseña</p>
+      <DivForm>
+        <LabelUi htmlFor="email">
           Correo electrónico
-        </label>
-        <input
+        </LabelUi>
+        <InputUi
           type="email"
           id="email"
           name="email"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "10px",
-            margin: "8px 0",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-          }}
           required
         />
-      </div>
+      </DivForm>
 
-      <button
+      <ButtonSubmitUi
         type="submit"
-        style={{
-          width: "100%",
-          padding: "10px",
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
       >
         Enviar correo de recuperación
-      </button>
+      </ButtonSubmitUi>
 
       <Link
         href="/"
-        style={{
-          display: "block",
-          textAlign: "center",
-          marginTop: "10px",
-          color: "#007bff",
-          textDecoration: "none",
-        }}
+        className={style.volver}
       >
         Volver
       </Link>
-    </form>
+    </FormUi>
+    </ContainerUi>
+    </div>
+    </div>
   );
 };
 
