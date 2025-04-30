@@ -109,6 +109,8 @@
     padding: .5rem 1rem;
     border-radius: .2rem;
     transition: 0.2s;
+    color: rgb(222, 226, 230);
+    font-weight: bold;
 }
 .editar:hover {
     background-color: rgb(39, 124, 204);
