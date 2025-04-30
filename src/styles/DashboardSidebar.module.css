@@ -48,3 +48,9 @@
     background-color: rgb(222, 226, 230);
   }
   
+  @media (max-width: 480px) {
+    .mainContent {
+      padding: 0;
+      width: 100%;
+    }
+  }

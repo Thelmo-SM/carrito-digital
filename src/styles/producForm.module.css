@@ -161,4 +161,9 @@
     font-weight: bold;
     display: block;
   }
-  
+
+  @media (max-width: 480px) {
+    .container {
+        padding-top: 3rem;
+    }
+  }

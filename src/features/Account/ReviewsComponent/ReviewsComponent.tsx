@@ -59,7 +59,7 @@ export const ReviewsComponent = () => {
         <p>{error}</p>
       ) : (
         <ul className={styles.noDocuments}>
-          {productsWithReviews.length === 0 ? <p>No tienes reseñas</p> : 
+          {productsWithReviews.length === 0 ? <p className={styles.cero}>No tienes reseñas</p> : 
           productsWithReviews.map((order) => (
             <li key={order.id}>
               <ul className={styles.productList}>
