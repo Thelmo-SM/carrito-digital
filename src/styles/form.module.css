@@ -149,6 +149,14 @@
   transition: 0.9s;
 }
 
+@media (max-width: 480px) {
+  .forgotContainer {
+    box-shadow: 0 .1rem .9rem .2rem #98b0d8;
+    padding: 1rem;
+    width: 100%;
+  }
+}
+
 /* .successButton {
     width: 15%;
     padding: .5rem;
@@ -286,6 +294,14 @@
     .image {
         display: none;
     }
+
+
+    
+    .forgotContainer {
+      width: 100%;
+      border: solid red;
+    }
+    
   }
   
   @media (max-width: 480px) {
@@ -305,6 +321,8 @@
     .image {
         display: none;
     }
+
+    
   }
   
 
@@ -354,5 +372,6 @@
       width: 100%;
       max-width: 180px;
     }
+    
   }
   
