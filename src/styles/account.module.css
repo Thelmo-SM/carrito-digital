@@ -8,7 +8,7 @@
     border-color: #444444;
     width: 240px;
     color: rgb(223, 230, 235);
-    padding: 2rem 1rem;
+    padding: 2rem 1rem
 }
 .nav {
     display: flex;
@@ -60,20 +60,11 @@
 
   /*//////////////////////////////////////*/
 
-  /* .subContainer {
-    width: 100%;
-    margin: 8rem 0 0 3rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 3rem;
-  } */
   .userContainer {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 3rem;
-    
   }
 
   .imgContainer {
@@ -432,7 +423,6 @@ color: rgb(67, 123, 175);
   .container {
     padding-top: 7rem;
     flex-direction: column;
-    border: solid red;
   }
 
   .headerContainer {
@@ -476,6 +466,8 @@ color: rgb(67, 123, 175);
   .editar {
     margin-left: 0;
     align-self: center;
+    width: 50%;
+    margin: auto;
   }
 }
 
@@ -483,4 +475,84 @@ color: rgb(67, 123, 175);
   .container {
     padding-top: 3rem;
   }
+}
+
+@media (max-width: 480px) {
+  .userContainer {
+    margin-bottom: 3rem;
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+  }
+  .successMessage {
+    text-align: center;
+    margin: 0 0 1rem 0;
+  }
+  .successMessage > p {
+    padding: 1.2rem;
+    border-radius: .2rem;
+    box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+    transition: .5s;
+    
+  }
+  .userInfo {
+    margin: auto;
+    text-align: center;
+  }
+  .userInfo > h2 {
+    color: #444444;
+    font-weight: bold;
+    padding: 1rem;
+  }
+  .userInfo > p {
+    font-size: 1rem;
+    padding: 1rem;
+    margin:  auto;
+    text-align: center;
+  }
+
+  .editar {
+    align-self: flex-start;
+    width: 50%;
+    margin: auto;
+  }
+
+  .title {
+    text-align: center;
+  }
+  .cero {
+    text-align: center;
+  }
+  .orderContainer {
+    margin: auto;
+  }
+  .cardContainer {
+    margin: auto;
+    padding: 1rem;
+  }
+
+  .nav > ul {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .nav li {
+    width: 45%;
+    margin: 2px .4rem;
+    border: .1px solid rgb(67, 123, 175);
+    border-radius: .2rem;
+  }
+  
+  .nav a {
+    padding: 0 1rem;
+    text-decoration: none;
+    display: block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    width: 100%;
+  }
+
 }

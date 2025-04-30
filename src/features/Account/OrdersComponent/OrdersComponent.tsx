@@ -53,7 +53,7 @@ export const OrdersComponent = () => {
           <LoaderUi />
           <p>{"Cargando tus pedidos..."}</p>
           </div>
-      ) : orders.length === 0 ? <p>No hay compras para mostrar.</p> :(
+      ) : orders.length === 0 ? <p className={style.cero}>No hay compras para mostrar.</p> :(
         <ul className={style.orderContainer}>
           {orders.map((order) => (
             

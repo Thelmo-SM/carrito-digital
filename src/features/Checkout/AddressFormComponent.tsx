@@ -5,6 +5,8 @@ import { useState } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { saveShippingAddress } from "./services/addressServices";
 import { ShippingAddress } from "@/types/ordersTypes";
+import style from '../../styles/producForm.module.css'
+import { FormUi } from "@/components/UI";
 
 interface AddressFormComponentProps {
     onAddressSaved: (address: ShippingAddress) => void;
@@ -48,7 +50,8 @@ export const AddressFormComponent = ({ onAddressSaved }: AddressFormComponentPro
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div className={style.formAddress}>
+        <FormUi onSubmit={handleSubmit}>
             <h3>Dirección de Envío</h3>
             <div>
                 <label>Calle:</label>
@@ -101,7 +104,8 @@ export const AddressFormComponent = ({ onAddressSaved }: AddressFormComponentPro
                 />
             </div>
             <button type="submit">Guardar Dirección</button>
-        </form>
+        </FormUi>
+        </div>
     );
 };
 
