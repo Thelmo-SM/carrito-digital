@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Carrito Digital - E-commerce Tecnológico
 
-## Getting Started
+Carrito Digital es una aplicación web de comercio electrónico centrada en la venta de productos tecnológicos como computadoras, laptops, tablets, consolas, accesorios y más. Desarrollado con **Next.js**, **Firebase** y **CSS Modules**, el sistema permite a los usuarios explorar productos, agregarlos al carrito, gestionar compras y dejar reseñas después de completar una orden.
 
-First, run the development server:
+Incluye autenticación de usuarios, roles diferenciados (cliente y administrador), sistema de filtrado por categorías, búsqueda, ordenamiento, scroll infinito para carga de productos, y un panel administrativo donde se pueden gestionar clientes, productos y pedidos.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tecnologías utilizadas:
+- **Frontend**: Next.js, TypeScript, CSS Modules
+- **Backend y BBDD**: Firebase (Firestore, Auth)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Funcionalidades:
+- **Registro e inicio de sesión**: Los usuarios pueden registrarse e iniciar sesión con Firebase Authentication.
+- **Carrito persistente**: El carrito se mantiene durante la sesión del usuario y se actualiza automáticamente.
+- **Sistema de reseñas**: Los usuarios pueden dejar reseñas sobre productos que hayan comprado.
+- **Dashboard para administración**: Los administradores pueden gestionar usuarios, productos y pedidos.
+- **Filtros, ordenamiento y búsqueda en tiempo real**: Los usuarios pueden buscar productos y filtrarlos por categorías o características.
+- **Lazy loading**: Implementación de carga diferida para una mejor experiencia de navegación.
+- **Control de acceso por roles**: Los usuarios tienen roles diferenciados (cliente o administrador) para controlar el acceso a funcionalidades del sistema.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Autor
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Thelmo Antonio Silverio Muñoz** - Desarrollo del proyecto
