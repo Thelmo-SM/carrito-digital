@@ -21,4 +21,4 @@ Incluye autenticación de usuarios, roles diferenciados (cliente y administrador
 
 ## Autor
 
-- **Thelmo Antonio Silverio Muñoz** - Desarrollo del proyecto
+- **Thelmo Antonio Silverio Muñoz** - Desarrollador del proyecto
