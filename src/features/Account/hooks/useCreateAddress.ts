@@ -12,10 +12,18 @@ import { useCallback, useEffect, useState } from "react";
     [key in keyof SimpleAddress]?: string;
   };
 
-  export const useCreateAddress = (initialValue: ShippingAddress, validateForm: (value: ShippingAddress) => AddressErrors) => {
+  interface AddAddressesProps {
+    closeModal: () => void;
+    onSuccess: (message: string) => void; 
+  }
+
+  export const useCreateAddress = (initialValue: ShippingAddress, validateForm: (value: ShippingAddress) => AddressErrors,
+  { closeModal, onSuccess }: AddAddressesProps
+  ) => {
   const [form, setForm] = useState(initialValue);
   const [errors, setErrors] = useState<AddressErrors>({});
   const [addresses, setAddresses] = useState<ShippingAddress[]>([]);
+  const [loading, setLoading] = useState(false);
     const user = useAuthUsers();
       const { refreshAddresses } = useAddresses();
 
@@ -43,6 +51,8 @@ import { useCallback, useEffect, useState } from "react";
 
      const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        setLoading(true);
     
         if (!user?.uid) {
           alert("Usuario no autenticado.");
@@ -65,11 +75,14 @@ import { useCallback, useEffect, useState } from "react";
         try {
           await createShippingAddress(userId, address, isDefault);
           refreshAddresses();
-          alert("Dirección de envío creada exitosamente");
           setForm(initialValue);
+          onSuccess('✅ Dirección creada correctamente.');
+          closeModal()
         } catch (error) {
           console.error(error);
           alert("Hubo un error al crear la dirección");
+        } finally {
+          setLoading(false);
         }
       };
 
@@ -92,6 +105,7 @@ import { useCallback, useEffect, useState } from "react";
     return {
         form,
         errors,
+        loading,
         handleChange,
         handleBlur,
         handleSubmit

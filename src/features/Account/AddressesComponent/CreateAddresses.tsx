@@ -5,8 +5,14 @@ import { LabelUi, ButtonSubmitUi, InputUi, DivForm, FormUi, ContainerUi } from "
 import { validateAddressForm } from "./validateAddressForm";
 import { useCreateAddress } from "../hooks/useCreateAddress";
 import { ValidateMessgeErrror } from "@/components/UI/Message";
+import { LoaderUi } from "@/components/UI/LoaderUi";
 
 type SimpleAddress = Omit<ShippingAddress, "id" | "isDefault">;
+
+interface AddAddressesProps {
+  closeModal: () => void;
+  onSuccess: (message: string) => void; 
+}
 
 const initialValue: SimpleAddress = {
   street: '',
@@ -16,14 +22,15 @@ const initialValue: SimpleAddress = {
   country: '',
 }
 
-export const CreateAddresses = () => {
+export const CreateAddresses: React.FC<AddAddressesProps>  = ({closeModal, onSuccess}) => {
   const {
     form,
     errors,
+    loading,
     handleBlur,
     handleChange,
     handleSubmit
-  } = useCreateAddress(initialValue, validateAddressForm);
+  } = useCreateAddress(initialValue, validateAddressForm, {closeModal, onSuccess});
   
  // const isFormValid = Object.values(form).every(value => value !== '') && Object.keys(errors).length === 0;
 
@@ -87,8 +94,9 @@ export const CreateAddresses = () => {
             {errors.country}
             </ValidateMessgeErrror>}
         </DivForm>
-        <ButtonSubmitUi type="submit"
-        >Crear Dirección</ButtonSubmitUi>
+        <ButtonSubmitUi type="submit">
+        {loading ? <LoaderUi /> : 'Crear Dirección'}
+        </ButtonSubmitUi>
       </FormUi>
     </ContainerUi>
   );

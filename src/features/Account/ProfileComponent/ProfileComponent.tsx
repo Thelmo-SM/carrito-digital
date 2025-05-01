@@ -27,7 +27,7 @@ export const ProfileComponent = () => {
 
     const handleSuccess = (message: string) => {
         setSuccessMessage(message);
-        setTimeout(() => setSuccessMessage(null), 3000); // Ocultar el mensaje después de 3 segundos
+        setTimeout(() => setSuccessMessage(null), 3000);
     };
 
     return (

@@ -7,10 +7,11 @@ import {
     ButtonSubmitUi,
     ContainerUi,
     DivForm,
-    ImagePreview
+    ImagePreview,
 } from "@/components/UI";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 import { LoaderUi } from "@/components/UI/LoaderUi";
+import { ValidateMessgeErrror } from "@/components/UI/Message";
 
 interface UpdateProfileProps {
     closeModal: () => void;
@@ -21,6 +22,8 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
     const {
         form,
         loading,
+        formErrors,
+        handleBlur,
         handleChange,
         handleFileChange,
         handleSubmit,
@@ -28,9 +31,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
     } = useUpdateProfile({closeModal, onSuccess});
 
     // Si no hay usuario, mostrar un mensaje de carga o retorno temprano
-    if (!form.name) {
-        return <p>Cargando...</p>;
-    }
+    // if (!form.name) {
+    //     return <p>Cargando...</p>;
+    // }
 
     return (
         <ContainerUi>
@@ -43,6 +46,7 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         type="file" 
                         name="image" 
                         onChange={handleFileChange} 
+                        onBlur={handleBlur}
                     />
                     <DivForm>
                       {loading ? (
@@ -60,7 +64,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="name" 
                         value={form.name} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                     />
+                    {formErrors.name && <ValidateMessgeErrror>{formErrors.name}</ValidateMessgeErrror>}
                 </DivForm>
 
                 <DivForm>
@@ -70,7 +76,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="lastName" 
                         value={form.lastName} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                     />
+                    {formErrors.lastName && <ValidateMessgeErrror>{formErrors.lastName}</ValidateMessgeErrror>}
                 </DivForm>
 
                 <DivForm>
@@ -80,7 +88,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="email" 
                         value={form.email} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                     />
+                    {formErrors.email && <ValidateMessgeErrror>{formErrors.email}</ValidateMessgeErrror>}
                 </DivForm>
 
                 <DivForm>
@@ -90,7 +100,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="password" 
                         value={form.password} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                     />
+                    {formErrors.password && <ValidateMessgeErrror>{formErrors.password}</ValidateMessgeErrror>}
                 </DivForm>
 
                 <DivForm>
@@ -100,7 +112,9 @@ export const UpdateProfile: React.FC<UpdateProfileProps>  = ({closeModal, onSucc
                         name="confirmPassword" 
                         value={form.confirmPassword} 
                         onChange={handleChange} 
+                        onBlur={handleBlur}
                     />
+                    {formErrors.confirmPassword && <ValidateMessgeErrror>{formErrors.confirmPassword}</ValidateMessgeErrror>}
                 </DivForm>
 
                 <ButtonSubmitUi>
