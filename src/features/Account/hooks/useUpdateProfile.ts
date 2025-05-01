@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import { usersTypes } from "@/types/usersTypes";
-//import { updateUser } from "@/features/Auth/services/registerService";
-//import { updateUserProfile } from "@/utils/firebase";
 import { updateUserProfile } from "../services/userAccountServices";
+import { validateUserProfile, ValidationErrors } from "../helpers/validateProfileValues";
 
 type SimpleAddress = Omit<usersTypes, "uid" | "createdAt" | "role"> & {
   image: string;
@@ -13,10 +12,15 @@ interface UpdateProfileProps {
   onSuccess: (message: string) => void;
 }
 
+  export type ProfileErrors = {
+    [key in keyof ValidationErrors]?: string;
+  }
+
 export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) => {
-  const user = useAuthUsers(); // Obtener los datos del usuario
+  const user = useAuthUsers();
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<ProfileErrors>({});
   const [form, setForm] = useState<SimpleAddress>({
     name: user?.name || "",
     lastName: user?.lastName || "",
@@ -38,7 +42,6 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
         confirmPassword: "",
       });
 
-      // Si el usuario tiene una imagen, establecerla en la vista previa
       if (user.image) {
         setImagePreview(user.image);
       }
@@ -50,17 +53,41 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleBlur = useCallback(
+    (e: React.FocusEvent<HTMLInputElement>) => {
+      const { name, value } = e.target as { name: keyof ValidationErrors; value: string };
+  
+      const fieldErrors = validateUserProfile({ ...form, [name]: value });
+  
+      if (fieldErrors[name]) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: fieldErrors[name]!,
+        }));
+      } else {
+        setFormErrors((prevErrors) => {
+          // Omitimos la clave sin asignarla a una variable (truco limpio)
+          const rest = Object.fromEntries(
+            Object.entries(prevErrors).filter(([key]) => key !== name)
+          ) as ProfileErrors;
+  
+          return rest;
+        });
+      }
+    },
+    [form]
+  );
+
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
 
-      // Crear una URL temporal para la vista previa
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result as string); // Guardar la vista previa
+        setImagePreview(reader.result as string);
       };
-      reader.readAsDataURL(selectedFile); // Lee el archivo como una URL de datos
+      reader.readAsDataURL(selectedFile);
     }
   };
 
@@ -70,7 +97,14 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
 
     let image = form.image;
 
-    // Subir la imagen a Cloudinary si se ha seleccionado una nueva imagen
+    const errors = validateUserProfile(form);
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      setLoading(false);
+      return;
+    }
+
     if (file) {
       const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
@@ -104,12 +138,10 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
 
     const updatedUserData = {
       ...form,
-      image, // Solo se incluye la nueva imagen si fue subida
-      // Incluye password solo si tiene valor
+      image,
       password: form.password && form.password.trim() !== "" ? form.password : undefined,
     };
     
-    // Eliminar el campo password si no se ha actualizado
     if (updatedUserData.password === undefined) {
       delete updatedUserData.password;
     }
@@ -118,10 +150,8 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
       await updateUserProfile(user?.uid, updatedUserData);
       console.log("Perfil actualizado correctamente");
     
-      // Primero mostramos el mensaje de éxito
       onSuccess("✅ Perfil actualizado correctamente.");
     
-      // Luego cerramos el modal
       setTimeout(() => {
         closeModal();
       }, 1000);
@@ -137,6 +167,8 @@ export const useUpdateProfile = ({ closeModal, onSuccess }: UpdateProfileProps) 
     imagePreview,
     file,
     loading,
+    formErrors,
+    handleBlur,
     handleChange,
     handleFileChange,
     handleSubmit,
