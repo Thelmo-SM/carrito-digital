@@ -309,6 +309,9 @@
     .compra > p, .quedan, .precio {
         margin: .5rem;
     }
+    .compra > button {
+      width: 100%;
+    }
     .volver {
         width: 50%;
         margin-bottom: 5rem;
