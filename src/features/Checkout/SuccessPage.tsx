@@ -6,6 +6,7 @@ import { orderTypes } from '@/types/ordersTypes';
 import { useRouter } from 'next/navigation';
 import { LoaderStatusd } from '@/components/UI/LoaderUi';
 import styles from '@/styles/SuccessPage.module.css';
+import { useAuthUsers } from '../Auth/hooks/authUsers';
 
 type VerifyResponse = {
   status: 'paid' | 'unpaid';
@@ -17,26 +18,25 @@ const SuccessPage = () => {
   const [order, setOrder] = useState<VerifyResponse | null>(null);
   const searchParams = useSearchParams();
   const router = useRouter();
+  const user = useAuthUsers();
 
   useEffect(() => {
     const session_id = searchParams.get('session_id');
-    console.log('Session ID:', session_id);
+    if (!session_id || !user) return;
   
     const fetchOrder = async (retries = 5) => {
-      if (!session_id) return;
-    
       try {
         const res = await fetch(`/api/verify-payment?session_id=${session_id}`);
         const data = await res.json();
-        console.log('Respuesta del servidor:', data); // Verificar la respuesta completa
-        
+        console.log('Respuesta del servidor:', data);
+  
         if (data.status === 'paid' && data.order) {
           setOrder(data);
         } else {
           if (retries > 0) {
             console.log(`Reintentando... (${6 - retries}/5)`);
-            await new Promise(resolve => setTimeout(resolve, 1000)); // Esperar 1 segundo
-            fetchOrder(retries - 1); // Reintentar después de esperar
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            fetchOrder(retries - 1);
           } else {
             console.error('No se pudo obtener la orden después de varios intentos');
             alert('Hubo un problema con la orden. Intenta nuevamente.');
@@ -53,7 +53,8 @@ const SuccessPage = () => {
     };
   
     fetchOrder();
-  }, [searchParams]);
+  }, [searchParams, user]);
+  
 
   if (loading) {
     return (

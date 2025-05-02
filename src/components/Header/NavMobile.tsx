@@ -74,11 +74,11 @@ export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMob
                   >
                     Notificaciones
                     </Link>
-                  <Link href='/account/settings' className={styles.link}
+                  {/* <Link href='/account/settings' className={styles.link}
                   onClick={() => setOpenMenuMobile(false)}
                   >
                     Configuración
-                    </Link>
+                    </Link> */}
 
 
 {/*////////////////////////////////////////////////////*/}

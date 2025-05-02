@@ -15,6 +15,7 @@ import ModalForm from '../Modals/modalForm';
 import { IsAuthenticated } from '../UI/Message';
 import { useModalForm } from '@/hooks/useModalForm';
 import NavMobile from './NavMobile';
+import { useNotifications } from '@/features/notifications/useNotifications';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -27,6 +28,7 @@ export const Nav = () => {
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(false); 
   const [openMenuMobile, setOpenMenuMobile] = useState(false); 
+  const { unreadCount, markAllAsRead } = useNotifications();
   
 
   useEffect(() => {
@@ -89,6 +91,9 @@ export const Nav = () => {
     if (!user) openModal();
   };
 
+  useEffect(() => {
+    markAllAsRead();
+  }, []);
 
   return (
     <div>
@@ -121,7 +126,7 @@ export const Nav = () => {
           </Link>
 
           {user ? (
-            <>
+            <div className={NavStyle.accoutNotifications}>
               <button
                 onClick={() => setOpenMenu(!openMenu)}
                 className={NavStyle.profileButton}
@@ -134,8 +139,13 @@ export const Nav = () => {
                   alt='Usuario'
                   className={NavStyle.userImg}
                 />
+                {unreadCount > 0 && (
+            <span className={NavStyle.notificationNav}>
+              {unreadCount}
+            </span>
+            )}
               </button>
-            </>
+            </div>
           ) : (
             <Link
               href='/login'
@@ -184,15 +194,19 @@ export const Nav = () => {
           >
             Direcciones
             </Link>
-          <Link href='' className={NavStyle.menuItem}
-          onClick={() => setOpenMenu(false)}
+          <Link href='/notifications' className={NavStyle.menuItem}
+          onClick={() => {
+            markAllAsRead();
+            setOpenMenu(false);
+          }}
           >
             Notificaciones
-            </Link>
-          <Link href='/account/settings' className={NavStyle.menuItem}
-          onClick={() => setOpenMenu(false)}
-          >
-            Configuración
+
+            {unreadCount > 0 && (
+            <span className={NavStyle.notificationBadge}>
+              {unreadCount}
+            </span>
+            )}
             </Link>
           <button className={NavStyle.logout} onClick={handleSignOut}>
             {loading ? <LoaderUi /> : 'Cerrar sesión'}
