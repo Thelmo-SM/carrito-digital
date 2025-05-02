@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { registerService } from "../services/registerService";
 import { setDocument } from "@/utils/firebase";
 import { useRouter } from "next/navigation";
+import { createNotification } from "@/features/notifications/createNotification";
 
 //setDocument
 
@@ -70,6 +71,7 @@ import { useRouter } from "next/navigation";
           console.log(password, confirmPassword)
       
           await userColection({ ...noPassword, uid: createdUser.user.uid, role: form.role } as dataUsersTypes);
+          await createNotification(createdUser.user.uid, "¡Bienvenido!", "Gracias por registrarte en Carrito Digital")
         } catch (error: unknown) {
           console.error("Error en el hook de registro:", error);
         } finally {

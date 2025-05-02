@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { getOrderBySessionId } from "@/features/Checkout/services/getOrderBySessionId";
 import { createOrderInDatabase } from "@/features/Checkout/services/createOrderInDataBase";
 import { productsTypes } from "@/types/productTypes";
+import { createNotification } from "@/features/notifications/createNotification";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-02-24.acacia",
@@ -57,6 +58,13 @@ export async function GET(req: NextRequest) {
         client: session.customer_details?.name || 'Desconocido',
         orderId: `ORD-${Date.now()}`,
       });
+
+      await createNotification(
+        newOrder.userId ?? '',
+        "¡Compra realizada!",
+        `Tu pedido fue exitoso. Gracias por comprar con nosotros. <a href="/account/orders/${newOrder.sessionId}" target="_blank">Ver detalles de tu compra aquí</a>`
+      );
+      
 
       return NextResponse.json({ status: "paid", order: newOrder });
     } else {
