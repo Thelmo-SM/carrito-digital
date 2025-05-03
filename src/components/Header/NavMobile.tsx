@@ -17,9 +17,10 @@ type NavMobileProps = {
   setOpenMenuMobile: (open: boolean) => void;
   handleSignOut: () => void;
   unreadCount: number;
+  markAllAsRead: () => void;
 };
 
-export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMobile, handleSignOut, unreadCount }: NavMobileProps) => {
+export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMobile, handleSignOut, unreadCount, markAllAsRead }: NavMobileProps) => {
     return (
       <nav className={`${!isMenuOpen ? styles.nav : styles.containerShow}`}>
         <Link href="/" className={styles.link}
@@ -71,7 +72,11 @@ export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMob
                     Direcciones
                     </Link>
                   <Link href='/notifications' className={styles.link}
-                  onClick={() => setOpenMenuMobile(false)}
+                  onClick={() => {
+                    markAllAsRead();
+                    setOpenMenuMobile(false)
+                  }
+                }
                   >
                     Notificaciones
 

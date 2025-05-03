@@ -170,6 +170,7 @@ export const Nav = () => {
       setOpenMenuMobile={setOpenMenuMobile}
       handleSignOut={handleSignOut}
       unreadCount={unreadCount}
+      markAllAsRead={markAllAsRead}
       />}
 
       {/* Menú desplegable con animación y ref */}
