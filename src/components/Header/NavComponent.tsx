@@ -102,6 +102,11 @@ export const Nav = () => {
           onClick={() => handleOpenMenu()}
         >
           ☰
+          {unreadCount > 0 && (
+            <span className={NavStyle.notificationNavMobile}>
+              {unreadCount}
+            </span>
+            )}
         </button>
 {  !isMobile ? <nav className={scrollY ? NavStyle.navScroll : NavStyle.container}>
   <div className={NavStyle.subContainer}>
@@ -164,6 +169,7 @@ export const Nav = () => {
       isMenuOpen={openMenuMobile}
       setOpenMenuMobile={setOpenMenuMobile}
       handleSignOut={handleSignOut}
+      unreadCount={unreadCount}
       />}
 
       {/* Menú desplegable con animación y ref */}
