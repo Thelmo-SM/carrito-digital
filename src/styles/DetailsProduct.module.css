@@ -4,7 +4,7 @@
     justify-content: center;
     /* width: 75%; */
     box-shadow: 0 .1rem .9rem .2rem #cad1dd;
-    margin: auto;
+    /* margin: 6rem auto; */
 }
 .details {
     display: flex;
@@ -17,6 +17,7 @@
 
 .pPuntaje {
     margin-top: 1rem;
+    
 }
 
 .puntaje {
@@ -39,6 +40,9 @@
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
+}
+.subDcontainer1 {
+  margin: 0;
 }
 
 .description {
@@ -125,7 +129,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 3rem 0;
+    margin: rem 0;
 }
 
 .loadMoreButton {
@@ -229,6 +233,11 @@
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    color: #cad1dd;
+  }
+  .span, .price {
+    color: rgb(67, 123, 175);
+    font-weight: bold;
   }
   
   /* Estilo para el botón de disminuir */
@@ -263,6 +272,7 @@
     border-radius: 4px;
     margin: 0;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    color: rgb(67, 123, 175);
   }
   
   /* Estilo cuando el campo de cantidad está enfocado */
@@ -323,4 +333,46 @@
         color: rgb(39, 124, 204);
         font-weight: bold;
       }
+      .img2 {
+        margin: auto;
+      }
+  }
+
+  @media(min-width: 820px) and (max-width: 1280px) {
+    .dContainer {
+      width: 100%;
+      margin: 6rem auto;
+  }
+  .compra > button {
+    width: 50%; 
+  }
+  .img2 {
+    width: 70%;
+  }
+  .subDcontainer2 {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+  .subDcontainer1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .volver {
+    width: 20%;
+    margin-bottom: 5rem;
+}
+  }
+
+  @media(min-width: 1280px) {
+    .dContainer {
+      width: 75%;
+      margin: 6rem auto;
+  }
+  .compra > button {
+    width: 50%; 
+  }
   }
