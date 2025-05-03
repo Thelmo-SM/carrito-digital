@@ -142,8 +142,8 @@
 }
 
 .cartItemCount {
-  background-color: #dc3545;
-  color: #d1d9e6;
+  background-color: #d1d9e6;
+  color: #dc3545;
   border-radius: 50%;
   padding: 0.1rem 0.5rem;
   position: absolute;
@@ -223,6 +223,7 @@
   padding: .4rem .6rem;
   border-radius: 50%;
   font-weight: bold;
+  border: solid;
 }
 
 .accoutNotifications {
@@ -242,6 +243,20 @@
   right: -.2rem;
   font-weight: bold;
 }
+
+.notificationNavMobile {
+  background-color: #dc3545;
+  color: #d1d9e6;
+  border-radius: 50%;
+  padding: 0.1rem 0.5rem;
+  position: absolute;
+  top: -.2rem;
+  right: 1.5rem;
+  font-weight: bold;
+  font-size: 1.2rem
+}
+
+
 
 @media (max-width: 1125px) {
   .container, .navScroll {
@@ -269,6 +284,9 @@
     width: 20%;
     margin: 0 auto;
     text-align: center;
+  }
+  .profileButton {
+    width: 100%;
   }
 
   .subContainer {
