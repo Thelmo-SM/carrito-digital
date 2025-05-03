@@ -208,6 +208,27 @@
   border-radius: 0.5rem;
 }
 
+.alertContainer {
+  height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+  border-radius: .2rem;
+}
+.alertContainer > p {
+  text-align: center;
+}
+
+.imgMessage {
+  background-color: rgb(67, 123, 175);
+  margin: 2rem auto;
+  padding: 1rem;
+  border-radius: .2rem;
+  box-shadow: 0 .1rem .9rem .2rem #cad1dd;
+}
+
 /*//////////////Responsive/////////////////*/
 
 @media (min-width: 1025px) and (max-width: 1250px) {

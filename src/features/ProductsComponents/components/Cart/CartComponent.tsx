@@ -13,7 +13,8 @@ import { useModalForm } from '@/hooks/useModalForm';
 import successError from '../../../../../public/checkoutError.webp';
 import { LoaderUi } from '@/components/UI/LoaderUi';
 import Style from '@/styles/products.module.css';
-//import { LoaderUi } from '@/components/UI/LoaderUi';
+import Link from 'next/link';
+import cartXImg from '../../../../../public/cart-x.webp';
 
 
 
@@ -32,7 +33,7 @@ export const CartComponent = () => {
       }
     
       if (cart.length === 0) {
-        alert("El carrito está vacío.");
+        openModal();
         return;
       }
     
@@ -44,7 +45,7 @@ export const CartComponent = () => {
     
       // Verificar si la dirección de envío es válida
       if (!defaultAddress) {
-        alert("No tienes una dirección de envío predeterminada.");
+        openModal();
         return;
       }
     
@@ -113,6 +114,36 @@ export const CartComponent = () => {
             <div className={styles.containerError}>
             <p className={styles.messageError}>{errorMessage}</p>
             <Image src={successError} width={400} height={300} alt='' className={styles.imageError} />
+            </div>
+          </ModalForm>: ''}
+          {/* Agregar dirección */}
+          {!defaultAddress ? <ModalForm isOpens={isOpen} closeModal={closeModal}>
+            <div className={styles.alertContainer}>
+            <Image src={cartXImg} width={180} height={180} alt='' 
+            className={styles.imgMessage}
+            />
+            <p className={styles.messageError}>No tienes una dirección de envío predeterminada.</p>
+            <Link 
+                href='/account/addresses'
+                className={styles.newAddress}
+                >
+                  Agregar dirección
+                </Link>
+            </div>
+          </ModalForm>: ''}
+          {/*Carrito vacío */}
+          {cart.length === 0 ? <ModalForm isOpens={isOpen} closeModal={closeModal}>
+            <div className={styles.alertContainer}>
+            <Image src={cartXImg} width={180} height={180} alt='' 
+            className={styles.imgMessage}
+            />
+            <p className={styles.messageError}>El carrito está vacío.</p>
+            <Link 
+                href='/products'
+                className={styles.newAddress}
+                >
+                  Agregar productos
+                </Link>
             </div>
           </ModalForm>: ''}
             <div className={styles.tableAndButton}>
