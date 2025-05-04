@@ -15,7 +15,8 @@ import ModalForm from '../Modals/modalForm';
 import { IsAuthenticated } from '../UI/Message';
 import { useModalForm } from '@/hooks/useModalForm';
 import NavMobile from './NavMobile';
-import { useNotifications } from '@/features/notifications/useNotifications';
+import { useNotifications } from '@/features/notifications/hooks/useNotifications';
+import { useMessageNotification } from '@/features/notifications/hooks/useMessageNotification';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -29,6 +30,7 @@ export const Nav = () => {
   const [isMobile, setIsMobile] = useState(false); 
   const [openMenuMobile, setOpenMenuMobile] = useState(false); 
   const { unreadCount, markAllAsRead } = useNotifications();
+  const { hasNewMessage, setHasNewMessage } = useMessageNotification();
   
 
   useEffect(() => {
@@ -149,6 +151,12 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+
+              {hasNewMessage && (
+              <span className={NavStyle.notificationNav}>
+              ...
+              </span>
+              )}
               </button>
             </div>
           ) : (
@@ -214,6 +222,17 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+            </Link>
+            <Link href='/messages' 
+            className={NavStyle.menuItem}
+            onClick={() => setHasNewMessage(false)}
+            >
+              Mensajes
+              {hasNewMessage && (
+              <span className={NavStyle.notificationBadge}>
+              ...
+              </span>
+        )}
             </Link>
           <button className={NavStyle.logout} onClick={handleSignOut}>
             {loading ? <LoaderUi /> : 'Cerrar sesión'}

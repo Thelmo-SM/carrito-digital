@@ -3,11 +3,13 @@
 
 import styles from '@/styles/account.module.css';
 import Link from 'next/link';
-import { useNotifications } from '../notifications/useNotifications';
+import { useNotifications } from '../notifications/hooks/useNotifications';
 import { useEffect } from 'react';
+import { useMessageNotification } from '../notifications/hooks/useMessageNotification';
 
 export const AccountSidebar = () => {
     const { unreadCount, markAllAsRead } = useNotifications();
+      const { hasNewMessage, setHasNewMessage } = useMessageNotification();
 
       useEffect(() => {
         markAllAsRead();
@@ -40,6 +42,19 @@ return (
               {unreadCount}
             </span>
             )}
+        </Link>
+        </li>
+        <li>
+        <Link 
+        href='/messages'
+        onClick={() => setHasNewMessage(false)}
+        >
+          Mensajes
+          {hasNewMessage && (
+          <span className={styles.notificationBadge}>
+              ...
+              </span>
+        )}
         </Link>
         </li>
         </ul>

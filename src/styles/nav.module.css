@@ -129,6 +129,7 @@
   color: #d1d9e6;
 }
 
+
 .logout {
   margin-top: 2rem;
   padding: 1rem;
@@ -225,9 +226,8 @@
   font-weight: bold;
   padding: .4rem .6rem;
   border-radius: 50%;
-  font-weight: bold;
+  font-weight: bold;;
 }
-
 
 .accoutNotifications {
   margin: auto 0;
@@ -245,6 +245,7 @@
   top: -.4rem;
   right: -.2rem;
   font-weight: bold;
+
 }
 
 .notificationNavMobile {
