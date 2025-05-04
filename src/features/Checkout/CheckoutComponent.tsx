@@ -30,7 +30,7 @@ export const CheckoutComponent = ({ totalCart, handleOrder, loading}: checkoutTy
 
             <div className={styles.addressContainer}>
                 {/* Mostrar la dirección predeterminada */}
-                <p className={styles.addressTile}>★ Dirección predeterminada</p>
+                <p className={styles.addressTile}>{addresses.length > 0 ?'★ Dirección predeterminada' : 'No tienes direcciones'}</p>
                 <p className={styles.address}>
                     {defaultAddress?.street}, {defaultAddress?.city}, {defaultAddress?.state}, {defaultAddress?.postalCode}, {defaultAddress?.country}
                 </p>

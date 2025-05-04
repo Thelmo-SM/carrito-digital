@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import ReviewForm from '../ReviewsComponent/AddReviews';
 import { useAuthUsers } from '@/features/Auth/hooks/authUsers';
+import { formatPrice } from '@/features/Dashboard/helpers/formatPrice';
 
 interface OrderDetailComponentProps1 {
   session_id: string; // Add the session_id prop here
@@ -53,8 +54,8 @@ const OrderDetailComponent = ({ session_id }: OrderDetailComponentProps1) => {
         <p><strong>ID de la orden:</strong> {id}</p>
         <p><strong>Fecha de compra:</strong> {new Date(createdAt).toLocaleDateString()}</p>
         <p><strong>Catidad de productos:</strong> {totalProductos}</p>
-        <p><strong>Estado:</strong> <span className={`${status === 'Entregado' ? styles.statusSuccess: ''}`}>{status}</span></p>
-        <p><strong>Total:</strong> RD${total.toLocaleString()}</p>
+        <p><strong>Estado:</strong> <span className={`${status === 'Entregado' ? styles.statusSuccess: styles.statusP}`}>{status}</span></p>
+        <p><strong>Total:</strong><span className={styles.price}>{formatPrice(Number(total))}</span></p>
       </div>
 
       <div className={styles.shippingAddress}>

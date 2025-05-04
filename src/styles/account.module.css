@@ -75,6 +75,9 @@
   .image {
     width: 100%;
     height: auto;
+    object-fit: cover; 
+    width: 18rem;
+    height: 18rem;
   }
   .successMessage {
     text-align: center;
@@ -353,17 +356,43 @@
   margin: 1rem 0;
 }
 .email {
-  color: rgb(67, 123, 175);;
+  color: rgb(67, 123, 175);
 }
 
 .statusP {
-  color: rgb(155, 115, 115);
+  color: rgb(143, 129, 3);
   margin-left: .3rem;
 }
+
 .statusSuccess {
   color:  rgb(1, 163, 1);
   margin-left: .3rem;
 }
+.statusC {
+  color: rgb(180, 52, 52);
+  margin-left: .3rem;
+}
+
+.notificationBadge {
+  margin-left: .5rem;
+  background-color: #dc3545;
+  color: #d1d9e6;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: .4rem .6rem;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.accoutNotifications {
+  margin: auto 0;
+  padding: .1rem 1rem;
+  border-radius: .2rem;
+  position: relative;
+  transition: 0.5s;
+  object-fit: cover;
+}
+
 
 .verProduct {
 padding: 5rem 0;

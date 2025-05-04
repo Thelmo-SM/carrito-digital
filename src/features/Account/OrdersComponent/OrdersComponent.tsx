@@ -8,6 +8,7 @@ import { orderTypes } from '@/types/ordersTypes';
 import style from '@/styles/account.module.css';
 import { LoaderUi } from "@/components/UI/LoaderUi";
 import { useRouter } from "next/navigation";
+import { formatPrice } from "@/features/Dashboard/helpers/formatPrice";
 
 export const OrdersComponent = () => {
   const [orders, setOrders] = useState<orderTypes[]>([]);
@@ -61,7 +62,7 @@ export const OrdersComponent = () => {
             className={style.cardContainer}
             >
               <h3>Pedido #{order.id}</h3>
-              <p>Total: ${order.total}</p>
+              <p>Total: <span className={style.email}>{formatPrice(Number(order.total))}</span></p>
               <p>Estado:  
                  <span 
                 className={`${order.status === 'Entregado' ? style.statusSuccess : style.statusP}`}>

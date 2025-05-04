@@ -2,7 +2,7 @@ export interface orderTypes {
     id: string;
     total: number;
     status: string;
-    createdAt: Date; // Cambia a Date si quieres usar objetos Date reales
+    createdAt: Date;
     products: ProductOrderTypes[];
     shippingAddress: ShippingAddress | null;
     client?: string;

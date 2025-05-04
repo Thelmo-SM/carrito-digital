@@ -13,7 +13,7 @@ export const createOrderInDatabase = async (orderData: orderTypes) => {
       products: orderData.products,
       total: orderData.total,
       shippingAddress: orderData.shippingAddress,
-      status: 'paid', // o 'pending', si prefieres manejarlo después
+      status: 'Pendiente',
       client: orderData.client,
       orderId: orderData.orderId,
       createdAt,
@@ -26,7 +26,7 @@ export const createOrderInDatabase = async (orderData: orderTypes) => {
       products: orderData.products,
       total: orderData.total,
       shippingAddress: orderData.shippingAddress,
-      status: 'paid',
+      status: 'Pendiente',
       client: orderData.client,
       orderId: orderData.orderId,
       createdAt,

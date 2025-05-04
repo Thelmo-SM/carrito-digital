@@ -99,7 +99,16 @@
   background-color: rgb(50, 100, 150);
 }
 
+.price {
+  color: rgb(67, 123, 175);
+}
+
 .statusSuccess {
   color:  rgb(1, 163, 1);
+  margin-left: .3rem;
+}
+
+.statusP {
+  color: rgb(143, 129, 3);
   margin-left: .3rem;
 }
