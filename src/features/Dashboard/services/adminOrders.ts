@@ -42,6 +42,8 @@ export const adminOrders = async (): Promise<orderTypes[]> => {
       products: orderData.products || [],
       shippingAddress: orderData.shippingAddress || null,
       client: displayName,
+      userId: orderData.userId,
+      sessionId: orderData.sessionId,
     });
   }
 

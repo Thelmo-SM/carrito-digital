@@ -76,6 +76,9 @@
   padding: .1rem;
   cursor: pointer;
   transition: opacity 0.3s;
+  object-fit: cover; 
+  width: 2rem;
+  height: 2rem;
 }
 
 .userImg:hover {
@@ -223,8 +226,8 @@
   padding: .4rem .6rem;
   border-radius: 50%;
   font-weight: bold;
-  border: solid;
 }
+
 
 .accoutNotifications {
   margin: auto 0;

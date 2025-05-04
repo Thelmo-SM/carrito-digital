@@ -1,8 +1,18 @@
 // components/Dashboard/DashboardSidebar.tsx
+'use client';
+
 import styles from '@/styles/account.module.css';
 import Link from 'next/link';
+import { useNotifications } from '../notifications/useNotifications';
+import { useEffect } from 'react';
 
 export const AccountSidebar = () => {
+    const { unreadCount, markAllAsRead } = useNotifications();
+
+      useEffect(() => {
+        markAllAsRead();
+      }, []);
+
 return (
     <aside className={styles.headerContainer}>
       <h2 className={styles.logo}>Tu cuenta</h2>
@@ -21,7 +31,16 @@ return (
         <Link href= '/account/addresses' >Direcciones</Link>
         </li>
         <li>
-        <Link href= '' >Notificaciones</Link>
+        <Link href= '' 
+        className={styles.accoutNotifications}
+        >
+        Notificaciones
+        {unreadCount > 0 && (
+            <span className={styles.notificationBadge}>
+              {unreadCount}
+            </span>
+            )}
+        </Link>
         </li>
         </ul>
       </nav>

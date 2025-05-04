@@ -5,12 +5,13 @@ import styles from '@/styles/OrdersTable.module.css';
 import sharedStyles from '@/styles/shared.module.css';
 import { useAdminOrders } from '../hooks/useOrders';
 import { orderTypes } from '@/types/ordersTypes';
-import { updateOrderStatus } from '../services/updateOrderStatus'; // este lo implementamos ahora
+import { updateOrderStatus } from '../services/updateOrderStatus';
+import { createNotification } from '@/features/notifications/createNotification';
 
 const statusOptions = ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'];
 
 const OrdersTable = () => {
-  const { orders, loading, error } = useAdminOrders(); // refresh es opcional si tu hook lo permite
+  const { orders, loading, error } = useAdminOrders();
   const [selectedStatuses, setSelectedStatuses] = useState<{ [id: string]: string }>({});
   const [updatingOrderId, setUpdatingOrderId] = useState<string | null>(null);
   const [message, setMessage] = useState('');
@@ -22,14 +23,42 @@ const OrdersTable = () => {
   const handleUpdate = async (id: string) => {
     const newStatus = selectedStatuses[id];
     if (!newStatus) return;
-
+  
     setUpdatingOrderId(id);
+    // Buscar la orden correcta por el ID de la orden
+    const currentOrder = orders.find((o) => o.id === id);
+  
+    if (!currentOrder) {
+      console.log("Orden no encontrada");
+      setMessage("Orden no encontrada");
+      return;
+    }
+  
     try {
+      // Actualizamos el estado de la orden
       await updateOrderStatus(id, newStatus);
+  
+      // Verificamos si el currentOrder tiene el userId
+      if (currentOrder?.userId) {
+        // Aquí accedes al userId de la orden para obtener los datos del cliente
+        console.log("Cliente encontrado:", currentOrder.client);
+  
+        // Se envía la notificación al cliente
+        await createNotification(
+          currentOrder.userId,  // Enviamos la notificación usando el userId
+          'Actualización de tu pedido',
+          `El estado de tu pedido ha cambiado a: ${newStatus} 
+          <a href="/account/orders/${currentOrder.sessionId}" style="color: #437BAF; text-decoration: underline;" target="_blank">Ver detalles de tu compra aquí</a>`
+        );
+        console.log("Notificación enviada correctamente.");
+      } else {
+        console.log("No se encontró el userId en la orden");
+      }
+  
       setMessage('✅ Estado actualizado');
     } catch (err: unknown) {
       setMessage('Error al actualizar');
-      console.log(err)
+      console.log(err);
     } finally {
       setUpdatingOrderId(null);
       setTimeout(() => setMessage(''), 3000);

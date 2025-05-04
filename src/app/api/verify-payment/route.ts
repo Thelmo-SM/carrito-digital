@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
         sessionId: session.id,
         userId: session.metadata?.userId || 'desconocido',
         total: Number(session.metadata?.total),
-        status: 'paid',
+        status: 'Pendiente',
         createdAt: new Date(),
         products,
         shippingAddress: shippingAddress,
@@ -62,7 +62,9 @@ export async function GET(req: NextRequest) {
       await createNotification(
         newOrder.userId ?? '',
         "¡Compra realizada!",
-        `Tu pedido fue exitoso. Gracias por comprar con nosotros. <a href="/account/orders/${newOrder.sessionId}" target="_blank">Ver detalles de tu compra aquí</a>`
+        `Tu pedido fue exitoso. Gracias por comprar con nosotros. 
+        <a href="/account/orders/${newOrder.sessionId}" style="color: #437BAF; text-decoration: underline;"
+         target="_blank">Ver detalles de tu compra aquí</a>`
       );
       
 
