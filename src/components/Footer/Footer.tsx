@@ -58,7 +58,7 @@ const Footer = () => {
         </div>
         </div>
         <div className={styles.footerBottom}>
-          <p>&copy; 2025 Elegance Studio. Todos los derechos reservados.</p>
+          <p>&copy; 2025 Carrito Digital. Todos los derechos reservados.</p>
         </div>
       </footer>
     );
