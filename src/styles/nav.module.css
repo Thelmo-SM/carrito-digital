@@ -129,6 +129,7 @@
   color: #d1d9e6;
 }
 
+
 .logout {
   margin-top: 2rem;
   padding: 1rem;
@@ -225,10 +226,16 @@
   font-weight: bold;
   padding: .4rem .6rem;
   border-radius: 50%;
-  font-weight: bold;
+  font-weight: bold;;
 }
 
-
+.accoutNotifications {
+  margin: auto 0;
+  padding: .1rem 1rem;
+  border-radius: .2rem;
+  position: relative;
+  transition: 0.5s;
+}
 .accoutNotifications {
   margin: auto 0;
   padding: .1rem 1rem;
@@ -245,6 +252,7 @@
   top: -.4rem;
   right: -.2rem;
   font-weight: bold;
+
 }
 
 .notificationNavMobile {
@@ -256,7 +264,7 @@
   top: -.2rem;
   right: 1.5rem;
   font-weight: bold;
-  font-size: 1.2rem
+  font-size: 1rem;
 }
 
 

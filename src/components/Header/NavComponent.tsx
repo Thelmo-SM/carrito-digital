@@ -15,7 +15,8 @@ import ModalForm from '../Modals/modalForm';
 import { IsAuthenticated } from '../UI/Message';
 import { useModalForm } from '@/hooks/useModalForm';
 import NavMobile from './NavMobile';
-import { useNotifications } from '@/features/notifications/useNotifications';
+import { useNotifications } from '@/features/notifications/hooks/useNotifications';
+import { useChatNotificationContext } from '@/features/notifications/hooks/useMessageNotification';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -29,6 +30,7 @@ export const Nav = () => {
   const [isMobile, setIsMobile] = useState(false); 
   const [openMenuMobile, setOpenMenuMobile] = useState(false); 
   const { unreadCount, markAllAsRead } = useNotifications();
+  const { hasNewNotification, markNotificationsAsSeen } = useChatNotificationContext();
   
 
   useEffect(() => {
@@ -107,6 +109,12 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+
+              {hasNewNotification && (
+              <span className={NavStyle.notificationNavMobile}>
+              ...
+              </span>
+              )}
         </button>
 {  !isMobile ? <nav className={scrollY ? NavStyle.navScroll : NavStyle.container}>
   <div className={NavStyle.subContainer}>
@@ -136,6 +144,7 @@ export const Nav = () => {
                 onClick={() => setOpenMenu(!openMenu)}
                 className={NavStyle.profileButton}
                 aria-label="Abrir menú de usuario"
+
               >
                 <Image
                   src={user.image || userImg}
@@ -149,6 +158,12 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+
+              {hasNewNotification && (
+              <span className={NavStyle.notificationNav}>
+              ...
+              </span>
+              )}
               </button>
             </div>
           ) : (
@@ -171,6 +186,8 @@ export const Nav = () => {
       handleSignOut={handleSignOut}
       unreadCount={unreadCount}
       markAllAsRead={markAllAsRead}
+      hasNewNotification={hasNewNotification}
+      markNotificationsAsSeen={markNotificationsAsSeen}
       />}
 
       {/* Menú desplegable con animación y ref */}
@@ -214,6 +231,20 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+            </Link>
+            <Link href='/account/messages' 
+            className={NavStyle.menuItem}
+            onClick={() => {
+              markNotificationsAsSeen()
+            }
+            }
+            >
+              Mensajes
+              {hasNewNotification && (
+              <span className={NavStyle.notificationBadge}>
+              ...
+              </span>
+        )}
             </Link>
           <button className={NavStyle.logout} onClick={handleSignOut}>
             {loading ? <LoaderUi /> : 'Cerrar sesión'}

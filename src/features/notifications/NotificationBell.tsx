@@ -1,6 +1,6 @@
 'use client';
 
-import { useNotifications } from "./useNotifications";
+import { useNotifications } from "./hooks/useNotifications";
 import styles from "./NotificationBell.module.css";
 
 export default function NotificationsPage() {

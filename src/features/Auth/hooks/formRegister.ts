@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { registerService } from "../services/registerService";
 import { setDocument } from "@/utils/firebase";
 import { useRouter } from "next/navigation";
-import { createNotification } from "@/features/notifications/createNotification";
+import { createNotification } from "@/features/notifications/services/createNotification";
 
 //setDocument
 

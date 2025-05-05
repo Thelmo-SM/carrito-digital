@@ -10,6 +10,7 @@ import Nav from "@/components/Header/NavComponent";
 import Footer from "@/components/Footer/Footer";
 import { ProductCartProvider } from "@/store/ProductCartContext";
 import { AddressProvider } from "@/store/AddressContext";
+import { ChatNotificationProvider } from "@/features/notifications/hooks/useMessageNotification";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({
   return (
     <ProductCartProvider>
     <AddressProvider>
+      <ChatNotificationProvider>
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Nav />
@@ -52,6 +54,7 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
+    </ChatNotificationProvider>
     </AddressProvider>
     </ProductCartProvider>
   );

@@ -6,7 +6,7 @@ import sharedStyles from '@/styles/shared.module.css';
 import { useAdminOrders } from '../hooks/useOrders';
 import { orderTypes } from '@/types/ordersTypes';
 import { updateOrderStatus } from '../services/updateOrderStatus';
-import { createNotification } from '@/features/notifications/createNotification';
+import { createNotification } from '@/features/notifications/services/createNotification';
 
 const statusOptions = ['Pendiente', 'Enviado', 'Entregado', 'Cancelado'];
 
