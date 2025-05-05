@@ -13,6 +13,7 @@ import ChatButton from "./ChatButton";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
 import style from '@/styles/ChatComponent.module.css';
 
+
 interface ChatItem {
   chatId: string;
   participants: string[];
@@ -30,6 +31,7 @@ export const ChatComponent = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const user = useAuthUsers();
+  
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -95,7 +97,7 @@ export const ChatComponent = () => {
 
             return (
               <li key={chat.chatId} className={style.chatItem}>
-                <Link href={`/messages/${chat.chatId}`} className={style.chatLink}>
+                <Link href={`/account/messages/${chat.chatId}`} className={style.chatLink}>
                   Conversación con: <span className={style.oterUser}>{otherUserName}</span>
                 </Link>
               </li>

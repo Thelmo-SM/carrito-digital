@@ -7,6 +7,7 @@ import {
   addDoc,
   serverTimestamp,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 /**
@@ -56,3 +57,15 @@ export const sendMessageService = async (text: string, receiverId: string) => {
   }
 };
 
+export const markMessagesAsSeenS = async () => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  const userRef = doc(db, "users", user.uid);
+
+  await updateDoc(userRef, {
+    lastSeenMessage: Date.now(),
+  });
+};

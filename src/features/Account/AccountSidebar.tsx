@@ -5,11 +5,12 @@ import styles from '@/styles/account.module.css';
 import Link from 'next/link';
 import { useNotifications } from '../notifications/hooks/useNotifications';
 import { useEffect } from 'react';
-import { useMessageNotification } from '../notifications/hooks/useMessageNotification';
+import { useChatNotificationContext } from '../notifications/hooks/useMessageNotification';
+import { markMessagesAsSeenS } from '../Message/services/sendMessageService';
 
 export const AccountSidebar = () => {
     const { unreadCount, markAllAsRead } = useNotifications();
-      const { hasNewMessage, setHasNewMessage } = useMessageNotification();
+      const { hasNewMessage, markMessagesAsSeen } = useChatNotificationContext();
 
       useEffect(() => {
         markAllAsRead();
@@ -46,8 +47,12 @@ return (
         </li>
         <li>
         <Link 
-        href='/messages'
-        onClick={() => setHasNewMessage(false)}
+        href='/account/messages'
+        onClick={() => {
+          markMessagesAsSeen()
+          markMessagesAsSeenS()
+        }
+        }
         >
           Mensajes
           {hasNewMessage && (

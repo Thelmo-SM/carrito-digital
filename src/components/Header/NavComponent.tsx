@@ -16,7 +16,8 @@ import { IsAuthenticated } from '../UI/Message';
 import { useModalForm } from '@/hooks/useModalForm';
 import NavMobile from './NavMobile';
 import { useNotifications } from '@/features/notifications/hooks/useNotifications';
-import { useMessageNotification } from '@/features/notifications/hooks/useMessageNotification';
+import { useChatNotificationContext } from '@/features/notifications/hooks/useMessageNotification';
+import { markMessagesAsSeenS } from '@/features/Message/services/sendMessageService';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -30,7 +31,7 @@ export const Nav = () => {
   const [isMobile, setIsMobile] = useState(false); 
   const [openMenuMobile, setOpenMenuMobile] = useState(false); 
   const { unreadCount, markAllAsRead } = useNotifications();
-  const { hasNewMessage, setHasNewMessage } = useMessageNotification();
+  const { hasNewMessage, markMessagesAsSeen,  } = useChatNotificationContext();
   
 
   useEffect(() => {
@@ -138,6 +139,7 @@ export const Nav = () => {
                 onClick={() => setOpenMenu(!openMenu)}
                 className={NavStyle.profileButton}
                 aria-label="Abrir menú de usuario"
+
               >
                 <Image
                   src={user.image || userImg}
@@ -223,9 +225,13 @@ export const Nav = () => {
             </span>
             )}
             </Link>
-            <Link href='/messages' 
+            <Link href='/account/messages' 
             className={NavStyle.menuItem}
-            onClick={() => setHasNewMessage(false)}
+            onClick={() => {
+              markMessagesAsSeen()
+              markMessagesAsSeenS()
+            }
+            }
             >
               Mensajes
               {hasNewMessage && (

@@ -17,7 +17,7 @@ export const useChat = (chatId: string) => {
   useEffect(() => {
     if (!chatId) return;
 
-    const messagesRef = collection(db, "messages", chatId, "messages"); // Asegúrate de que la ruta sea correcta
+    const messagesRef = collection(db, "messages", chatId, "messages");
     const q = query(messagesRef, orderBy("createdAt", "asc"));
 
     const unsubscribe = onSnapshot(q, (snapshot) => {

@@ -2,7 +2,7 @@
 .chatContainer {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 80%;
   margin: auto;
   border-radius: .2rem;
   box-shadow: 0 .1rem .9rem .2rem #cad1dd;
