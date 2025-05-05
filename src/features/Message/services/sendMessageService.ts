@@ -8,7 +8,11 @@ import {
   serverTimestamp,
   getDoc,
   updateDoc,
+  query,
+  where,
+  getDocs,
 } from "firebase/firestore";
+import { NotificationMessage } from "@/features/notifications/hooks/useMessageNotification";
 
 /**
  * Envía un mensaje entre dos usuarios.
@@ -51,21 +55,51 @@ export const sendMessageService = async (text: string, receiverId: string) => {
       createdAt: serverTimestamp(),
     });
 
-    console.log("Mensaje enviado correctamente.");
+    // 🔔 Agregar notificación SOLO para el receptor
+    const notificationRef = collection(db, "notifications");
+    await addDoc(notificationRef, {
+      userId: receiverId,
+      type: "message",
+      senderId: senderId,
+      message: text,
+      chatId,
+      createdAt: serverTimestamp(),
+      read: false,
+    });
+
+    console.log("Mensaje y notificación enviados correctamente.");
   } catch (error) {
     console.error("Error al enviar el mensaje:", error);
   }
 };
 
-export const markMessagesAsSeenS = async () => {
-  const auth = getAuth();
-  const user = auth.currentUser;
 
-  if (!user) return;
+export const getUnreadNotificationsMessage = async (userId: string): Promise<NotificationMessage[]> => {
+  try {
+    const q = query(
+      collection(db, "notifications"),
+      where("userId", "==", userId),
+      where("read", "==", false)
+    );
 
-  const userRef = doc(db, "users", user.uid);
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...(doc.data() as Omit<NotificationMessage, "id">),
+    }));
+  } catch (error) {
+    console.error("Error obteniendo notificaciones no leídas:", error);
+    return [];
+  }
+};
 
-  await updateDoc(userRef, {
-    lastSeenMessage: Date.now(),
-  });
+
+
+
+
+export const markMessagesAsSeenMessage = async (notificationId: string): Promise<void> => {
+  const notificationRef = doc(db, "notifications", notificationId);
+
+  // Aquí puedes actualizar la notificación como leída
+  await updateDoc(notificationRef, { read: true });
 };

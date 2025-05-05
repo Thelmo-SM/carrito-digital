@@ -17,7 +17,6 @@ import { useModalForm } from '@/hooks/useModalForm';
 import NavMobile from './NavMobile';
 import { useNotifications } from '@/features/notifications/hooks/useNotifications';
 import { useChatNotificationContext } from '@/features/notifications/hooks/useMessageNotification';
-import { markMessagesAsSeenS } from '@/features/Message/services/sendMessageService';
 
 export const Nav = () => {
   const [scrollY, setScrollY] = useState(false);
@@ -31,7 +30,7 @@ export const Nav = () => {
   const [isMobile, setIsMobile] = useState(false); 
   const [openMenuMobile, setOpenMenuMobile] = useState(false); 
   const { unreadCount, markAllAsRead } = useNotifications();
-  const { hasNewMessage, markMessagesAsSeen,  } = useChatNotificationContext();
+  const { hasNewNotification, markNotificationsAsSeen } = useChatNotificationContext();
   
 
   useEffect(() => {
@@ -110,6 +109,12 @@ export const Nav = () => {
               {unreadCount}
             </span>
             )}
+
+              {hasNewNotification && (
+              <span className={NavStyle.notificationNavMobile}>
+              ...
+              </span>
+              )}
         </button>
 {  !isMobile ? <nav className={scrollY ? NavStyle.navScroll : NavStyle.container}>
   <div className={NavStyle.subContainer}>
@@ -154,7 +159,7 @@ export const Nav = () => {
             </span>
             )}
 
-              {hasNewMessage && (
+              {hasNewNotification && (
               <span className={NavStyle.notificationNav}>
               ...
               </span>
@@ -181,6 +186,8 @@ export const Nav = () => {
       handleSignOut={handleSignOut}
       unreadCount={unreadCount}
       markAllAsRead={markAllAsRead}
+      hasNewNotification={hasNewNotification}
+      markNotificationsAsSeen={markNotificationsAsSeen}
       />}
 
       {/* Menú desplegable con animación y ref */}
@@ -228,13 +235,12 @@ export const Nav = () => {
             <Link href='/account/messages' 
             className={NavStyle.menuItem}
             onClick={() => {
-              markMessagesAsSeen()
-              markMessagesAsSeenS()
+              markNotificationsAsSeen()
             }
             }
             >
               Mensajes
-              {hasNewMessage && (
+              {hasNewNotification && (
               <span className={NavStyle.notificationBadge}>
               ...
               </span>

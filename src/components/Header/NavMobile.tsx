@@ -18,9 +18,23 @@ type NavMobileProps = {
   handleSignOut: () => void;
   unreadCount: number;
   markAllAsRead: () => void;
+  hasNewNotification: boolean;
+  markNotificationsAsSeen: () => void;
 };
 
-export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMobile, handleSignOut, unreadCount, markAllAsRead }: NavMobileProps) => {
+export const NavMobile = (
+  { user
+    , isUser,
+     totalItems,
+      isMenuOpen,
+       setOpenMenuMobile,
+        handleSignOut,
+         unreadCount,
+          markAllAsRead,
+          hasNewNotification,
+          markNotificationsAsSeen
+         }: NavMobileProps
+        ) => {
     return (
       <nav className={`${!isMenuOpen ? styles.nav : styles.containerShow}`}>
         <Link href="/" className={styles.link}
@@ -86,6 +100,20 @@ export const NavMobile = ({ user, isUser, totalItems, isMenuOpen, setOpenMenuMob
                     </span>
                    )}
                     </Link>
+                    <Link href='/account/messages' 
+                    className={styles.link}
+                    onClick={() => {
+                    markNotificationsAsSeen()
+                    }
+                    }
+                    >
+                    Mensajes
+                    {hasNewNotification && (
+                    <span className={styles.notificationBadge}>
+                    ●
+                    </span>
+                     )}
+                 </Link>
 {/*////////////////////////////////////////////////////*/}
           <button
             className={styles.logout}

@@ -1,123 +1,67 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import {
-  collection,
-  doc,
-  onSnapshot,
-  updateDoc,
-  query,
-  orderBy,
-  limit,
-} from "firebase/firestore";
-import { db } from "@/utils/firebase";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useAuthUsers } from "@/features/Auth/hooks/authUsers";
+import { Timestamp } from "firebase/firestore";
+import { getUnreadNotificationsMessage, markMessagesAsSeenMessage } from "@/features/Message/services/sendMessageService";
 
+// Tipo de Notificación
+export interface NotificationMessage {
+  id: string;
+  userId: string;
+  senderId: string;
+  message: string;
+  chatId: string;
+  createdAt: Timestamp;
+  read: boolean;
+  type: string;
+}
+
+// Tipo del Contexto
 interface ChatNotificationContextType {
-  hasNewMessage: boolean;
-  markMessagesAsSeen: () => Promise<void>;
-  lastSeenMessage: number | null;
+  hasNewNotification: boolean;
+  markNotificationsAsSeen: () => void;
 }
 
 const ChatNotificationContext = createContext<ChatNotificationContextType>({
-  hasNewMessage: false,
-  markMessagesAsSeen: async () => {},
-  lastSeenMessage: null,
+  hasNewNotification: false,
+  markNotificationsAsSeen: () => {},
 });
 
-export const ChatNotificationProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+export const ChatNotificationProvider = ({ children }: { children: React.ReactNode }) => {
   const user = useAuthUsers();
   const userId = user?.uid;
+  const [hasNewNotification, setHasNewNotification] = useState(false);
 
-  const [hasNewMessage, setHasNewMessage] = useState(false);
-  const [lastSeenMessage, setLastSeenMessage] = useState<number | null>(null);
-
-  // Escucha los datos del usuario (incluyendo lastSeenMessage)
+  // Verificar notificaciones no leídas
   useEffect(() => {
     if (!userId) return;
-
-    const userRef = doc(db, "users", userId);
-    const unsubscribe = onSnapshot(userRef, (snapshot) => {
-      const data = snapshot.data();
-      if (data?.lastSeenMessage) {
-        setLastSeenMessage(data.lastSeenMessage);
-      }
-    });
-
-    return () => unsubscribe();
+  
+    console.log("userId actual:", userId); // <-- ¿Coincide con el del documento?
+  
+    const checkNotifications = async () => {
+      const notifications = await getUnreadNotificationsMessage(userId);
+      console.log("Notificaciones no leídas:", notifications);
+      setHasNewNotification(notifications.length > 0);
+    };
+  
+    checkNotifications();
   }, [userId]);
 
-  useEffect(() => {
-    if (!userId || lastSeenMessage === null) return;
-  
-    const chatsRef = collection(db, "messages");
-  
-    const unsubscribeChats = onSnapshot(chatsRef, (snapshot) => {
-      const unsubscribes: (() => void)[] = [];
-  
-      snapshot.forEach((chatDoc) => {
-        const chatId = chatDoc.id;
-        const [id1, id2] = chatId.split("_");
-  
-        // Ignorar chats donde no participa el usuario
-        if (id1 !== userId && id2 !== userId) return;
-  
-        // Ignorar chats consigo mismo
-        if (id1 === id2 && id1 === userId) return;
-  
-        // Ahora escuchamos los mensajes de ese chat
-        const messagesRef = collection(db, "messages", chatId, "messages");
-        const q = query(messagesRef, orderBy("createdAt", "desc"), limit(1));
-  
-        const unsubscribeMsg = onSnapshot(q, (msgSnapshot) => {
-          const doc = msgSnapshot.docs[0];
-          if (!doc) return;
-  
-          const data = doc.data();
-          const createdAt = data.createdAt?.toDate().getTime();
-          const senderId = data.senderId;
-  
-          // Si el mensaje es de otro usuario y es más reciente que lastSeenMessage, notificar
-          if (
-            createdAt &&
-            createdAt > lastSeenMessage &&
-            senderId !== userId
-          ) {
-            setHasNewMessage(true);
-          }
-        });
-  
-        unsubscribes.push(unsubscribeMsg);
-      });
-  
-      // Limpiar listeners de mensajes
-      return () => unsubscribes.forEach((unsub) => unsub());
-    });
-  
-    return () => unsubscribeChats();
-  }, [userId, lastSeenMessage]);
-
-  // Marcar mensajes como vistos
-  const markMessagesAsSeen = async () => {
+  // Función para marcar las notificaciones como leídas
+  const markNotificationsAsSeen = () => {
     if (!userId) return;
 
-    const now = Date.now();
-    const userRef = doc(db, "users", userId);
-
-    await updateDoc(userRef, {
-      lastSeenMessage: now,
+    // Obtener notificaciones no leídas y marcarlas como leídas
+    getUnreadNotificationsMessage(userId).then((notifications: NotificationMessage[]) => {
+      notifications.forEach((notification) => {
+        markMessagesAsSeenMessage(notification.id);
+      });
     });
 
-    setLastSeenMessage(now);
-    setHasNewMessage(false);
+    setHasNewNotification(false);
   };
 
   return (
-    <ChatNotificationContext.Provider
-      value={{ hasNewMessage, markMessagesAsSeen, lastSeenMessage }}
-    >
+    <ChatNotificationContext.Provider value={{ hasNewNotification, markNotificationsAsSeen }}>
       {children}
     </ChatNotificationContext.Provider>
   );

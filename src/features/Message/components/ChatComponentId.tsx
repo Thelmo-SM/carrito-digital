@@ -32,7 +32,6 @@ const ChatComponentId = ({ chatId }: { chatId: string }) => {
       const newNames: Record<string, string> = {};
       const newImages: Record<string, string> = {};
   
-      console.log("Buscando nombres e imágenes para los usuarios:", participants);
   
       for (const uid of participants) {
         if (!newNames[uid]) {
@@ -41,7 +40,6 @@ const ChatComponentId = ({ chatId }: { chatId: string }) => {
             if (docSnap.exists()) {
               newNames[uid] = docSnap.data().name || "Usuario";
               newImages[uid] = docSnap.data().image || "/default-avatar.png";
-              console.log(`Usuario encontrado: ${uid} - Nombre: ${newNames[uid]} - Imagen: ${newImages[uid]}`);
             } else {
               newNames[uid] = "Desconocido";
               newImages[uid] = "/default-avatar.png";
@@ -54,9 +52,6 @@ const ChatComponentId = ({ chatId }: { chatId: string }) => {
           }
         }
       }
-  
-      console.log("Nombres obtenidos:", newNames);
-      console.log("Imágenes obtenidas:", newImages);
   
       setUserNames((prev) => ({ ...prev, ...newNames }));
     };
@@ -94,10 +89,10 @@ const ChatComponentId = ({ chatId }: { chatId: string }) => {
 
   return (
     <div className={styles.chatContainer}>
-      <h2 className={styles.chatTitle}>
+      {/* <h2 className={styles.chatTitle}>
         Estás conversando con{" "}
         <span className={styles.oterUser}>{userNames[chatId.split("_")[1]]}</span>
-      </h2>
+      </h2> */}
 
       <div ref={chatContainerRef} className={styles.chatBox}>
       {

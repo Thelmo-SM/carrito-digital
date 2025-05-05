@@ -236,6 +236,13 @@
   position: relative;
   transition: 0.5s;
 }
+.accoutNotifications {
+  margin: auto 0;
+  padding: .1rem 1rem;
+  border-radius: .2rem;
+  position: relative;
+  transition: 0.5s;
+}
 .notificationNav {
   background-color: #dc3545;
   color: #d1d9e6;
@@ -257,7 +264,7 @@
   top: -.2rem;
   right: 1.5rem;
   font-weight: bold;
-  font-size: 1.2rem
+  font-size: 1rem;
 }
 
 

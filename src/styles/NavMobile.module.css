@@ -140,6 +140,7 @@
     border-radius: .2rem;
     position: relative;
     transition: 0.5s;
+    border: solid blue;
   }
   .notificationNav {
     background-color: #dc3545;

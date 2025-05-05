@@ -5,7 +5,7 @@ import Stripe from "stripe";
 import { getOrderBySessionId } from "@/features/Checkout/services/getOrderBySessionId";
 import { createOrderInDatabase } from "@/features/Checkout/services/createOrderInDataBase";
 import { productsTypes } from "@/types/productTypes";
-import { createNotification } from "@/features/notifications/createNotification";
+import { createNotification } from "@/features/notifications/services/createNotification";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-02-24.acacia",
