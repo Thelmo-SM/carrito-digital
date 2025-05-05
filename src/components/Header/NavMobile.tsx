@@ -103,7 +103,8 @@ export const NavMobile = (
                     <Link href='/account/messages' 
                     className={styles.link}
                     onClick={() => {
-                    markNotificationsAsSeen()
+                    markNotificationsAsSeen();
+                    setOpenMenuMobile(false);
                     }
                     }
                     >
