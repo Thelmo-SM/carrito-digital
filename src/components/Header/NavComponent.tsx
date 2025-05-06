@@ -218,7 +218,7 @@ export const Nav = () => {
           >
             Direcciones
             </Link>
-          <Link href='/notifications' className={NavStyle.menuItem}
+          <Link href='/account/notifications' className={NavStyle.menuItem}
           onClick={() => {
             markAllAsRead();
             setOpenMenu(false);
