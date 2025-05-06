@@ -34,7 +34,7 @@ export const AccountSidebar = () => {
                     </li>
                     <li>
                         <Link
-                            href='/notifications'
+                            href='/account/notifications'
                             className={styles.accoutNotifications}
                             onClick={() => markAllAsRead()}
                         >
