@@ -9,7 +9,7 @@ export const addDocument = async (path: string, data: productsTypes) => {
   try {
     const docRef = await addDoc(collection(db, path), data);
     console.log('Documento agregado con ID: ', docRef.id);
-    return docRef.id; // Devolver el ID si se necesita usar más adelante
+    return docRef.id;
   } catch (error) {
     console.error('Error al agregar el documento: ', error);
     throw new Error('Error al agregar el documento');
@@ -30,13 +30,13 @@ export const deleteDocument = async (path: string) => {
 }
 
 //Editar productos 
-export const updateDocument = async (path: string, data: Partial<productsTypes>) => {
-    try {
-      const docRef = doc(db, path);
-      await updateDoc(docRef, data);
-      console.log("Documento actualizado correctamente");
-    } catch (error) {
-      console.error("Error al actualizar documento:", error);
-      throw new Error("No se pudo actualizar el documento");
-    }
-  };
+export const updateDocument = async (productId: string, data: Partial<productsTypes>) => {
+  try {
+    const docRef = doc(db, "products", productId);  // Asegúrate de usar productId aquí
+    await updateDoc(docRef, data);
+    console.log("Documento actualizado correctamente");
+  } catch (error) {
+    console.error("Error al actualizar documento:", error);
+    throw new Error("No se pudo actualizar el documento");
+  }
+};

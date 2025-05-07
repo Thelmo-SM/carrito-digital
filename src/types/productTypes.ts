@@ -4,11 +4,11 @@ import { Review } from "./ordersTypes";
 export interface itemImage {
     path: string;
     url: string;
-};
-
-export interface productsTypes {
+  }
+  
+  export interface productsTypes {
     id: string;
-    file?: itemImage;
+    file?: itemImage[];  // Cambio aquí, ahora es un arreglo de imágenes
     imageUrl?: string;
     name: string;
     price: number;
@@ -20,8 +20,7 @@ export interface productsTypes {
     avgRating?: number;
     reviews?: Review[];
     units?: number;
-
-};
+  }
 
 export interface cartTypes {
     id: string;

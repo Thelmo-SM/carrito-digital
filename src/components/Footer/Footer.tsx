@@ -45,13 +45,13 @@ const Footer = () => {
             <h4>Síguenos</h4>
             <ul>
               <li>
-                <Link href="https://facebook.com/elegancestudio" target="_blank">Facebook</Link>
+                <Link href="" target="_blank">Facebook</Link>
               </li>
               <li>
-                <Link href="https://instagram.com/elegancestudio" target="_blank">Instagram</Link>
+                <Link href="" target="_blank">Instagram</Link>
               </li>
               <li>
-                <Link href="https://twitter.com/elegancestudio" target="_blank">Twitter</Link>
+                <Link href="" target="_blank">Twitter</Link>
               </li>
             </ul>
           </div>

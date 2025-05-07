@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { addDocument } from "../services/addDocumentServices"; 
-import { productsTypes } from "@/types/productTypes";
+import { addDocument } from "../services/addDocumentServices";
+import { itemImage, productsTypes } from "@/types/productTypes";
 
 export const useCreateItems = (
   initialValue: productsTypes,
@@ -8,8 +8,8 @@ export const useCreateItems = (
   closeModal: () => void
 ) => {
   const [form, setForm] = useState(initialValue);
-  const [file, setFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [file, setFile] = useState<itemImage[]>([]);  
+  const [imagePreview, setImagePreview] = useState<string[]>([]); 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -19,45 +19,36 @@ export const useCreateItems = (
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(selectedFile);
+    const selectedFiles = e.target.files;
+    if (selectedFiles && selectedFiles.length > 0) {
+      const newImages = Array.from(selectedFiles).map(file => ({
+        path: file.name,
+        url: URL.createObjectURL(file),  
+      }));
+      setFile(prevFiles => [...prevFiles, ...newImages]);  
+      setImagePreview(prevPreviews => [...prevPreviews, ...newImages.map(image => image.url)]);  
     }
   };
-
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
     
-    // Agregar las nuevas categorías seleccionadas sin reemplazar las anteriores
     setForm(prevForm => {
-      // Fusionamos las categorías previas con las nuevas seleccionadas
-      const updatedCategories = Array.from(new Set([...prevForm.categorie, ...selectedOptions])); // Usamos Set para evitar duplicados
-      return {
-        ...prevForm,
-        categorie: updatedCategories
-      };
+      const updatedCategories = Array.from(new Set([...prevForm.categorie, ...selectedOptions]));
+      return { ...prevForm, categorie: updatedCategories };
     });
-  
-    console.log("Categorias seleccionadas:", selectedOptions);
   };
+
   const handleCategoryRemove = (category: string) => {
     setForm(prevForm => ({
       ...prevForm,
       categorie: prevForm.categorie.filter(cat => cat !== category)
     }));
-    console.log("Categoría eliminada:", category);
   };
 
-  // Cambiar la ruta para guardar en la colección global 'products'
   const itemCollection = async (items: productsTypes) => {
     try {
-      await addDocument("products", items); // Guarda el producto en la colección pública 'products'
+      await addDocument("products", items);
       console.log("Producto agregado correctamente en la colección 'products'");
     } catch (error) {
       console.error("Error al agregar el producto:", error);
@@ -68,7 +59,7 @@ export const useCreateItems = (
     e.preventDefault();
     setLoading(true);
   
-    if (!file) {
+    if (file.length === 0) {
       console.log("No se ha seleccionado ninguna imagen");
       setLoading(false);
       return;
@@ -76,17 +67,19 @@ export const useCreateItems = (
   
     try {
       const formData = new FormData();
-      formData.append("image", file);
-  
+      file.forEach((image, index) => {
+        formData.append(`image_${index}`, image.path);  
+      });
+
       const response = await fetch("/api/upload", {
         method: "POST",
         body: formData,
       });
   
       const data = await response.json();
-      setForm(initialValue); // Resetea los valores del formulario a los valores iniciales
-      setFile(null); // Limpia el archivo de imagen
-      setImagePreview(null); // Limpia la vista previa de la imagen
+      setForm(initialValue);
+      setFile([]);
+      setImagePreview([]);
       console.log("Respuesta de Cloudinary:", data);
   
       if (!response.ok || !data.secure_url) {
@@ -94,12 +87,11 @@ export const useCreateItems = (
         return;
       }
   
-      // Guardar el producto con la URL de la imagen en la colección pública
-      const newItem = { ...items, imageUrl: data.secure_url };
+      const newItem = { ...items, file: file };  
       await itemCollection(newItem);
   
-      console.log("Producto guardado con imagen en 'products'");
-      getItems(); // Recargar productos
+      console.log("Producto guardado con imágenes en 'products'");
+      getItems();
       closeModal();
       setSuccess(true);
     } catch (error) {
@@ -109,7 +101,6 @@ export const useCreateItems = (
       setSuccess(false);
     }
   };
-  
 
   return {
     form,
