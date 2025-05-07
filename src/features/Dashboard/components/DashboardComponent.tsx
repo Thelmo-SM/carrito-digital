@@ -26,7 +26,7 @@ export const DashboardComponent = () => {
   const user = useAuthUsers()
 
   const getItems = async () => {
-      const path = `products`; // Cambiado para acceder a la colección general de productos.
+      const path = `products`; 
       setLoading(true);
   
       try {
@@ -43,11 +43,11 @@ export const DashboardComponent = () => {
   };
 
   useEffect(() => {
-      getItems(); // Ya no dependemos de `user`, solo cargamos los productos de la colección general.
+      getItems(); 
   }, []);
 
   const deleteItem = async (item: productsTypes) => {
-      const path = `products/${item.id}`; // Cambiado para eliminar de la colección general de productos.
+      const path = `products/${item.id}`;
   
       try {
           await deleteDocument(path);
