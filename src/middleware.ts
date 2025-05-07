@@ -52,9 +52,9 @@ export async function middleware(req: NextRequest) {
     }
 
     // 🚫 Usuario con rol no permitido en dashboard
-    // if (pathname.startsWith('/dashboard') && role !== 'admin') {
-    //   return NextResponse.redirect(new URL('/account/profile', req.url));
-    // }
+    if (pathname.startsWith('/dashboard') && role !== 'admin') {
+      return NextResponse.redirect(new URL('/account/profile', req.url));
+    }
 
     return NextResponse.next();
   } catch (error) {
